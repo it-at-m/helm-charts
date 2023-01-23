@@ -1,0 +1,27 @@
+{{- if (not .Values.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "appswitcher-server-helm-chart.fullname" . }}
+  labels: 
+    {{- include "appswitcher-server-helm-chart.labels" . | nindent 4 }}
+data:
+  {{- with .Values }}
+  application.yml: |
+    appswitcher:
+      apps:
+      {{- toYaml .applications | nindent 8 }}
+      {{- if .keycloak.enabled }}
+      keycloak:
+        issuer-uri: {{ required "Issuer URI must be provided" .keycloak.issuerUri | quote }}
+        jwk-set-uri: {{ required "JWK Set URI must be provided" .keycloak.jwkSetUri | quote }}
+        scopes: {{ required "Scopes must be provided" .keycloak.scopes | quote }}
+        sso-session-max: {{ required "SSO session max must be provided" .keycloak.ssoSessionMax | quote }}
+      {{- end }}
+
+
+    logging:
+      level:
+        "[de.muenchen.oss.appswitcher-server]": INFO
+  {{- end }}
+{{- end }}

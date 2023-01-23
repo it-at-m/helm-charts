@@ -1,0 +1,10 @@
+apiVersion: v2
+name: appswitcher-server
+description: A Helm chart for appswitcher-server
+type: application
+version: 1.0.0
+appVersion: "1.0.1"
+maintainers:
+  - name: Michael Prankl
+    email: eidottermihi@gmail.com
+icon: https://github.com/it-at-m/appswitcher-server-helm-chart/raw/main/images/logo.png
