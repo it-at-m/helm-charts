@@ -2,7 +2,7 @@ apiVersion: v2
 name: appswitcher-server
 description: A Helm chart for appswitcher-server
 type: application
-version: 1.0.0
+version: 0.0.1
 appVersion: "1.0.1"
 maintainers:
   - name: Michael Prankl
