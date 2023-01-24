@@ -105,20 +105,20 @@ keycloak:
   # Maximum time in seconds before keycloak expires the sso sessions (e.g. '36000' for 10 hours).
   ssoSessionMax: "36000"
 
-# applications: {}
-applications:
-  demo-phone-book:
-    display-name: Phone book
-    url: https://www.gelbeseiten.de/
-    image-url: https://i.imgur.com/PA25O7T.png
-    tags:
-      - global
-  google:
-    display-name: Google
-    url: https://google.com
-    image-url: https://www.google.com/favicon.ico
-    tags:
-      - global
+applications: {}
+# applications:
+#   demo-phone-book:
+#     display-name: Phone book
+#     url: https://www.gelbeseiten.de/
+#     image-url: https://i.imgur.com/PA25O7T.png
+#     tags:
+#       - global
+#   google:
+#     display-name: Google
+#     url: https://google.com
+#     image-url: https://www.google.com/favicon.ico
+#     tags:
+#       - global
 
 credentials:
   # secret containing keys CLIENT_ID and CLIENT_SECRET (for Keycloak integration)
