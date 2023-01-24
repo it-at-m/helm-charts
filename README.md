@@ -18,3 +18,7 @@ To install the `appswitcher-server` chart:
 To uninstall the chart:
 
     helm delete my-appswitcher-server
+
+## Chart documentation
+
+See <https://github.com/it-at-m/appswitcher-server-helm-chart>.
