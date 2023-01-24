@@ -11,7 +11,7 @@ data:
     appswitcher:
       apps:
       {{- toYaml .applications | nindent 8 }}
-      {{- if .keycloak.enabled }}
+      {{- if contains "keycloak" .activeSpringProfiles }}
       keycloak:
         issuer-uri: {{ required "Issuer URI must be provided" .keycloak.issuerUri | quote }}
         jwk-set-uri: {{ required "JWK Set URI must be provided" .keycloak.jwkSetUri | quote }}

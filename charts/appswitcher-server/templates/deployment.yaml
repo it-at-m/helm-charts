@@ -48,14 +48,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          {{- if .Values.keycloak.enabled }}
+          {{- if .Values.activeSpringProfiles }}
             - name: SPRING_PROFILES_ACTIVE
-              value: "keycloak"
+              value: {{ .Values.activeSpringProfiles | quote }}
           {{- end}}
           {{- with .Values.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- if .Values.keycloak.enabled }}
+          {{- if contains "keycloak" .Values.activeSpringProfiles }}
           envFrom:
             - prefix: APPSWITCHER_KEYCLOAK_
               secretRef:

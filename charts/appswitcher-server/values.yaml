@@ -92,8 +92,10 @@ tolerations: []
 
 affinity: {}
 
+# List of active spring profiles (include 'keycloak' to activate Keycloak integration)
+activeSpringProfiles: ""
+
 keycloak:
-  enabled: false
   # Issuer uri (e.g. 'https://keycloak.mycompany.org/auth/realms/myrealm')
   issuerUri: ""
   # JWK set uri (e.g. 'https://keycloak.mycompany.org/auth/realms/myrealm/protocol/openid-connect/certs'
