@@ -14,7 +14,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup git user
-        uses: fregante/setup-git-user@v1
+        uses: fregante/setup-git-user@v2
       - name: Install Helm
         uses: azure/setup-helm@v3
       - name: Run chart-releaser
