@@ -5,20 +5,13 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
 
-    helm repo add appswitcher-server https://it-at-m.github.io/appswitcher-server-helm-chart
+    helm repo add it-at-m https://it-at-m.github.io/helm-charts
 
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages. You can then run `helm search repo
-appswitcher-server` to see the charts.
+it-at-m` to see the charts.
 
-To install the `appswitcher-server` chart:
-
-    helm install my-appswitcher-server appswitcher-server/appswitcher-server
-
-To uninstall the chart:
-
-    helm delete my-appswitcher-server
 
 ## Chart documentation
 
-See <https://github.com/it-at-m/appswitcher-server-helm-chart>.
+See <https://github.com/it-at-m/helm-charts>.
