@@ -1,13 +1,13 @@
 apiVersion: v2
-name: appswitcher-server
-description: Server component for a Google-like app switching experience.
+name: ad2image
+description: "easy avatars powered by AD / Exchange & Identicons"
 type: application
-version: 1.0.0
-appVersion: "1.0.2"
+version: 1.0.4
+appVersion: "1.0.4"
 maintainers:
   - name: Michael Prankl
     email: eidottermihi@gmail.com
-home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
 icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"

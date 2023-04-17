@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ad2image-helm-chart.fullname" . }}
+  labels: 
+    {{- include "ad2image-helm-chart.labels" . | nindent 4 }}
+data:
+  {{- with .Values }}
+  application.yml: |
+    de.muenchen.oss.ad2image:
+      ad:
+        url: {{ required "AD url must be provided" .ad.url | quote }}
+        user-search-base: {{ required "AD user-search-base must be provided" .ad.userSearchBase | quote }}
+        user-search-filter: {{ required "AD user-search-filter must be provided" .ad.userSearchFilter | quote }}
+      ews:
+        ews-service-url: {{ required "EWS service url must be provided" .ews.ewsServiceUrl | quote }}
+        domain: {{ required "EWS domain must be provided" .ews.domain | quote }}
+      web.docs.url: {{ .docsUrl | default "https://github.com/it-at-m/ad2image" | quote }}
+
+    logging:
+      level:
+        "[de.muenchen.oss.ad2image]": INFO
+  {{- end }}

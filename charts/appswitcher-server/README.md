@@ -9,7 +9,7 @@ This chart bootstraps a [appswitcher-server](https://github.com/it-at-m/appswitc
 Install this chart using:
 
 ```bash
-helm install appswitcher-server appswitcher-server/appswitcher-server --values values.yaml
+helm install my-appswitcher-release it-at-m/appswitcher-server --values values.yaml
 ```
 
 The command deploys appswitcher-server on the Kubernetes cluster with some default configuration. The [Configuration](#configuration) section lists the parameters that can be configured during via `values.yaml`.
