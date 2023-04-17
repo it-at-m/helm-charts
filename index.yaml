@@ -42,7 +42,7 @@ entries:
     description: Server component for a Google-like app switching experience.
     digest: afe0eaef11d94ebb6334245622bcd029e858441f58e4618acb96b38392ba9423
     home: https://github.com/it-at-m/appswitcher-server-helm-chart/tree/main/charts/appswitcher-server
-    icon: https://raw.githubusercontent.com/it-at-m/appswitcher-server-helm-chart/main/images/logo.png
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
     maintainers:
     - email: eidottermihi@gmail.com
       name: Michael Prankl
@@ -58,7 +58,7 @@ entries:
     created: "2023-01-24T10:12:49.428029845Z"
     description: A Helm chart for appswitcher-server
     digest: 34dd52744434a00acac1c94b494d0f5a70d4ded6459d24d175f5a5d94fa63afe
-    icon: https://github.com/it-at-m/appswitcher-server-helm-chart/raw/main/images/logo.png
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
     maintainers:
     - email: eidottermihi@gmail.com
       name: Michael Prankl
