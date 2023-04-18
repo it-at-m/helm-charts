@@ -1,70 +1,104 @@
 apiVersion: v1
 entries:
   ad2image:
-    - apiVersion: v2
-      appVersion: 1.0.4
-      created: "2023-04-17T12:40:11.145083973Z"
-      description: easy avatars powered by AD / Exchange & Identicons
-      digest: cd84738fcbc9054db226ae040c0d35e950ca441d48b58111661702a5ddb131a9
-      home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
-      icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
-      maintainers:
-        - email: eidottermihi@gmail.com
-          name: Michael Prankl
-      name: ad2image
-      sources:
-        - https://github.com/it-at-m/helm-charts
-      type: application
-      urls:
-        - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
-      version: 1.0.4
+  - apiVersion: v2
+    appVersion: 1.0.4
+    created: "2023-04-18T07:03:26.120713327Z"
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 3f5e4a1294d09999d9d632480bed46edff1da1beeeae22a948d6ca2ded978260
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.5/ad2image-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v2
+    appVersion: 1.0.4
+    created: "2023-04-17T12:40:11.145083973Z"
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: cd84738fcbc9054db226ae040c0d35e950ca441d48b58111661702a5ddb131a9
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
+    version: 1.0.4
   appswitcher-server:
-    - apiVersion: v2
-      appVersion: 1.0.2
-      created: "2023-04-17T12:40:11.297487033Z"
-      description: Server component for a Google-like app switching experience.
-      digest: fd5d888454df222c20180d93121035b79b0bd8418fc31cc29b07646e82766e84
-      home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
-      icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
-      maintainers:
-        - email: eidottermihi@gmail.com
-          name: Michael Prankl
-      name: appswitcher-server
-      sources:
-        - https://github.com/it-at-m/helm-charts
-      type: application
-      urls:
-        - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.0.0/appswitcher-server-1.0.0.tgz
-      version: 1.0.0
-    - apiVersion: v2
-      appVersion: 1.0.2
-      created: "2023-04-13T13:28:58.283518949Z"
-      description: Server component for a Google-like app switching experience.
-      digest: afe0eaef11d94ebb6334245622bcd029e858441f58e4618acb96b38392ba9423
-      home: https://github.com/it-at-m/appswitcher-server-helm-chart/tree/main/charts/appswitcher-server
-      icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
-      maintainers:
-        - email: eidottermihi@gmail.com
-          name: Michael Prankl
-      name: appswitcher-server
-      sources:
-        - https://github.com/it-at-m/appswitcher-server
-      type: application
-      urls:
-        - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.1/appswitcher-server-0.1.1.tgz
-      version: 0.1.1
-    - apiVersion: v2
-      appVersion: 1.0.2
-      created: "2023-01-24T10:12:49.428029845Z"
-      description: A Helm chart for appswitcher-server
-      digest: 34dd52744434a00acac1c94b494d0f5a70d4ded6459d24d175f5a5d94fa63afe
-      icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
-      maintainers:
-        - email: eidottermihi@gmail.com
-          name: Michael Prankl
-      name: appswitcher-server
-      type: application
-      urls:
-        - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.0/appswitcher-server-0.1.0.tgz
-      version: 0.1.0
-generated: "2023-04-18T06:40:11.297496633Z"
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2023-04-18T07:03:26.325242414Z"
+    description: Server component for a Google-like app switching experience.
+    digest: 662aadb49d39acdd91ebb528cf61d3e1296f13524afb83e0989ed34293807193
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.0.1/appswitcher-server-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2023-04-17T12:40:11.297487033Z"
+    description: Server component for a Google-like app switching experience.
+    digest: fd5d888454df222c20180d93121035b79b0bd8418fc31cc29b07646e82766e84
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.0.0/appswitcher-server-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2023-04-13T13:28:58.283518949Z"
+    description: Server component for a Google-like app switching experience.
+    digest: afe0eaef11d94ebb6334245622bcd029e858441f58e4618acb96b38392ba9423
+    home: https://github.com/it-at-m/appswitcher-server-helm-chart/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/appswitcher-server
+    type: application
+    urls:
+    - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.1/appswitcher-server-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2023-01-24T10:12:49.428029845Z"
+    description: A Helm chart for appswitcher-server
+    digest: 34dd52744434a00acac1c94b494d0f5a70d4ded6459d24d175f5a5d94fa63afe
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: appswitcher-server
+    type: application
+    urls:
+    - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.0/appswitcher-server-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-04-18T07:03:26.325263514Z"
