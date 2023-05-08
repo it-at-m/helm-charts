@@ -2,12 +2,12 @@ apiVersion: v2
 name: appswitcher-server
 description: Server component for a Google-like app switching experience.
 type: application
-version: 1.0.1
+version: 1.0.2
 appVersion: "1.0.2"
 maintainers:
   - name: Michael Prankl
     email: eidottermihi@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
-icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+icon: https://it-at-m.github.io/opensource.muenchen.de/assets/itm-logo-256.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
