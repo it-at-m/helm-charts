@@ -60,10 +60,6 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-service:
-  type: ClusterIP
-  port: 8080
-
 route:
   enabled: false
   annotations: {}
@@ -149,3 +145,14 @@ extraVolumes:
   #   secret:
   #     secretName: custom-cacerts
   #     defaultMode: 420
+
+# can be used to add init containers
+initContainers: []
+  # - name: my-init-container-name
+  #   image: some-image:latest
+  #   env:
+  #     - name: AWS_DEFAULT_REGION
+  #       value: "eu-central-1"
+  #   volumeMounts:
+  #     - name: help-zammad
+  #       mountPath: /opt/zammad

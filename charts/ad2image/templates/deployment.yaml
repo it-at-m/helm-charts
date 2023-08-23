@@ -45,6 +45,10 @@ spec:
       {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        {{- with .Values.initContainers }}
+        {{- toYaml . | nindent 8}}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
