@@ -144,3 +144,14 @@ extraVolumes:
   #   secret:
   #     secretName: custom-cacerts
   #     defaultMode: 420
+
+# can be used to add init containers
+initContainers: []
+  # - name: my-init-container-name
+  #   image: some-image:latest
+  #   env:
+  #     - name: AWS_DEFAULT_REGION
+  #       value: "eu-central-1"
+  #   volumeMounts:
+  #     - name: help-zammad
+  #       mountPath: /opt/zammad
