@@ -3,6 +3,23 @@ entries:
   ad2image:
   - apiVersion: v2
     appVersion: 1.0.6
+    created: "2023-11-23T13:11:22.255271733Z"
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 2e352910d85ea27f4760315a2e12f0ab1e7a3b0435793e21353243779a5e3a20
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.1.1/ad2image-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 1.0.6
     created: "2023-08-23T12:55:45.335178227Z"
     description: easy avatars powered by AD / Exchange & Identicons
     digest: 2f421debd0745b4dc7dfe006c16633ff4d58d0d275b2ac6fa8dfe5651e67c04c
@@ -104,6 +121,23 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
     version: 1.0.4
   appswitcher-server:
+  - apiVersion: v2
+    appVersion: 1.0.3
+    created: "2023-11-23T13:11:22.38763485Z"
+    description: Server component for a Google-like app switching experience.
+    digest: 7c44db027bcb201903db91fbdd4c2fb3e84ecb6cc0818269ee482635291ad8ab
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.1.2/appswitcher-server-1.1.2.tgz
+    version: 1.1.2
   - apiVersion: v2
     appVersion: 1.0.3
     created: "2023-11-22T20:03:08.711426372Z"
@@ -220,4 +254,4 @@ entries:
     urls:
     - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.0/appswitcher-server-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-22T20:03:08.711466697Z"
+generated: "2023-11-23T13:11:22.387690875Z"
