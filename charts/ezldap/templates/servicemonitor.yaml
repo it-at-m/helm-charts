@@ -1,0 +1,15 @@
+{{- if .Values.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "ezldap.fullname" . }}
+spec:
+  endpoints:
+    - interval: 15s
+      port: "http"
+      scheme: http
+      path: "/actuator/prometheus"
+  selector:
+    matchLabels:
+      {{- include "ezldap.selectorLabels" . | nindent 6 }}
+{{- end }}
