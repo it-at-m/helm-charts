@@ -256,6 +256,23 @@ entries:
     version: 0.1.0
   ezldap:
   - apiVersion: v2
+    appVersion: v1.0.0
+    created: "2023-12-20T15:06:37.473128813Z"
+    description: ezLDAP - easy read access for LDAP
+    digest: 60653c01a426978de09ab0dd58e12bd3f730371e96e08b70714a47aa75997251
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: Michael Prankl
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-12-18T10:15:59.626652163Z"
     description: ezLDAP - easy read access for LDAP
@@ -289,4 +306,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-0.0.1/ezldap-0.0.1.tgz
     version: 0.0.1
-generated: "2023-12-18T10:15:59.626692649Z"
+generated: "2023-12-20T15:06:37.473170952Z"
