@@ -2,8 +2,8 @@ apiVersion: v2
 name: ezldap
 description: ezLDAP - easy read access for LDAP
 type: application
-version: 1.0.0
-appVersion: "1.0.0"
+version: 1.0.1
+appVersion: "v1.0.0"
 maintainers:
   - name: Michael Prankl
     email: eidottermihi@gmail.com
