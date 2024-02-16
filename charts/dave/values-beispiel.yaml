@@ -1,0 +1,52 @@
+#############################################
+# Allgemeine Parameter - !! Pflichtfelder!! #
+#############################################
+
+## Alle Namen der Openshift Objekte werden aus dem Namen der Anwendung und der Umgebung zusammengesetzt:  applicationName-applicationEnv
+## Name der Anwendung.
+## Beispiel - applicationName: "mypp"
+applicationName: "pip"
+
+## Name der Umgebung.
+## Beispiel - applicationEnv: "dev"
+applicationEnv: "dev"
+
+## Setzt die aktiven Spring Profiles.
+## Wird für die Umgebungsvariable SPRING_PROFILES_ACTIVE der Anwendung verwendet,
+## siehe hier: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/values.yaml#L61
+## Beispiel - springProfilesActive: "openshift,dev,no-security"
+springProfilesActive: "openshift,dev,no-security"
+
+## Wert für das label 'app'. Die Openshift Objekte können darüber gesucht werden (z.B. app=application-label)
+## Beispiel - applicationLabel: "myApp-dev"
+applicationLabel: "applicationName-label"
+
+## Version der Anwendung entspricht standardmäßig dem Namen der Umgebung.
+## applicationEnv wird hier gesetzt: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/values.yaml#L12
+applicationVersion: "{{ .Values.applicationEnv }}"
+
+#############################################
+# BuildConfig Parameter                     #
+#############################################
+
+build:
+  ## Enable BuildConfig
+  enabled: true
+
+#deploy:
+#  envFrom:
+#    configMapRef: pip-dev
+#    secretRef: elasticsearch-credential
+
+#############################################
+# Route Parameter                           #
+#############################################
+route:
+  ## Soll eine Route erstellt werden
+  enabled: true
+
+## Appdynamics
+## https://git.muenchen.de/groups/appdynamics/-/wikis/java-agent-init-container
+## https://docs.appdynamics.com/21.12/en/application-monitoring/install-app-server-agents/java-agent/install-the-java-agent/install-the-java-agent-in-containers
+appdynamics:
+  enabled: false
