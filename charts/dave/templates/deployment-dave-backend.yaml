@@ -68,6 +68,9 @@ spec:
             - name: http
               containerPort: {{ .Values.daveBackend.service.port }}
               protocol: TCP
+            - name: jolokia
+              containerPort: 8778
+              protocol: TCP
           volumeMounts:
             - name: config
               mountPath: /deployments/config
