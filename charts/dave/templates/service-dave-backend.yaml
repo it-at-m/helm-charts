@@ -11,9 +11,5 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    - port: 8778
-      targetPort: jolokia
-      protocol: TCP
-      name: jolokia
   selector:
     {{- include "dave.selectorLabels" . | nindent 4 }}
