@@ -1,15 +1,62 @@
 {{/*
-Helper to check whether all required variables for all Openshift Objects are configured.
+Expand the name of the chart.
 */}}
-{{- define "check.required.values.all" }}
-  {{- $applicationName := required "applicationName muss angegeben werden!" .Values.daveBackend.applicationName -}}
-  {{- $applicationEnv := required "applicationEnv muss angegeben werden!" .Values.daveBackend.applicationEnv -}}
-  {{- $applicationLabel := required "applicationLabel muss angegeben werden!" .Values.daveBackend.applicationLabel -}}
-{{ end -}}
+{{- define "dave.name" -}}
+{{- default .Chart.Name .Values.daveBackend.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
 
 {{/*
-Helper to check whether all required variables for Openshift Object Deployment are configured.
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
 */}}
-{{- define "check.required.values.deployment" }}
-  {{- $springProfilesActive := required "springProfilesActive muss angegeben werden!" .Values.daveBackend.springProfilesActive -}}
-{{ end -}}
+{{- define "dave.fullname" -}}
+{{- if .Values.daveBackend.fullnameOverride }}
+{{- .Values.daveBackend.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.daveBackend.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "dave.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "dave.labels" -}}
+helm.sh/chart: {{ include "dave.chart" . }}
+{{ include "dave.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "dave.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "dave.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "dave.serviceAccountName" -}}
+{{- if .Values.daveBackend.serviceAccount.create }}
+{{- default (include "dave.fullname" .) .Values.daveBackend.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.daveBackend.serviceAccount.name }}
+{{- end }}
+{{- end }}

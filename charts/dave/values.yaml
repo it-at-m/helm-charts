@@ -1,240 +1,155 @@
-#############################################
-# Allgemeine Parameter - !! Pflichtfelder!! #
-#############################################
+# Default values for dave-external.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
-## Alle Namen der Openshift Objekte werden aus dem Namen der Anwendung und der Umgebung zusammengesetzt:  applicationName-applicationEnv
-## Name der Anwendung.
-## Beispiel - applicationName: "myApp"
-applicationName:
+daveBackend:
 
-## Name der Umgebung.
-## Beispiel - applicationEnv: "dev"
-applicationEnv:
+  replicaCount: 1
 
-## Setzt die aktiven Spring Profiles.
-## Wird für die Umgebungsvariable SPRING_PROFILES_ACTIVE der Anwendung verwendet,
-## siehe hier: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/values.yaml#L61
-## Beispiel - springProfilesActive: "dev,no-security"
-springProfilesActive: "{{ .Values.applicationEnv }}"
+  image:
+    repository: ghcr.io/gislab-augsburg/dave-backend
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "main-ls1"
 
-## Wert für das label 'app'. Die Openshift Objekte können darüber gesucht werden (z.B. app=application-label)
-## Beispiel - applicationLoabe: "myApp-dev"
-applicationLabel: "{{ .Values.applicationName }}-{{ .Values.applicationEnv }}"
+  imagePullSecrets: []
+  nameOverride: "backend"
+  #fullnameOverride: "dave-backend"
 
-## Version der Anwendung entspricht standardmäßig dem Namen der Umgebung.
-## applicationEnv wird hier gesetzt: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/values.yaml#L12
-applicationVersion: "{{ .Values.applicationEnv }}"
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
-#############################################
-# BuildConfig Parameter                     #
-#############################################
-build:
-  ## enabled: true startet den Image Build. Normalerweise wird 'enabled: true' nur in der DEV-Umgebung gesetzt.
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/buildconfig.yaml#L1
-  enabled: false
-  ## Name des Basis ImageStreams zur Erzeugung des Anwendungs ImageStreams.
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/buildconfig.yaml#L30
-  imageStreamSource: ubi9-openjdk-17
-  ## Output Image Tag, entspricht dem Tag des Anwendungs-Image.
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/buildconfig.yaml#L12
-  applicationBuildVersion: latest
+  podAnnotations: {}
 
-#############################################
-# Deployment Parameter                      #
-#############################################
-deploy:
-  ## Anzahl der zu startenden replicas (pods).
-  ## Weitere Informationen: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#replicas
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L8
-  replicas: 1
+  deploymentAnnotations: {}
 
-  annotations:
-    ## Opensource-Projekte zum automatischen Rollout von Images.
-    ## Weitere Informationen: https://docs.openshift.com/container-platform/4.14/openshift_images/triggering-updates-on-imagestream-changes.html
-    # image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"{{tpl .Values.deploy.image .}}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ .Values.applicationName }}-{{ .Values.applicationEnv }}\")].image"}]'
-  ## Angabe des Images. Bei Opensource Projekten bitte ändern.
-  image: image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/{{ .Values.applicationName }}:{{ tpl .Values.applicationVersion . }}
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
 
-  ## env Absatz. Alle Key-Value-Paare sind Umgebungsvariablen im Pod. Weitere Werte können hinzugefügt werden.
-  ## Weitere Informationen: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/deployment.yaml#L44
-  env:
-    ## Aktive Spring Profiles der Anwendung werden über den Parameter springProfilesActive festgelegt.
-    SPRING_PROFILES_ACTIVE: "{{ tpl .Values.springProfilesActive . }}"
-    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
-    GC_MAX_METASPACE_SIZE: "200"
-    ## Java Optionen der Anwendung
-    JAVA_OPTS_APPEND: ""
-    ## Default Timezone
-    TZ: Europe/Berlin
-    # Namespace für Hazelcasst
-    APP_SPRING-SESSION-HAZELCAST_NAMESPACE: "{{.Release.Namespace}}"
-    ## APP Dynamics Variablen
-    ## evtl. das obere JAVA_OPTS_APPEND entfernen
-    #JAVA_OPTS_APPEND: >-
-    #  -javaagent:/appd/javaagent.jar 
-    #  -Dappdynamics.jvm.shutdown.mark.node.as.historical=true 
-    #  -Dappdynamics.http.proxyHost=internet-proxy-server.muenchen.de 
-    #  -Dappdynamics.http.proxyPort=80
-    #APPDYNAMICS_AGENT_APPLICATION_NAME: "{{.Release.Namespace}}-{{ .Values.applicationEnv }}"
-    #APPDYNAMICS_AGENT_TIER_NAME: "{{ .Values.applicationName }}"
-    #APPDYNAMICS_CONTROLLER_HOST_NAME: "lhm-itm.saas.appdynamics.com"
-    #APPDYNAMICS_CONTROLLER_PORT: "443"
-    #APPDYNAMICS_CONTROLLER_SSL_ENABLED: "true"
-    #APPDYNAMICS_USE_SIMPLE_HOSTNAME: "true"
+  securityContext:
+    {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
 
+  service:
+    type: ClusterIP
+    port: 8080
 
+  ingress:
+    enabled: false
+    className: ""
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
 
-  # bestimmte SecretKeys in Variable umwandeln
-  #envWithSecrets:
-  #  - name: APP_KPSKATASTEREAI_USERNAME # Variablen Name im Deployment
-  #    valueFrom:
-  #      secretKeyRef:
-  #        name: kps-demo-secret # Secret Ref
-  #        key: kpskatastereai-username # Key im Secret
-
-  # bestimmte ConfigMapKeys in Variable umwandeln
-  #envWithConfigMap:
-  #  - name: APP_KPSKATASTEREAI_USERNAME # Variablen Name im Deployment
-  #    valueFrom:
-  #      configMapRef:
-  #        name: kps-demo-secret # ConfigMap Ref
-  #        key: kpskatastereai-username # Key im ConfigMap
-
-  ## envFrom Absatz. Alle in einem Secret oder einer ConfigMap konfigurierten Werte werden zu Umgebungsvariablen des Pod.
-  ## Weitere Informationen für
-  ## Secrets: https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables
-  ## ConfigMaps: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#configure-all-key-value-pairs-in-a-configmap-as-container-environment-variables
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/deployment.yaml#L40
-  envFrom:
-    ## Beispielkonfiguration: Environment Variables eines Secrets
-    # - secretRef:
-    #     name: softwarefreigabe-dev
-    ## Beispielkonfiguration: Environment Variables einer ConfigMap
-    # - configMapRef:
-    #     name: softwarefreigabe-dev
-
-  ## Beliebige Volume Mounts. Es können weitere hinzugefügt werden, die unter deploy.volumes konfiguriert werden,
-  ## siehe https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/values.yaml#L93.
-  ## Weitere Informationen: https://kubernetes.io/docs/concepts/storage/volumes/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/deployment.yaml#L95
-  volumeMounts: {}
-
-  ## Beliebige Volumes. Es können weitere hinzugefügt werden und über deploy.volumeMounts im Pod geladen werden,
-  ## siehe siehe https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/values.yaml#L83.
-  ## Weitere Infos: https://kubernetes.io/docs/concepts/storage/volumes/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/deployment.yaml#L108
-  volumes: {}
-
-  ## Resourcen für die Anwendung. Die Werte können bei Bedarf geändert werden.
-  ## Weitere Infos: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/deployment.yaml#L88 ff.
   resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 50m
-      memory: 512Mi
+    {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
-  ## Wird benötigt, um eine Anwendung hochverfügbar zu machen.
-  ## Weitere Infos: https://git.muenchen.de/ccse/cookbook/-/wikis/spring#gracefull-shutdown-in-spring
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L67
-  lifecycle:
-    preStop:
-      sleep: 10
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
 
-  ## StartupProbe
-  startupProbe:
-    httpGet:
-      path: /actuator/health/liveness
-      port: 8080
-      scheme: HTTP
-    failureThreshold: 30
-    periodSeconds: 10
+  nodeSelector: {}
 
-  ## Prüft regelmäßig, ob der Pod (die Anwendung) läuft
-  ## Weitere Infos: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L68 ff.
-  livenessProbe:
-    failureThreshold: 5
-    httpGet:
-      path: /actuator/health/liveness
-      port: 8080
-      scheme: HTTP
-    initialDelaySeconds: 60
-    periodSeconds: 20
-    successThreshold: 1
-    timeoutSeconds: 1
+  tolerations: []
 
-  ## Prüft, ob der Pod (die Anwendung) korrekt startet
-  ## Weitere Infos: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L78 ff.
-  readinessProbe:
-    failureThreshold: 5
-    httpGet:
-      path: /actuator/health/readiness
-      port: 8080
-      scheme: HTTP
-    initialDelaySeconds: 60
-    periodSeconds: 20
-    successThreshold: 1
-    timeoutSeconds: 1
+  affinity: {}
 
-## App Dynamics Konfiguration.
-## Weitere Informationen:
-## LHM intern: https://git.muenchen.de/groups/appdynamics/-/wikis/java-agent-init-container
-## AppDynamics Doc: https://docs.appdynamics.com/21.12/en/application-monitoring/install-app-server-agents/java-agent/install-the-java-agent/install-the-java-agent-in-containers
-## Im Template:
-## https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L22 ff.
-## https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L96 ff.
-## https://git.muenchen.de/ccse/cicd/helm/helm-template/-/blob/main/templates/deployment.yaml#L109 ff.
-appdynamics:
-  ## enabled: true konfiguriert AppDynamics für die Anwendung
-  enabled: false
-  ## Gibt an, welche Version von appdynamics-java-agent verwendet werden soll.
-  version: latest
-  ## Resourcen für den AppD InitContainer. Die Werte können bei Bedarf geändert werden.
-  ## Weitere Infos: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/deployment.yaml#L88 ff.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 50m
-      memory: 512Mi
+  extraEnvVars:
+  #  - name: "TZ"
+  #    value: "Europe/Berlin"
 
-#############################################
-# Route Parameter                           #
-#############################################
-## Für einen Zugriff auf die Pods (die Anwendung) außerhalb von Openshift werden Routen angelegt.
-## Weitere Infos: https://docs.openshift.com/container-platform/4.10/networking/routes/route-configuration.html
-route:
-  ## enabled: true legt eine Route für den Service an.
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/route.yaml#L1
-  enabled: false
-  ## Angabe des Route Pfads. So können mehrere Sevices unter der gleichen URL verfügbar sein.
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/route.yaml#L14
-  path: /
-  ## hosturl wird nur bei Vanity URLs angegeben, bei WildCard Routen keine Angabe machen
-  ## Weitere Infos: https://git.muenchen.de/openshift/openshift-configs/-/wikis/Routen#vanity-url
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/route.yaml#L14
-  #hosturl: example.muenchen.de
+  extraVolumeMounts:
+    []
+    # - name: secret-truststore
+    #   readOnly: true
+    #   mountPath: /mnt
+  extraVolumes:
+    []
+    # - name: secret-truststore
+    #   secret:
+    #     secretName: custom-cacerts
+    #     defaultMode: 420
 
-  ## Spezielle Konfiguration für die Route, z.B. Whitelisting oder Cookie-Einstellungen
-  ## Weitere Informationen: https://docs.openshift.com/container-platform/4.10/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/route.yaml#L10
-  annotations:
-    ## EAI Whitelisting
-    ## Weitere Informationen: https://git.muenchen.de/openshift/openshift-configs/-/wikis/Routen#whitelisting
-    #haproxy.router.openshift.io/ip_whitelist: 0.0.0.0
+  # can be used to add init containers
+  initContainers:
+    []
+    # - name: my-init-container-name
+    #   image: some-image:latest
+    #   env:
+    #     - name: AWS_DEFAULT_REGION
+    #       value: "eu-central-1"
+    #   volumeMounts:
+    #     - name: help-zammad
+    #       mountPath: /opt/zammad
 
-  ## Gibt an, ob die Route TLS (HTTPS) benutzen soll und wie es konfiguriert wird.
-  ## Siehe Openshift API Reference für mögliche Werte von termination und insecureEdgeTerminationPolicy:
-  ## https://docs.openshift.com/container-platform/4.10/networking/routes/secured-routes.html
-  ## Im Template: https://git.muenchen.de/ccse/cicd/helm-template/-/blob/main/templates/route.yaml#L18 ff.
-  tls:
-    enabled: true
-    termination: edge
-    insecureEdgeTerminationPolicy: Redirect
+  credentials:
+    # secret must contain keys USER_DN and PASSWORD for ldap authentication
+    existingSecret: ""
+
+  eaiRoute:
+    enabled: false
+    # host: "ezldap-eai-route.example.org"
+    # wildcardPolicy: "None"
+    # tls:
+    #   termination: "Edge"
+    #   insecureEdgeTerminationPolicy: "Redirect"
+    # whitelist: "10.0.0.1 10.0.0.2"
+
+  serviceMonitor:
+    enabled: false
+
+  applicationYML:
+    daveBackend:
+      #ldap:
+      #  url: ldap://ldap.example.org:389
+      #  user-search-base: ou=users,dc=example,dc=org
+      #  ou-search-base: ou=orga,dc=example,dc=org
+      cors:
+        enabled: false
+        # allowed-origin-patterns:
+        #   - https://*.example.org:[*]
+        #   - http://localhost:[*]
+      cache:
+        enabled: false
+        # disk:
+        #   dir: /deployments/cache
+    app:
+      auth-mode: none
+    # logging:
+    #   level:
+    #     "[de.muenchen.oss.ezldap]": DEBUG
