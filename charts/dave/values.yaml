@@ -105,6 +105,19 @@ daveBackend:
     ## Namespace für Hazelcasst
     - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
       value: "dave-external"
+    ## Elasticsearch
+    - name: "ELASTICSEARCH_PASSWORD"
+      value: "XXXXXXXXXXXXXXXXXXXXXXXXX"
+    - name: "ELASTICSEARCH_USER"
+      value: ""
+    - name: "ELASTICSEARCH_HOST"
+      value: "dave-elasticsearch"
+    - name: "ELASTICSEARCH_PORT"
+      value: "9200"
+    - name: "ELASTICSEARCH_REINDEX"
+      value: "true"
+    - name: "ELASTICSEARCH_SCHEME"
+      value: "http"
 
   extraVolumeMounts:
     []
