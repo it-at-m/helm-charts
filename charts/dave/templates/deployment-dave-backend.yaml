@@ -57,7 +57,7 @@ spec:
           env:
             - name: LC_ALL
               value: C.utf8
-          {{- with .Values.daveBackend.extraEnvVars }}
+          {{- with .Values.global.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
 #          envFrom:

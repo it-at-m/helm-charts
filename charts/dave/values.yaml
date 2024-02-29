@@ -2,6 +2,39 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+
+  extraEnvVars:
+    ## Default Timezone
+    - name: "TZ"
+      value: "Europe/Berlin"
+    ## Aktive Spring Profiles der Anwendung
+    - name: "SPRING_PROFILES_ACTIVE"
+      value: "dev"
+    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
+    - name: "GC_MAX_METASPACE_SIZE"
+      value: "200"
+    ## Java Optionen der Anwendung
+    - name: "AVA_OPTS_APPEND"
+      value: ""
+    ## Namespace für Hazelcasst
+    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
+      value: "dave-external"
+    ## Elasticsearch
+    - name: "ELASTICSEARCH_PASSWORD"
+      value: "XXXXXXXXXXXXXXXXXXXXXXXX"
+    - name: "ELASTICSEARCH_USER"
+      value: ""
+    - name: "ELASTICSEARCH_HOST"
+      value: "dave-elasticsearch"
+    - name: "ELASTICSEARCH_PORT"
+      value: "9200"
+    - name: "ELASTICSEARCH_REINDEX"
+      value: "true"
+    - name: "ELASTICSEARCH_SCHEME"
+      value: "http"
+
+
 daveBackend:
 
   replicaCount: 1
@@ -88,36 +121,6 @@ daveBackend:
   tolerations: []
 
   affinity: {}
-
-  extraEnvVars:
-    ## Default Timezone
-    - name: "TZ"
-      value: "Europe/Berlin"
-    ## Aktive Spring Profiles der Anwendung
-    - name: "SPRING_PROFILES_ACTIVE"
-      value: "dev"
-    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
-    - name: "GC_MAX_METASPACE_SIZE"
-      value: "200"
-    ## Java Optionen der Anwendung
-    - name: "AVA_OPTS_APPEND"
-      value: ""
-    ## Namespace für Hazelcasst
-    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
-      value: "dave-external"
-    ## Elasticsearch
-    - name: "ELASTICSEARCH_PASSWORD"
-      value: "XXXXXXXXXXXXXXXXXXXXXXXXX"
-    - name: "ELASTICSEARCH_USER"
-      value: ""
-    - name: "ELASTICSEARCH_HOST"
-      value: "dave-elasticsearch"
-    - name: "ELASTICSEARCH_PORT"
-      value: "9200"
-    - name: "ELASTICSEARCH_REINDEX"
-      value: "true"
-    - name: "ELASTICSEARCH_SCHEME"
-      value: "http"
 
   extraVolumeMounts:
     []
