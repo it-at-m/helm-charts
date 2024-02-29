@@ -45,6 +45,9 @@ global:
       value: "true"
     - name: "ELASTICSEARCH_SCHEME"
       value: "http"
+    ## Spring
+    - name: "SPRING_SESSION_TIMEOUT"
+      value: "60"
 
 ############################################################
 
