@@ -46,8 +46,9 @@ global:
     - name: "ELASTICSEARCH_SCHEME"
       value: "http"
     ## Spring
+    ## Session timout in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
     - name: "SPRING_SESSION_TIMEOUT"
-      value: "60"
+      value: "3600"
 
 ############################################################
 
