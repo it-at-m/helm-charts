@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "daveBackend.fullname" . }}
+  name: {{ include "daveFrontend.fullname" . }}
   labels:
     {{- include "dave.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.daveBackend.service.type }}
+  type: {{ .Values.daveFrontend.service.type }}
   ports:
-    - port: {{ .Values.daveBackend.service.port }}
+    - port: {{ .Values.daveFrontend.service.port }}
       targetPort: http
       protocol: TCP
       name: http

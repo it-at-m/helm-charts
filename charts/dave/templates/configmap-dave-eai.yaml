@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "daveEai.fullname" . }}
+  labels: 
+    {{- include "dave.labels" . | nindent 4 }}
+data:
+  {{- with .Values.daveEai.applicationYML }}
+  application.yml: |
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
