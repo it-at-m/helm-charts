@@ -272,4 +272,22 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
-generated: "2024-01-08T14:54:12.127550014Z"
+  wjh-rechner:
+  - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2024-02-29T14:49:57.442698594Z"
+    description: Orientierungsrechner für die Wirtschaftliche Jugendhilfe
+    digest: 97df7ab13d294d8002575d98466f86b751c76e1a7c4c5ffe161e0190256b231a
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/wjh-rechner
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: matthias.karl@muenchen.de
+      name: Matthias Karl
+    name: wjh-rechner
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
+    version: 0.0.1
+generated: "2024-02-29T14:49:57.442730574Z"
