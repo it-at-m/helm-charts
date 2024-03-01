@@ -1,2 +1,2 @@
 credentials:
-  existingSecret: "testSecret"
+  existingSecret: "test-secret"
