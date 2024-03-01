@@ -63,7 +63,11 @@ spec:
           envFrom:
             - prefix: EZLDAP_LDAP_
               secretRef:
+                {{- if .Values.credentials.existingSecret }}
                 name: {{ .Values.credentials.existingSecret }}
+                {{- else }}
+                name: {{ include "ezldap.fullname" . }}
+                {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
