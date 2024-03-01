@@ -16,7 +16,7 @@ jobs:
       - name: Setup git user
         uses: fregante/setup-git-user@v2
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
