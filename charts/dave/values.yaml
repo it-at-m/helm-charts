@@ -85,7 +85,15 @@ daveBackend:
 
   service:
     type: ClusterIP
-    port: 8080
+    ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+    - port: 5701
+      targetPort: 5701
+      protocol: TCP
+      name: hazelcast
 
   ingress:
     enabled: false

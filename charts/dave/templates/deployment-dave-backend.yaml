@@ -65,9 +65,11 @@ spec:
 #              secretRef:
 #                name: {{ .Values.daveBackend.credentials.existingSecret }}
           ports:
-            - name: http
-              containerPort: {{ .Values.daveBackend.service.port }}
-              protocol: TCP
+            {{- range .Values.daveBackend.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}  
+            {{- end }}
           volumeMounts:
             - name: config
               mountPath: /deployments/config
