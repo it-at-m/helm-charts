@@ -21,6 +21,13 @@ elasticsearch:
       enabled: false
     containerSecurityContext:
       enabled: false
+    replicaCount: 1
+  coordinating:
+    replicaCount: 0
+  data:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
 
 #daveBackend:
 #  elasticsearch:
