@@ -12,7 +12,7 @@ Install this chart using:
 helm install my-ezldap-release it-at-m/ezldap --values values.yaml
 ```
 
-The command deploys ezLDAP on the Kubernetes cluster with some default configuration. The [Configuration](#configuration) section lists the parameters that can or **must** be configured during installation.
+The command deploys ezLDAP on the Kubernetes cluster with some default configuration. The [Configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Configuration
 
@@ -35,7 +35,9 @@ The command deploys ezLDAP on the Kubernetes cluster with some default configura
 | serviceAccount.annotations                 | object | `{}`             | Service account annotations                                                                                                                                                                                                                                |
 | serviceAccount.create                      | bool   | `true`           | Create service account                                                                                                                                                                                                                                     |
 | serviceAccount.name                        | string | `""`             | Service account name                                                                                                                                                                                                                                       |
-| credentials.existingSecret **(\*)**        | string | `""`             | Required, must contains keys: [USER_DN, PASSWORD] for LDAP authentication                                                                                                                                                                                  |
+| credentials.existingSecret                 | string | `""`             | set a secret name here if you want to manage secrets on your own. required keys: [USER_DN, PASSWORD]                                                                                                                                                       |
+| credentials.userDn                         | string | `""`             | Bind User-DN for LDAP authentication                                                                                                                                                                                                                       |
+| credentials.password                       | string | `""`             | Password for LDAP authentication                                                                                                                                                                                                                           |
 | extraEnvVars                               | list   | `[]`             | Extra environment variables                                                                                                                                                                                                                                |
 | extraVolumes                               | list   | `[]`             | Extra volumes                                                                                                                                                                                                                                              |
 | extraVolumeMounts                          | list   | `[]`             | Extra volumeMounts for the pods                                                                                                                                                                                                                            |
@@ -52,5 +54,3 @@ The command deploys ezLDAP on the Kubernetes cluster with some default configura
 | eaiRoute.tls.caCertificate                 | string | `""`             | Route tls ca certificate                                                                                                                                                                                                                                   |
 | eaiRoute.tls.destinationCACertificate      | string | `""`             | Route tls destination ca certificate                                                                                                                                                                                                                       |
 | eaiRoute.whitelist                         | string | `""`             | Whitelist (space-seperated list of IPs and CIDR ranges) for IP-based [HAProxy Whitelist](https://docs.openshift.com/container-platform/4.9/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration) for the EAI route |
-
-**(\*)**: required

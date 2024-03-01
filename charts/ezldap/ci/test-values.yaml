@@ -1,2 +1,3 @@
 credentials:
-  existingSecret: "test-secret"
+  userDn: "test-userdn"
+  password: "testTest"

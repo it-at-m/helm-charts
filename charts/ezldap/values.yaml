@@ -116,6 +116,10 @@ initContainers:
   #       mountPath: /opt/zammad
 
 credentials:
+  # Bind User-DN for LDAP authentication
+  userDn: ""
+  # Password for LDAP authentication
+  password: ""
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
   existingSecret: ""
 
