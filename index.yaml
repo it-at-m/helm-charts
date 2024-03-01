@@ -3,6 +3,23 @@ entries:
   ad2image:
   - apiVersion: v2
     appVersion: 1.0.6
+    created: "2024-03-01T10:09:17.712139134Z"
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 69dbc44602a830a59926ae479c40727a284715b55a34991707a9c74b6ab88e1d
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.1.2/ad2image-1.1.2.tgz
+    version: 1.1.2
+  - apiVersion: v2
+    appVersion: 1.0.6
     created: "2023-11-23T13:11:22.255271733Z"
     description: easy avatars powered by AD / Exchange & Identicons
     digest: 2e352910d85ea27f4760315a2e12f0ab1e7a3b0435793e21353243779a5e3a20
@@ -121,6 +138,23 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
     version: 1.0.4
   appswitcher-server:
+  - apiVersion: v2
+    appVersion: 1.0.3
+    created: "2024-03-01T10:09:17.865700477Z"
+    description: Server component for a Google-like app switching experience.
+    digest: d8a3de7a624a8bc367a76f76687d965bbc93eefb1d9c91f51f6f80525e5dfba9
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.1.3/appswitcher-server-1.1.3.tgz
+    version: 1.1.3
   - apiVersion: v2
     appVersion: 1.0.3
     created: "2023-11-23T13:11:22.38763485Z"
@@ -257,6 +291,23 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: v1.0.0
+    created: "2024-03-01T10:09:18.021832483Z"
+    description: ezLDAP - easy read access for LDAP
+    digest: 42a16ccd13a792c5411181443456c0178bc0b78266f7ca96defc8970e76a15e4
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.2/ezldap-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: v1.0.0
     created: "2023-12-20T15:06:37.473128813Z"
     description: ezLDAP - easy read access for LDAP
     digest: 60653c01a426978de09ab0dd58e12bd3f730371e96e08b70714a47aa75997251
@@ -275,6 +326,23 @@ entries:
   wjh-rechner:
   - apiVersion: v2
     appVersion: 0.0.2
+    created: "2024-03-01T10:09:18.193725934Z"
+    description: Orientierungsrechner für die Wirtschaftliche Jugendhilfe
+    digest: f0cb3a24f89e4ac2c023e8ff1c9564cfadebe2ac3d1667b89a849a99c953a1d6
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/wjh-rechner
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: matthias.karl@muenchen.de
+      name: itgkarl
+    name: wjh-rechner
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.2/wjh-rechner-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 0.0.2
     created: "2024-02-29T14:49:57.442698594Z"
     description: Orientierungsrechner für die Wirtschaftliche Jugendhilfe
     digest: 97df7ab13d294d8002575d98466f86b751c76e1a7c4c5ffe161e0190256b231a
@@ -290,4 +358,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
     version: 0.0.1
-generated: "2024-02-29T14:49:57.442730574Z"
+generated: "2024-03-01T10:09:18.193827273Z"
