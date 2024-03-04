@@ -1,7 +1,3 @@
-#daveBackend:
-#  service:
-#    port: 8778
-
 ## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   global:
@@ -28,16 +24,3 @@ elasticsearch:
     replicaCount: 0
   ingest:
     replicaCount: 0
-
-#daveBackend:
-#  elasticsearch:
-#    # enable/disable elasticsearch chart dependency
-#    enabled: true
-#    # host env var is only used when zammadConfig.elasticsearch.enabled is false
-#    host: dave-elasticsearch
-#    initialisation: true
-#    pass: "XXXXXXXXXXXXXXXXXXXXXxxxxx"
-#    port: 9200
-#    reindex: true
-#    schema: http
-#    user: ""

@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: {{ include "daveSelfservicePortal.fullname" . }}
   labels: 
-    {{- include "dave.labels" . | nindent 4 }}
+    {{- include "daveSelfservicePortal.labels" . | nindent 4 }}
 data:
-  {{- with .Values.daveSelfservicePortal.applicationYML }}
+  {{- with .Values.applicationYML }}
   application.yml: |
     {{- toYaml . | nindent 4 }}
   {{- end }}

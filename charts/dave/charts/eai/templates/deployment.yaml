@@ -1,59 +1,59 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "daveBackend.fullname" . }}
+  name: {{ include "daveEai.fullname" . }}
   labels:
-    {{- include "dave.labels" . | nindent 4 }}
-  {{- with .Values.daveBackend.deploymentAnnotations }}
+    {{- include "daveEai.labels" . | nindent 4 }}
+  {{- with .Values.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if not .Values.daveBackend.autoscaling.enabled }}
-  replicas: {{ .Values.daveBackend.replicaCount }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "dave.selectorLabels" . | nindent 6 }}
+      {{- include "daveEai.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-dave-backend.yaml") . | sha256sum }}
-        {{- with .Values.daveBackend.podAnnotations }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "dave.selectorLabels" . | nindent 8 }}
+        {{- include "daveEai.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.daveBackend.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "dave.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.daveBackend.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: config
           configMap:
-            {{- if .Values.daveBackend.existingConfigMap }}
-            name: {{ .Values.daveBackend.existingConfigMap }}
+            {{- if .Values.existingConfigMap }}
+            name: {{ .Values.existingConfigMap }}
             {{- else }}
-            name: {{ include "daveBackend.fullname" . }}
+            name: {{ include "daveEai.fullname" . }}
             {{- end }}
             defaultMode: 420
-      {{- with .Values.daveBackend.extraVolumes }}
+      {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
-        {{- with .Values.daveBackend.initContainers }}
+        {{- with .Values.initContainers }}
         {{- toYaml . | nindent 8}}
         {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.daveBackend.securityContext | nindent 12 }}
-          image: "{{ .Values.daveBackend.image.repository }}:{{ .Values.daveBackend.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.daveBackend.image.pullPolicy }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LC_ALL
               value: C.utf8
@@ -61,11 +61,11 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end}}
 #          envFrom:
-#            - prefix: DAVE_LDAP_
+#            - prefix: EZLDAP_LDAP_
 #              secretRef:
-#                name: {{ .Values.daveBackend.credentials.existingSecret }}
+#                name: {{ .Values.credentials.existingSecret }}
           ports:
-            {{- range .Values.daveBackend.service.ports }}
+            {{- range .Values.service.ports }}
             - name: {{ .name }}
               containerPort: {{ .port }}
               protocol: {{ .protocol }}  
@@ -73,7 +73,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /deployments/config
-          {{- with .Values.daveBackend.extraVolumeMounts }}
+          {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
 #          livenessProbe:
@@ -95,16 +95,16 @@ spec:
 #            successThreshold: 1
 #            failureThreshold: 20
           resources:
-            {{- toYaml .Values.daveBackend.resources | nindent 12 }}
-      {{- with .Values.daveBackend.nodeSelector }}
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.daveBackend.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.daveBackend.tolerations }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
