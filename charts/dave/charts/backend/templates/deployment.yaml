@@ -60,10 +60,11 @@ spec:
           {{- with .Values.global.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
-#          envFrom:
-#            - prefix: EZLDAP_LDAP_
-#              secretRef:
-#                name: {{ .Values.credentials.existingSecret }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "daveBackend.fullname" . }}
+            - configMapRef:
+                name: {{ include "daveBackend.fullname" . }}-email
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}

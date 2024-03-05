@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "daveSelfservicePortal.fullname" . }}
+  name: {{ include "daveSelfservicePortal.fullname" . }}-service
   labels:
     {{- include "daveSelfservicePortal.labels" . | nindent 4 }}
 spec:

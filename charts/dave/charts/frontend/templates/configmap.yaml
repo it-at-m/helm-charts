@@ -5,7 +5,6 @@ metadata:
   labels: 
     {{- include "daveFrontend.labels" . | nindent 4 }}
 data:
-  {{- with .Values.applicationYML }}
-  application.yml: |
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+  {{- with .Values.extraEnvVars }}
+    {{- toYaml . | nindent 12 }}
+  {{- end}}

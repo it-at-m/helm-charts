@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "daveEai.fullname" . }}
+  name: {{ include "daveEai.fullname" . }}-service
   labels:
     {{- include "daveEai.labels" . | nindent 4 }}
 spec:
