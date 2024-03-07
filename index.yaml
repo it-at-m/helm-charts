@@ -325,6 +325,23 @@ entries:
     version: 1.0.1
   wjh-rechner:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-03-07T11:59:25.540810538Z"
+    description: Orientierungsrechner für die Wirtschaftliche Jugendhilfe
+    digest: 751969d6e99473802f1bcb6a3ca5254b99e035eae211ec8767ca19b0dd7cd20f
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/wjh-rechner
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: matthias.karl@muenchen.de
+      name: itgkarl
+    name: wjh-rechner
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-1.0.0/wjh-rechner-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 0.0.2
     created: "2024-03-01T10:09:18.193725934Z"
     description: Orientierungsrechner für die Wirtschaftliche Jugendhilfe
@@ -358,4 +375,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
     version: 0.0.1
-generated: "2024-03-01T10:09:18.193827273Z"
+generated: "2024-03-07T11:59:25.540873817Z"
