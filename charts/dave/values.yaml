@@ -49,3 +49,6 @@ global:
     ## Session timout in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
+
+  keys: {}
+

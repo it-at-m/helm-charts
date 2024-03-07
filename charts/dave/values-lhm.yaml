@@ -1,3 +1,7 @@
+global:
+  keys: 
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 ## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   global:
@@ -99,3 +103,40 @@ selfservice-portal:
     JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
+
+postgresql:
+  storageClass: "thin-csi"
+    
+  auth:
+    username: dave
+    password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#    database: wanjadb
+
+  primary:
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+#    persistence:
+#      storageClass: "thin-csi"
+
+#  primary:
+#    podSecurityContext:
+#      enabled: false
+#      fsGroup: ""
+#    containerSecurityContext:
+#      enabled: false
+#      runAsUser: "auto"
+#
+#  readReplicas:
+#    podSecurityContext:
+#      enabled: false
+#      fsGroup: ""
+#    containerSecurityContext:
+#      enabled: false
+#      runAsUser: "auto"
+#
+#  volumePermissions:
+#    enabled: false
+#    securityContext:
+#      runAsUser: "auto"

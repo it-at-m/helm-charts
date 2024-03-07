@@ -63,6 +63,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "daveAdminPortal.fullname" . }}
+            - secretRef:
+                name: {{ include "dave.fullname" . }}-frontend-client-secret
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}

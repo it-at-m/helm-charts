@@ -16,5 +16,16 @@ dependencies:
   - name: elasticsearch
     repository: https://charts.bitnami.com/bitnami
     version: 19.17.0
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 14.3.0
   - name: backend
+    version: "*"
+  - name: frontend
+    version: "*"
+  - name: admin-portal
+    version: "*"
+  - name: selfservice-portal
+    version: "*"
+  - name: eai
     version: "*"
