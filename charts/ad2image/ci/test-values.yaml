@@ -1,0 +1,12 @@
+ad:
+  url: "ldaps://ad.mydomain.test:636"
+  userSearchBase: "OU=Users,DC=mycompany,DC=test"
+  userSearchFilter: "(&(objectClass=organizationalPerson)(cn={uid}))"
+ews:
+  ewsServiceUrl: "https://ews.mydomain.test/EWS/Exchange.asmx"
+  domain: "ews.mydomain.test"
+credentials:
+  adUserDn: "DN=test.user,OU=Users,DC=mycompany,DC=test"
+  adPassword: "testTest"
+  ewsUsername: "test.user"
+  ewsPassword: "testTest"
