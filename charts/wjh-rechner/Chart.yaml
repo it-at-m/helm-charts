@@ -1,8 +1,8 @@
 apiVersion: v2
 name: wjh-rechner
-description: "Orientierungsrechner für die Wirtschaftliche Jugendhilfe"
+description: 'Orientation calculator for "Wirschaftliche Jugendhilfe" (WJH, economic youth welfare)'
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: "1.0.0"
 maintainers:
   - name: itgkarl
