@@ -50,5 +50,3 @@ global:
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
-  keys: {}
-

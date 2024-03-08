@@ -65,6 +65,8 @@ spec:
                 name: {{ include "daveBackend.fullname" . }}
             - configMapRef:
                 name: {{ include "daveBackend.fullname" . }}-email
+            - secretRef:
+                name: {{ include "daveBackend.fullname" . }}-secret
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}

@@ -1,6 +1,6 @@
 global:
-  keys: 
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  credentials: 
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
@@ -67,6 +67,14 @@ backend:
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen.de
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
 
+  credentials:
+    SPRING_DATASOURCE_URL: abc
+    SPRING_DATASOURCE_USERNAME: def
+    SPRING_DATASOURCE_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
+    DAVE_EMAIL_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
+    ELASTICSEARCH_HOST: dave-elasticsearch
+    ELASTICSEARCH_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
+
 eai:
   extraEnvVars:
     GC_MAX_METASPACE_SIZE: "256"
@@ -90,6 +98,9 @@ frontend:
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
 
+  credentials: 
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: MzYxODEyODItMGViMS00OTE1LWFmZTUtNjU1YjlkZGJjNDI3
+
 selfservice-portal:
   extraEnvVars:
     HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
@@ -108,9 +119,9 @@ postgresql:
   storageClass: "thin-csi"
     
   auth:
-    username: dave
+    username: dave_user
     password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-#    database: wanjadb
+    database: dave_db
 
   primary:
     containerSecurityContext:
