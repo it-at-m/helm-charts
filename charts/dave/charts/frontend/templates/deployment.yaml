@@ -64,7 +64,7 @@ spec:
             - configMapRef:
                 name: {{ include "daveFrontend.fullname" . }}
             - secretRef:
-                name: {{ include "daveFrontend.fullname" . }}-client-secret
+                name: {{ include "dave.fullname" . }}-frontend-client-secret
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}

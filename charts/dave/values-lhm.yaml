@@ -108,9 +108,6 @@ frontend:
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
 
-  credentials: 
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: MzYxODEyODItMGViMS00OTE1LWFmZTUtNjU1YjlkZGJjNDI3
-
   route:
     enabled: true
     targetPort: service
