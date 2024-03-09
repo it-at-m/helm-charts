@@ -42,6 +42,9 @@ admin-portal:
     JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
+  route:
+    enabled: true
+    targetPort: service
 
 backend:
   extraEnvVars:
@@ -74,6 +77,10 @@ backend:
     DAVE_EMAIL_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
     ELASTICSEARCH_HOST: dave-elasticsearch
     ELASTICSEARCH_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
+  
+  route:
+    enabled: true
+    targetPort: service
 
 eai:
   extraEnvVars:
@@ -83,6 +90,9 @@ eai:
     MANAGEMENT_SERVER_PORT: "8079"
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
+  route:
+    enabled: true
+    targetPort: service
 
 frontend:
   extraEnvVars:
@@ -101,6 +111,10 @@ frontend:
   credentials: 
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: MzYxODEyODItMGViMS00OTE1LWFmZTUtNjU1YjlkZGJjNDI3
 
+  route:
+    enabled: true
+    targetPort: service
+
 selfservice-portal:
   extraEnvVars:
     HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
@@ -114,6 +128,9 @@ selfservice-portal:
     JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
+  route:
+    enabled: true
+    targetPort: service
 
 postgresql:
   storageClass: "thin-csi"

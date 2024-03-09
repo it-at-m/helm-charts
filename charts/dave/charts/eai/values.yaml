@@ -123,14 +123,20 @@ credentials:
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
   existingSecret: ""
 
-eaiRoute:
+route:
   enabled: false
-  # host: "ezldap-eai-route.example.org"
-  # wildcardPolicy: "None"
-  # tls:
-  #   termination: "Edge"
-  #   insecureEdgeTerminationPolicy: "Redirect"
-  # whitelist: "10.0.0.1 10.0.0.2"
+  annotations: {}
+  host: ""
+  path: ""
+  wildcardPolicy: "None"
+  tls:
+    termination: "Edge"
+    insecureEdgeTerminationPolicy: "Redirect"
+    key: ""
+    certificate: ""
+    caCertificate: ""
+    destinationCACertificate: ""
+  targetPort: ""
 
 serviceMonitor:
   enabled: false
