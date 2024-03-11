@@ -45,6 +45,7 @@ admin-portal:
   route:
     enabled: true
     targetPort: service
+  fullnameOverride: dave-adminportal-apigateway-service
 
 backend:
   extraEnvVars:
@@ -63,24 +64,22 @@ backend:
       SPRING_PROFILES_ACTIVE: dev
       TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
       #HAZELCAST_JET_ENABLED: "true"
-
     email:
       DAVE_EMAIL_ADDRESS: ex.bayr@muenchen.de
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen.de
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
-
   credentials:
     SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5423/dave_db
     SPRING_DATASOURCE_USERNAME: dave_user
     SPRING_DATASOURCE_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
     DAVE_EMAIL_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
     ELASTICSEARCH_HOST: dave-elasticsearch
-    ELASTICSEARCH_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
-  
+    ELASTICSEARCH_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX  
   route:
     enabled: true
     targetPort: service
+  fullnameOverride: dave-backend-service
 
 eai:
   extraEnvVars:
@@ -93,6 +92,7 @@ eai:
   route:
     enabled: true
     targetPort: service
+  fullnameOverride: dave-eai-service
 
 frontend:
   extraEnvVars:
@@ -107,10 +107,10 @@ frontend:
     JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
-
   route:
     enabled: true
     targetPort: service
+  fullnameOverride: dave-frontend-apigateway-service
 
 selfservice-portal:
   extraEnvVars:
@@ -128,15 +128,14 @@ selfservice-portal:
   route:
     enabled: true
     targetPort: service
+  fullnameOverride: dave-selfserviceportal-apigateway-service
 
 postgresql:
-  storageClass: "thin-csi"
-    
+  storageClass: "thin-csi"    
   auth:
     username: dave_user
     password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     database: dave_db
-
   primary:
     containerSecurityContext:
       enabled: false
@@ -144,7 +143,6 @@ postgresql:
       enabled: false
 #    persistence:
 #      storageClass: "thin-csi"
-
 #  primary:
 #    podSecurityContext:
 #      enabled: false
@@ -152,7 +150,6 @@ postgresql:
 #    containerSecurityContext:
 #      enabled: false
 #      runAsUser: "auto"
-#
 #  readReplicas:
 #    podSecurityContext:
 #      enabled: false
@@ -160,7 +157,6 @@ postgresql:
 #    containerSecurityContext:
 #      enabled: false
 #      runAsUser: "auto"
-#
 #  volumePermissions:
 #    enabled: false
 #    securityContext:
