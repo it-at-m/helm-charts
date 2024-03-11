@@ -17,22 +17,22 @@ global:
     name: ""
 
   extraEnvVars:
-    ## Default Timezone
-    - name: "TZ"
-      value: "Europe/Berlin"
-    ## Aktive Spring Profiles der Anwendung
-    - name: "SPRING_PROFILES_ACTIVE"
-      value: "dev"
-    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
-    - name: "GC_MAX_METASPACE_SIZE"
-      value: "200"
-    ## Java Optionen der Anwendung
-    - name: "AVA_OPTS_APPEND"
-      value: ""
-    ## Namespace für Hazelcasst
-    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
-      value: "dave-external"
-    ## Elasticsearch
+#    ## Default Timezone
+#    - name: "TZ"
+#      value: "Europe/Berlin"
+#    ## Aktive Spring Profiles der Anwendung
+#    - name: "SPRING_PROFILES_ACTIVE"
+#      value: "dev"
+#    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
+#    - name: "GC_MAX_METASPACE_SIZE"
+#      value: "200"
+#    ## Java Optionen der Anwendung
+#    - name: "AVA_OPTS_APPEND"
+#      value: ""
+#    ## Namespace für Hazelcasst
+#    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
+#      value: "dave-external"
+#    ## Elasticsearch
     - name: "ELASTICSEARCH_PASSWORD"
       value: ""
     - name: "ELASTICSEARCH_USER"
