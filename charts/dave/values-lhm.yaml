@@ -131,7 +131,6 @@ selfservice-portal:
   fullnameOverride: dave-selfserviceportal-apigateway-service
 
 postgresql:
-  storageClass: "thin-csi"    
   auth:
     username: dave_user
     password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -141,8 +140,8 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
-#    persistence:
-#      storageClass: "thin-csi"
+    persistence:
+      storageClass: "thin-csi"
 #  primary:
 #    podSecurityContext:
 #      enabled: false
