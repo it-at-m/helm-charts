@@ -50,3 +50,68 @@ global:
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
+###############################################################
+backend:
+  spring:
+
+    # Spring data rest
+    data:
+      rest:
+        # Definition of page size for PagingAndSortingRepository
+        max-page-size: 0x7fffffff
+        default-page-size: 0x7fffffff
+        return-body-on-update: true
+        return-body-on-create: true
+
+    # Spring JPA
+    datasource:
+      username: dave
+      #    dev
+      url: jdbc:postgresql://dave-postgresql:5423/dave_db
+      driver-class-name: org.postgresql.Driver
+    jpa:
+      database: postgresql
+      hibernate:
+        # always drop and create the db should be the best
+        # configuration for local (development) mode. this
+        # is also the default, that spring offers by convention.
+        # but here explicite:
+        ddl-auto: update
+        naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      # Logging for database operation
+      show-sql: false
+      properties:
+        hibernate:
+          format_sql: true
+
+    security:
+      # possible values: none, all, changing (With changing, only changing requests such as POST, PUT, DELETE are logged)
+      logging.requests: all
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: ${keycloak.auth-server-url}/realms/${realm}
+            jwk-set-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+        client:
+          provider:
+            keycloak:
+              token-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+          registration:
+            keycloak:
+              client-id: dave
+              client-secret: TBD
+              authorization-grant-type: client_credentials
+              client-authentication-method: client_secret_post
+
+  # Define the keycloak development realm here
+  realm: intrap
+  keycloak:
+    auth-server-url: https://ssotest.muenchen.de/auth
+
+  elasticsearch:
+    user: elastic
+    password: changeme
+    host: dave-elasticsearch
+    port: 9200
+    connectTimeout: 10
+    socketTimeout: 30

@@ -132,7 +132,7 @@ selfservice-portal:
 
 postgresql:
   auth:
-    username: dave_user
+    username: dave
     password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     database: dave_db
   primary:
