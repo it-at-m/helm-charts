@@ -40,5 +40,5 @@ spec:
 {{- end }}
   to:
     kind: Service
-    name: {{ include "daveSelfservicePortal.fullname" . }}-service
+    name: {{ include "daveSelfservicePortal.fullname" . }}
 {{- end }}
