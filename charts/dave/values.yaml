@@ -126,7 +126,7 @@ backend:
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen.de
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
   credentials:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5423/dave_db
+    SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
     SPRING_DATASOURCE_USERNAME: dave
     SPRING_DATASOURCE_PASSWORD: dave_pwd
     DAVE_EMAIL_PASSWORD: pwd-email
