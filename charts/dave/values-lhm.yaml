@@ -1,162 +1,101 @@
+## from dave-c
 global:
   credentials: 
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXX
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
-elasticsearch:
-  global:
-    imageRegistry: "dockerhub.muenchen.de"
-    storageClass: "thin-csi"
-  sysctlImage:
-    enabled: false
-  master:
-    resources:
-      limits:
-        cpu: 2
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 1Gi
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
-    replicaCount: 1
-  coordinating:
-    replicaCount: 0
-  data:
-    replicaCount: 0
-  ingest:
-    replicaCount: 0
 
-admin-portal:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-adminportal-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-adminportal-apigateway-service
+## from dave-external, raw
+#  spring:
+#
+#    # Spring data rest
+#    data:
+#      rest:
+#        # Definition of page size for PagingAndSortingRepository
+#        max-page-size: 0x7fffffff
+#        default-page-size: 0x7fffffff
+#        return-body-on-update: true
+#        return-body-on-create: true
+#
+#    # Spring JPA
+#    datasource:
+#      username: dave
+#      #    dev
+#      url: jdbc:postgresql://dave-postgresql:5423/dave_db
+#      driver-class-name: org.postgresql.Driver
+#    jpa:
+#      database: postgresql
+#      hibernate:
+#        # always drop and create the db should be the best
+#        # configuration for local (development) mode. this
+#        # is also the default, that spring offers by convention.
+#        # but here explicite:
+#        ddl-auto: update
+#        naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#      # Logging for database operation
+#      show-sql: false
+#      properties:
+#        hibernate:
+#          format_sql: true
+#
+#    security:
+#      # possible values: none, all, changing (With changing, only changing requests such as POST, PUT, DELETE are logged)
+#      logging.requests: all
+#      oauth2:
+#        resourceserver:
+#          jwt:
+#            issuer-uri: ${keycloak.auth-server-url}/realms/${realm}
+#            jwk-set-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+#        client:
+#          provider:
+#            keycloak:
+#              token-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+#          registration:
+#            keycloak:
+#              client-id: dave
+#              client-secret: TBD
+#              authorization-grant-type: client_credentials
+#              client-authentication-method: client_secret_post
+#
+#  # Define the keycloak development realm here
+#  realm: intrap
+#  keycloak:
+#    auth-server-url: https://ssotest.muenchen.de/auth
 
 backend:
+  replicaCount: 0
+  ## from dave-external to extraEnvVars:
   extraEnvVars:
     env:
-      GC_MAX_METASPACE_SIZE: "256"
-      HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
-      HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
-      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
-      JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-        -Xmx1g --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
-        --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
-        --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-        --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
-      #HAZELCAST_JET_ENABLED: "true"
-    email:
-      DAVE_EMAIL_ADDRESS: ex.bayr@muenchen.de
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen.de
-      DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
-  credentials:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5423/dave_db
-    SPRING_DATASOURCE_USERNAME: dave_user
-    SPRING_DATASOURCE_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
-    DAVE_EMAIL_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX
-    ELASTICSEARCH_HOST: dave-elasticsearch
-    ELASTICSEARCH_PASSWORD: XXXXXXXXXXXXXXXXXXXXXXXXXX  
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-backend-service
+      SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
+      SPRING_DATA_REST_DEFAULT-PAGE-SIZE: "0x7fffffff"
+      SPRING_DATA_REST_RETURN-ON-BODY-UPDATE: "true"
+      SPRING_DATA_REST_RETURN-ON-BODY-CREATE: "true"
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE: postgresql
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_HIBERNATE_NAMING.PHYSICAL-STRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      SPRING_JPA_SHOW-SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_SECURITY_LOGGING.REQUESTS: all
+      SPRING_SECURITY_OAUTH2_RESSOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+      SPRING_SECURITY_OAUTH2_RESSOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+      SPRING_SECURITY_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+      SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+      SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
+      SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
+      SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
+      REALM: intrap
+      KEYCLOAK_AUTH-SERVER-URL: https://ssotest.muenchen.de/auth
+
+##
+admin-portal:
+  replicaCount: 0
 
 eai:
-  extraEnvVars:
-    GC_MAX_METASPACE_SIZE: "256"
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    MANAGEMENT_SERVER_PORT: "8079"
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-eai-service
+  replicaCount: 0
 
 frontend:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-frontend-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-frontend-apigateway-service
+  replicaCount: 0
 
 selfservice-portal:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-selfserviceportal-apigateway-service
-
-postgresql:
-  auth:
-    username: dave
-    password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    database: dave_db
-  primary:
-    containerSecurityContext:
-      enabled: false
-    podSecurityContext:
-      enabled: false
-    persistence:
-      storageClass: "thin-csi"
-#  primary:
-#    podSecurityContext:
-#      enabled: false
-#      fsGroup: ""
-#    containerSecurityContext:
-#      enabled: false
-#      runAsUser: "auto"
-#  readReplicas:
-#    podSecurityContext:
-#      enabled: false
-#      fsGroup: ""
-#    containerSecurityContext:
-#      enabled: false
-#      runAsUser: "auto"
-#  volumePermissions:
-#    enabled: false
-#    securityContext:
-#      runAsUser: "auto"
+  replicaCount: 0
