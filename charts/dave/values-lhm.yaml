@@ -62,7 +62,7 @@ global:
 #    auth-server-url: https://ssotest.muenchen.de/auth
 
 backend:
-  replicaCount: 0
+  replicaCount: 1
   ## from dave-external to extraEnvVars:
   extraEnvVars:
     env:
