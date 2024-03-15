@@ -33,18 +33,19 @@ global:
 #    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
 #      value: "dave-external"
 #    ## Elasticsearch
-    - name: "ELASTICSEARCH_PASSWORD"
-      value: "changeme"
-    - name: "ELASTICSEARCH_USER"
-      value: "elastic"
-    - name: "ELASTICSEARCH_HOST"
-      value: "dave-elasticsearch"
-    - name: "ELASTICSEARCH_PORT"
-      value: "9200"
+#    - name: "ELASTICSEARCH_PASSWORD"
+#      value: "changeme"
+#    - name: "ELASTICSEARCH_USER"
+#      value: "elastic"
+#    - name: "ELASTICSEARCH_HOST"
+#      value: "dave-elasticsearch"
+#    - name: "ELASTICSEARCH_PORT"
+#      value: "9200"
     - name: "ELASTICSEARCH_REINDEX"
       value: "true"
     - name: "ELASTICSEARCH_SCHEME"
       value: "http"
+    ## Reaction on Errors
     ## Spring
     ## Session timout in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
     - name: "SPRING_SESSION_TIMEOUT"
@@ -75,13 +76,10 @@ elasticsearch:
     replicaCount: 0
   ingest:
     replicaCount: 0
-## from dave-internal:
+  ##
   user: elastic
-  password: changeme
-  host: dave-elasticsearch
-  port: 9200
-  connectTimeout: 10
-  socketTimeout: 30
+  password: pwd_elastic
+
 
 ## from dave-c:
 admin-portal:
@@ -131,7 +129,7 @@ backend:
     SPRING_DATASOURCE_PASSWORD: dave_pwd
     DAVE_EMAIL_PASSWORD: pwd-email
     ELASTICSEARCH_HOST: dave-elasticsearch
-    ELASTICSEARCH_PASSWORD: pwd-elastic  
+    ELASTICSEARCH_PASSWORD: pwd_elastic
   route:
     enabled: true
     targetPort: service

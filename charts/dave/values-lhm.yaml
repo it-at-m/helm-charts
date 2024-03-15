@@ -5,6 +5,8 @@ global:
 
 
 ## from dave-external, raw
+#backend:
+#
 #  spring:
 #
 #    # Spring data rest
@@ -60,6 +62,22 @@ global:
 #  realm: intrap
 #  keycloak:
 #    auth-server-url: https://ssotest.muenchen.de/auth
+#
+#  elasticsearch:
+#    user: elastic
+#    password:
+#    host: daveelastick001.srv.muenchen.de
+#    port: 9200
+#    connectTimeout: 10
+#    socketTimeout: 30
+#
+#  dave:
+#    zaehlung:
+#      status:
+#        #      Alle 10 min
+#        updater: 0 0/10 * 1/1 * ?
+
+
 
 backend:
   replicaCount: 1
@@ -86,6 +104,11 @@ backend:
       SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
       REALM: intrap
       KEYCLOAK_AUTH-SERVER-URL: https://ssotest.muenchen.de/auth
+      ELASTICSEARCH_USER: elastic
+      ELASTICSEARCH_PORT: "9200"
+      ELASTICSEARCH_CONNECTTIMEOUT: "10"
+      ELASTICSEARCH_SOCKETTIMEOUT: "30"
+      DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
 
 ##
 admin-portal:
