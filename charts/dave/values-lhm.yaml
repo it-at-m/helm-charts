@@ -95,8 +95,8 @@ backend:
       SPRING_JPA_SHOW-SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
       SPRING_SECURITY_LOGGING.REQUESTS: all
-      SPRING_SECURITY_OAUTH2_RESSOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
-      SPRING_SECURITY_OAUTH2_RESSOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
       SPRING_SECURITY_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
       SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
       SPRING_SECURITY_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
