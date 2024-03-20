@@ -78,7 +78,7 @@ elasticsearch:
     replicaCount: 0
   ##
   user: elastic
-  password: pwd_elastic
+  #password: pwd_elastic
 
 
 ## from dave-c:
@@ -129,7 +129,7 @@ backend:
     SPRING_DATASOURCE_PASSWORD: dave_pwd
     dave.email.password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     ELASTICSEARCH_HOST: dave-elasticsearch
-    ELASTICSEARCH_PASSWORD: pwd_elastic
+    ELASTICSEARCH_PASSWORD: ""
   route:
     enabled: true
     targetPort: service
