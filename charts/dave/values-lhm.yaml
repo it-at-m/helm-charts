@@ -4,7 +4,7 @@ global:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
-## from dave-external, raw
+## from dave-internal, raw
 #backend:
 #
 #  spring:
@@ -76,6 +76,29 @@ global:
 #      status:
 #        #      Alle 10 min
 #        updater: 0 0/10 * 1/1 * ?
+#
+## from dave-internal/application-local.yml, raw:
+##
+#    email:
+#      address: dave-dummy@muenchen.de
+#      password: dummy
+#      url:
+#        adminportal: http://localhost:8085
+#        selfserviceportal: http://localhost:8086
+#      receiver:
+#        # Update-Intervall in Millisekunden für den Email-Abruf
+#        update-interval: 5000
+#        hostname: imap.muenchen.de
+#    messstelle:
+#      # Alle 5 min
+#      cron: 0 0/5 * 1/1 * ?
+#      # Sollte immer knapp unter dem Cron sein
+#      shedlock: 4m
+#  
+#  geodaten:
+#    eai:
+#      url: http://localhost:8088
+
 
 
 
@@ -109,10 +132,102 @@ backend:
       ELASTICSEARCH_CONNECTTIMEOUT: "10"
       ELASTICSEARCH_SOCKETTIMEOUT: "30"
       DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
+      DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
+      DAVE_EMAIL_URL_SELFSERVICEPORTAL: "http://localhost:8086"
+      DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
+      DAVE_EMAIL_RECEIVER_HOSTNAME: imap.muenchen.de
+      DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
+      DAVE_MESSSTELLE_SHEDLOCK: "4M"
+      GEODATEN_EAI_URL: "http://localhost:8088"
 
-##
+## from dave-external raw
+
+#admin-portal:
+#
+#  spring:
+# 
+#   # Define the keycloak development realm here
+#   realm: Dave
+# 
+#   # spring cloud gateway config
+#   cloud:
+#     gateway:
+#       actuator:
+#         verbose:
+#           enabled: false
+#       globalcors:
+#         corsConfigurations:
+#           # The cors configuration to allow frontend developers cross origin request via this api gateway
+#           '[/**]':
+#             allowedOrigins:
+#               - "http://localhost:8081"
+#               - "http://127.0.0.1:8081"
+#             allowedMethods: "*"
+#             allowedHeaders: "*"
+#             allowCredentials: true
+#             maxAge: 3600
+#       routes:
+#         - id: sso
+#           uri: https://ssodev.muenchen.de/
+#           predicates:
+#             - Path=/api/sso/userinfo
+#           filters:
+#             - RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+#         - id: backend
+#           uri: http://dave-backend-service:8080/
+#           predicates:
+#             - Path=/api/dave-backend-service/**
+#           filters:
+#             - name: Retry
+#               args:
+#                 retries: 2
+#                 methods: GET
+#                 backoff:
+#                   firstBackoff: 10ms
+#                   maxBackoff: 50ms
+#                   factor: 2
+#                   basedOnPreviousValue: false
+#             - RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+#             - RemoveResponseHeader=WWW-Authenticate
+#       default-filters:
+#         - RemoveResponseHeader=Expires
+#         - RemoveRequestHeader=cookie
+#         - RemoveRequestHeader=x-xsrf-token
+#         - TokenRelay=
+# 
+#   # security config
+#   security:
+#     oauth2:
+#       client:
+#         provider:
+#           keycloak:
+#             issuer-uri: https://ssodev.muenchen.de/auth/realms/${spring.realm}
+#         registration:
+#           keycloak:
+#             client-id: dave
+#             client-secret: TBD
+# 
+#   mvc:
+#     log-request-details: on
+# 
+# hazelcast:
+#   openshift-service-name: dave-adminportal-dev
+
+
 admin-portal:
   replicaCount: 0
+  ## from dave-external to extraEnvVars:
+  extraEnvVars:
+    SPRING_REALM: Dave
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    #SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS:
+    #- "http://localhost:8081"
+    #- "http://127.0.0.1:8081"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDMETHODS: "*"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDHEADERS: "*"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWCREDENTIALS: "true"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_MAXAGE: "3600"
+
 
 eai:
   replicaCount: 0
