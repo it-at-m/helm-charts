@@ -139,6 +139,17 @@ backend:
       DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
       DAVE_MESSSTELLE_SHEDLOCK: "4M"
       GEODATEN_EAI_URL: "http://localhost:8088"
+  ## CA-Certfificates Volume for LHM Certtificates
+  extraVolumeMounts:
+    - name: cacerts-lhm
+      readOnly: true
+      mountPath: /mnt
+  extraVolumes: 
+    - name: cacerts-lhm
+      secret:
+        secretName: cacerts-lhm
+        defaultMode: 420
+  
 
 ## from dave-external raw
 
