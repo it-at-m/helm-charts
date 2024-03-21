@@ -14,8 +14,8 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: elasticsearch
-    repository: https://charts.bitnami.com/bitnami
-    version: 19.17.0
+    version: 7.17.3
+    repository: https://helm.elastic.co
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 14.3.0

@@ -51,34 +51,45 @@ global:
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
-## from zammad:
+## elasticsearch values
 elasticsearch:
-  global:
-    storageClass: "thin-csi"
-  sysctlImage:
+  # ES version
+  imageTag: "7.17.9"
+  # from examples/openshift
+  securityContext:
+    runAsUser: null
+  podSecurityContext:
+    fsGroup: null
+    runAsUser: null
+  sysctlInitContainer:
     enabled: false
-  master:
-    resources:
-      limits:
-        cpu: 2
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 1Gi
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
-    replicaCount: 1
-  coordinating:
-    replicaCount: 0
-  data:
-    replicaCount: 0
-  ingest:
-    replicaCount: 0
-  ##
-  user: elastic
-  #password: pwd_elastic
+  
+#  global:
+#    storageClass: "thin-csi"
+#  sysctlImage:
+#    enabled: false
+#  master:
+#    resources:
+#      limits:
+#        cpu: 2
+#        memory: 1Gi
+#      requests:
+#        cpu: 100m
+#        memory: 1Gi
+#    podSecurityContext:
+#      enabled: false
+#    containerSecurityContext:
+#      enabled: false
+#    replicaCount: 1
+#  coordinating:
+#    replicaCount: 0
+#  data:
+#    replicaCount: 0
+#  ingest:
+#    replicaCount: 0
+#  ##
+#  user: elastic
+#  #password: pwd_elastic
 
 
 ## from dave-c:
