@@ -248,3 +248,24 @@ frontend:
 
 selfservice-portal:
   replicaCount: 0
+
+
+## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
+elasticsearch:
+  global:
+    imageRegistry: "dockerhub.muenchen.de"
+    storageClass: "thin-csi"
+  sysctlImage:
+    enabled: false
+  master:
+    resources:
+      limits:
+        cpu: 2
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 1Gi
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false

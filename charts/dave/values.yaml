@@ -51,19 +51,22 @@ global:
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
-## elasticsearch values
+# Settings for the elasticsearch subchart
 elasticsearch:
-  # ES version
-  imageTag: "7.17.9"
-  # from examples/openshift
-  securityContext:
-    runAsUser: null
-  podSecurityContext:
-    fsGroup: null
-    runAsUser: null
-  sysctlInitContainer:
-    enabled: false
-  
+  clusterName: zammad
+  coordinating:
+    replicaCount: 0
+  data:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
+  master:
+    heapSize: 512m
+    masterOnly: false
+    replicaCount: 1
+
+
+
 #  global:
 #    storageClass: "thin-csi"
 #  sysctlImage:
