@@ -53,7 +53,7 @@ global:
 
 # Settings for the elasticsearch subchart
 elasticsearch:
-  clusterName: zammad
+  clusterName: dave
   coordinating:
     replicaCount: 0
   data:
