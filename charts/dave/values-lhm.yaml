@@ -1,110 +1,14 @@
-## from dave-c
+## Global
 global:
+  ## from dave-c
   credentials: 
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
-## from dave-internal, raw
-#backend:
-#
-#  spring:
-#
-#    # Spring data rest
-#    data:
-#      rest:
-#        # Definition of page size for PagingAndSortingRepository
-#        max-page-size: 0x7fffffff
-#        default-page-size: 0x7fffffff
-#        return-body-on-update: true
-#        return-body-on-create: true
-#
-#    # Spring JPA
-#    datasource:
-#      username: dave
-#      #    dev
-#      url: jdbc:postgresql://dave-postgresql:5423/dave_db
-#      driver-class-name: org.postgresql.Driver
-#    jpa:
-#      database: postgresql
-#      hibernate:
-#        # always drop and create the db should be the best
-#        # configuration for local (development) mode. this
-#        # is also the default, that spring offers by convention.
-#        # but here explicite:
-#        ddl-auto: update
-#        naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#      # Logging for database operation
-#      show-sql: false
-#      properties:
-#        hibernate:
-#          format_sql: true
-#
-#    security:
-#      # possible values: none, all, changing (With changing, only changing requests such as POST, PUT, DELETE are logged)
-#      logging.requests: all
-#      oauth2:
-#        resourceserver:
-#          jwt:
-#            issuer-uri: ${keycloak.auth-server-url}/realms/${realm}
-#            jwk-set-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
-#        client:
-#          provider:
-#            keycloak:
-#              token-uri: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
-#          registration:
-#            keycloak:
-#              client-id: dave
-#              client-secret: TBD
-#              authorization-grant-type: client_credentials
-#              client-authentication-method: client_secret_post
-#
-#  # Define the keycloak development realm here
-#  realm: intrap
-#  keycloak:
-#    auth-server-url: https://ssotest.muenchen.de/auth
-#
-#  elasticsearch:
-#    user: elastic
-#    password:
-#    host: daveelastick001.srv.muenchen.de
-#    port: 9200
-#    connectTimeout: 10
-#    socketTimeout: 30
-#
-#  dave:
-#    zaehlung:
-#      status:
-#        #      Alle 10 min
-#        updater: 0 0/10 * 1/1 * ?
-#
-## from dave-internal/application-local.yml, raw:
-##
-#    email:
-#      address: dave-dummy@muenchen.de
-#      password: dummy
-#      url:
-#        adminportal: http://localhost:8085
-#        selfserviceportal: http://localhost:8086
-#      receiver:
-#        # Update-Intervall in Millisekunden für den Email-Abruf
-#        update-interval: 5000
-#        hostname: imap.muenchen.de
-#    messstelle:
-#      # Alle 5 min
-#      cron: 0 0/5 * 1/1 * ?
-#      # Sollte immer knapp unter dem Cron sein
-#      shedlock: 4m
-#  
-#  geodaten:
-#    eai:
-#      url: http://localhost:8088
-
-
-
-
+## Dave-backend
 backend:
   replicaCount: 1
-  ## from dave-external to extraEnvVars:
+  ## from dave-internal to extraEnvVars
   extraEnvVars:
     env:
       SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
@@ -139,6 +43,7 @@ backend:
       DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
       DAVE_MESSSTELLE_SHEDLOCK: "4M"
       GEODATEN_EAI_URL: "http://localhost:8088"
+  
   ## CA-Certfificates Volume for LHM Certtificates
   extraVolumeMounts:
     - name: cacerts-lhm
@@ -148,108 +53,202 @@ backend:
     - name: cacerts-lhm
       secret:
         secretName: cacerts-lhm
-        defaultMode: 420
-  
-
-## from dave-external raw
-
-#admin-portal:
-#
-#  spring:
-# 
-#   # Define the keycloak development realm here
-#   realm: Dave
-# 
-#   # spring cloud gateway config
-#   cloud:
-#     gateway:
-#       actuator:
-#         verbose:
-#           enabled: false
-#       globalcors:
-#         corsConfigurations:
-#           # The cors configuration to allow frontend developers cross origin request via this api gateway
-#           '[/**]':
-#             allowedOrigins:
-#               - "http://localhost:8081"
-#               - "http://127.0.0.1:8081"
-#             allowedMethods: "*"
-#             allowedHeaders: "*"
-#             allowCredentials: true
-#             maxAge: 3600
-#       routes:
-#         - id: sso
-#           uri: https://ssodev.muenchen.de/
-#           predicates:
-#             - Path=/api/sso/userinfo
-#           filters:
-#             - RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
-#         - id: backend
-#           uri: http://dave-backend-service:8080/
-#           predicates:
-#             - Path=/api/dave-backend-service/**
-#           filters:
-#             - name: Retry
-#               args:
-#                 retries: 2
-#                 methods: GET
-#                 backoff:
-#                   firstBackoff: 10ms
-#                   maxBackoff: 50ms
-#                   factor: 2
-#                   basedOnPreviousValue: false
-#             - RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-#             - RemoveResponseHeader=WWW-Authenticate
-#       default-filters:
-#         - RemoveResponseHeader=Expires
-#         - RemoveRequestHeader=cookie
-#         - RemoveRequestHeader=x-xsrf-token
-#         - TokenRelay=
-# 
-#   # security config
-#   security:
-#     oauth2:
-#       client:
-#         provider:
-#           keycloak:
-#             issuer-uri: https://ssodev.muenchen.de/auth/realms/${spring.realm}
-#         registration:
-#           keycloak:
-#             client-id: dave
-#             client-secret: TBD
-# 
-#   mvc:
-#     log-request-details: on
-# 
-# hazelcast:
-#   openshift-service-name: dave-adminportal-dev
+        defaultMode: 420  
 
 
+## Dave-admin-portal
 admin-portal:
-  replicaCount: 0
-  ## from dave-external to extraEnvVars:
+  replicaCount: 1
+  ## from dave-internal to extraEnvVars
   extraEnvVars:
     SPRING_REALM: Dave
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-    #SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS:
-    #- "http://localhost:8081"
-    #- "http://127.0.0.1:8081"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDMETHODS: "*"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDHEADERS: "*"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWCREDENTIALS: "true"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_MAXAGE: "3600"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
+      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
+
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+
+  ## CA-Certfificates Volume for LHM Certtificates  
+  extraVolumeMounts:
+    - name: cacerts-lhm
+      readOnly: true
+      mountPath: /mnt
+  extraVolumes: 
+    - name: cacerts-lhm
+      secret:
+        secretName: cacerts-lhm
+        defaultMode: 420
 
 
+## Dave-eai
 eai:
-  replicaCount: 0
+  replicaCount: 1
+  ## from dave-internal to extraEnvVars
+  extraEnvVars:
+    BACKEND_URI: dave-backend-service:8080
+  ## CA-Certfificates Volume for LHM Certtificates  
+  extraVolumeMounts:
+    - name: cacerts-lhm
+      readOnly: true
+      mountPath: /mnt
+  extraVolumes: 
+    - name: cacerts-lhm
+      secret:
+        secretName: cacerts-lhm
+        defaultMode: 420
 
+
+## Dave-frontend
 frontend:
-  replicaCount: 0
+  replicaCount: 1
+    ## from dave-internal to extraEnvVars:
+  extraEnvVars:
+    SPRING_REALM: Dave
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: "'[/**]'"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS_0: http://localhost:8081
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS_1: http://127.0.0.1:8081
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDMETHODS: '"*"'
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDHEADERS: '"*"'
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWCREDENTIALS: "true"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_MAXAGE: "3600"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDORIGINS_0: http://localhost:8081
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDORIGINS_1: http://127.0.0.1:8081
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDMETHODS: '"*"'
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDHEADERS: '"*"'
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWCREDENTIALS: "true"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_MAXAGE: "3600"
+    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
+      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
 
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET,POST
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+
+    SPRING_CLOUD_GATEWAY_ROUTES_2_ID: eai
+    SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://dave-eai-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0: Path=/api/dave-eai-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_2_METADATA_RESPONSE-TIMEOUT: "1800000"
+    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
+
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+#    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+
+  ## CA-Certfificates Volume for LHM Certtificates  
+  extraVolumeMounts:
+    - name: cacerts-lhm
+      readOnly: true
+      mountPath: /mnt
+  extraVolumes: 
+    - name: cacerts-lhm
+      secret:
+        secretName: cacerts-lhm
+        defaultMode: 420
+
+
+## Dave-selfservice-portal
 selfservice-portal:
-  replicaCount: 0
+  replicaCount: 1
+  ## from dave-internal to extraEnvVars
+  extraEnvVars:
+    SPRING_REALM: Dave
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
+#      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
+
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+
+  ## CA-Certfificates Volume for LHM Certtificates  
+  extraVolumeMounts:
+    - name: cacerts-lhm
+      readOnly: true
+      mountPath: /mnt
+  extraVolumes: 
+    - name: cacerts-lhm
+      secret:
+        secretName: cacerts-lhm
+        defaultMode: 420
 
 
+## Elasticsearch
 ## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   global:
