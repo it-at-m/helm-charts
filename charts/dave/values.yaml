@@ -30,7 +30,7 @@ backend:
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
       HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
       # Java
-      JAVA_OPTIONS:
+      JAVA_OPTIONS: <Java Options>
       JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
       # Other
       GC_MAX_METASPACE_SIZE: "256"
@@ -180,11 +180,7 @@ frontend:
     HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
     # Java
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    JAVA_OPTIONS: <Java Options>
     JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
     # Other
     SERVER_PORT: "8080"
