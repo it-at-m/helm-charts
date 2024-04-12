@@ -1,12 +1,10 @@
-# Default global values for dave.
+# Default values for dave.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Global values
 global:
-
-  #nameOverride: ""
   fullnameOverride: "dave"
-
   serviceAccount:
     # Specifies whether a service account should be created
     create: true
@@ -15,45 +13,280 @@ global:
     # The name of the service account to use.
     # If not set and create is true, a name is generated using the fullname template
     name: ""
-
   extraEnvVars:
-#    ## Default Timezone
-#    - name: "TZ"
-#      value: "Europe/Berlin"
-#    ## Aktive Spring Profiles der Anwendung
-#    - name: "SPRING_PROFILES_ACTIVE"
-#      value: "dev"
-#    ## Erhöhe Default JVM Metaspace Size (100 MB) um OutOfMemoryError - Metaspace zu verhindern
-#    - name: "GC_MAX_METASPACE_SIZE"
-#      value: "200"
-#    ## Java Optionen der Anwendung
-#    - name: "AVA_OPTS_APPEND"
-#      value: ""
-#    ## Namespace für Hazelcasst
-#    - name: "APP_SPRING-SESSION-HAZELCAST_NAMESPACE"
-#      value: "dave-external"
-#    ## Elasticsearch
-#    - name: "ELASTICSEARCH_PASSWORD"
-#      value: "changeme"
-#    - name: "ELASTICSEARCH_USER"
-#      value: "elastic"
-#    - name: "ELASTICSEARCH_HOST"
-#      value: "dave-elasticsearch"
-#    - name: "ELASTICSEARCH_PORT"
-#      value: "9200"
-    - name: "ELASTICSEARCH_REINDEX"
-      value: "true"
-    - name: "ELASTICSEARCH_SCHEME"
-      value: "http"
-    ## Reaction on Errors
-    ## Spring
-    ## Session timout in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
+    # Spring session timout in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
-# Settings for the elasticsearch subchart
+# Dave Backend
+backend:
+  replicaCount: 1
+  fullnameOverride: dave-backend-service
+  # Environment Variables
+  extraEnvVars:    
+    env: 
+      # Hazelcast
+      HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
+      HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
+      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
+      # Java
+      JAVA_OPTIONS:
+      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
+      # Other
+      GC_MAX_METASPACE_SIZE: "256"
+      SERVER_PORT: "8080"
+      TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
+      GEODATEN_EAI_URL: "http://localhost:8088"
+      # Spring, Keycloak
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
+      SPRING_DATA_REST_DEFAULT-PAGE-SIZE: "0x7fffffff"
+      SPRING_DATA_REST_RETURN-ON-BODY-UPDATE: "true"
+      SPRING_DATA_REST_RETURN-ON-BODY-CREATE: "true"
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
+      SPRING_DATASOURCE_USERNAME: dave
+      SPRING_JPA_DATABASE: postgresql
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_HIBERNATE_NAMING.PHYSICAL-STRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      SPRING_JPA_SHOW-SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_SECURITY_LOGGING.REQUESTS: all
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
+      REALM: Dave
+      KEYCLOAK_AUTH-SERVER-URL: <Auth-Server URL>
+      # Elasticsearch
+      ELASTICSEARCH_USER: elastic
+      ELASTICSEARCH_PORT: "9200"
+      ELASTICSEARCH_CONNECTTIMEOUT: "10"
+      ELASTICSEARCH_SOCKETTIMEOUT: "30"
+      ELASTICSEARCH_REINDEX: "true"
+      ELASTICSEARCH_SCHEME: http
+      # Dave
+      DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
+      DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
+      DAVE_MESSSTELLE_SHEDLOCK: "4M"
+    # Dave Email Settings
+    email:
+      DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
+      DAVE_EMAIL_URL_SELFSERVICEPORTAL: "http://localhost:8086"
+      DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
+      DAVE_EMAIL_RECEIVER_HOSTNAME: <Hostname>
+      DAVE_EMAIL_ADDRESS: <Email-Adress>
+      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
+      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: <Email Body Strings>
+      DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
+  # Credentials
+  credentials:    
+    SPRING_DATASOURCE_PASSWORD: dave_pwd
+    DAVE_EMAIL_PASSWORD: <Email-Password>
+    ELASTICSEARCH_HOST: dave-elasticsearch 
+    ELASTICSEARCH_PASSWORD: ""
+  # Volume for CA-Certfificates 
+  extraVolumeMounts: []
+  extraVolumes: []
+  # Route 
+  route:
+    enabled: true
+    targetPort: service
+
+# Dave Admin-Portal
+admin-portal:
+  replicaCount: 1
+  fullnameOverride: dave-adminportal-apigateway-service
+  # Environment variables
+  extraEnvVars:
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-adminportal-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
+    # Java
+    JAVA_OPTIONS: <Java Options>
+    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
+    # Other
+    SERVER_PORT: "8080"
+    # Spring, Keycloak
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_REALM: Dave 
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=  
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave    
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+  # Volume for CA-Certfificates   
+  extraVolumeMounts: []
+  extraVolumes: []
+  # Route 
+  route:
+    enabled: true
+    targetPort: service  
+
+# Dave EAI
+eai:
+  replicaCount: 1
+  fullnameOverride: dave-eai-service
+  # Environment variables
+  extraEnvVars:
+    # Java
+    JAVA_OPTIONS: <Java Options>
+    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    # Other
+    GC_MAX_METASPACE_SIZE: "256"
+    BACKEND_URI: dave-backend-service:8080
+    MANAGEMENT_SERVER_PORT: "8079"
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+  # Volume for CA-Certfificates   
+  extraVolumeMounts: []
+  extraVolumes: []
+  # Route 
+  route:
+    enabled: true
+    targetPort: service
+
+# Dave Frontend
+frontend:
+  replicaCount: 1
+  fullnameOverride: dave-frontend-apigateway-service
+  # Environment variables
+  extraEnvVars:
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-frontend-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
+    # Java
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
+      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
+      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
+      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
+      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    # Other
+    SERVER_PORT: "8080"
+    # Spring, Keycloak
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_REALM: Dave
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET,POST
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_ROUTES_2_ID: eai
+    SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://dave-eai-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0: Path=/api/dave-eai-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_2_METADATA_RESPONSE-TIMEOUT: "1800000"
+    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+  # Volume for CA-Certfificates   
+  extraVolumeMounts: []
+  extraVolumes: []
+  # Route
+  route:
+    enabled: true
+    targetPort: service
+
+# Dave Selfservice-Portal
+selfservice-portal:
+  replicaCount: 1
+  fullnameOverride: dave-selfserviceportal-apigateway-service
+  extraEnvVars:
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
+    # Java
+    JAVA_OPTIONS: <Java Options>
+    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    # Other
+    SERVER_PORT: "8080"
+    # Spring, Keycloak
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_REALM: Dave
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=   
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
+  # Volume for CA-Certfificates   
+  extraVolumeMounts: []
+  extraVolumes: []
+  # Route 
+  route:
+    enabled: true
+    targetPort: service
+
+# Elasticsearch
+# https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   clusterName: dave
+  global:
+    imageRegistry: <Elasticsearch Image Registry>
+    storageClass: "thin-csi"
+  sysctlImage:
+    enabled: false
   coordinating:
     replicaCount: 0
   data:
@@ -64,141 +297,20 @@ elasticsearch:
     heapSize: 512m
     masterOnly: false
     replicaCount: 1
+    resources:
+      limits:
+        cpu: 2
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 1Gi
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
 
-
-
-#  global:
-#    storageClass: "thin-csi"
-#  sysctlImage:
-#    enabled: false
-#  master:
-#    resources:
-#      limits:
-#        cpu: 2
-#        memory: 1Gi
-#      requests:
-#        cpu: 100m
-#        memory: 1Gi
-#    podSecurityContext:
-#      enabled: false
-#    containerSecurityContext:
-#      enabled: false
-#    replicaCount: 1
-#  coordinating:
-#    replicaCount: 0
-#  data:
-#    replicaCount: 0
-#  ingest:
-#    replicaCount: 0
-#  ##
-#  user: elastic
-#  #password: pwd_elastic
-
-
-## from dave-c:
-admin-portal:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-adminportal-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-      -Dhz.integritychecker.enabled=false
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-adminportal-apigateway-service
-
-backend:
-  extraEnvVars:
-    env:
-      GC_MAX_METASPACE_SIZE: "256"
-      HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
-      HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
-      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
-      JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-        -Xmx1g --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
-        --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
-        --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-        --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-        -Dhz.integritychecker.enabled=false
-      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
-    email:
-      DAVE_EMAIL_ADDRESS: dave-dev@muenchen.de
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen.de
-      DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
-  credentials:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
-    SPRING_DATASOURCE_USERNAME: dave
-    SPRING_DATASOURCE_PASSWORD: dave_pwd
-    dave.email.password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    ELASTICSEARCH_HOST: dave-elasticsearch
-    ELASTICSEARCH_PASSWORD: ""
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-backend-service
-
-eai:
-  extraEnvVars:
-    GC_MAX_METASPACE_SIZE: "256"
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    MANAGEMENT_SERVER_PORT: "8079"
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-eai-service
-
-frontend:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-frontend-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-frontend-apigateway-service
-
-selfservice-portal:
-  extraEnvVars:
-    HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
-    HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
-    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
-      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
-      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
-      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
-      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-    SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev 
-  route:
-    enabled: true
-    targetPort: service
-  fullnameOverride: dave-selfserviceportal-apigateway-service
-
-## postgresql
+# PostgreSQL
+# https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:   
   auth:
     username: dave

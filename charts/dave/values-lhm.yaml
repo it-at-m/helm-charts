@@ -1,50 +1,32 @@
-## Global
+# Default LHM specific values for dave.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global values
 global:
-  ## from dave-c
   credentials: 
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXX-SECRET-XXXX
 
-
-## Dave-backend
+# Dave Backend
 backend:
-  replicaCount: 1
-  ## from dave-internal to extraEnvVars
+  # Environment Variables
   extraEnvVars:
     env:
-      SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
-      SPRING_DATA_REST_DEFAULT-PAGE-SIZE: "0x7fffffff"
-      SPRING_DATA_REST_RETURN-ON-BODY-UPDATE: "true"
-      SPRING_DATA_REST_RETURN-ON-BODY-CREATE: "true"
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
-      SPRING_JPA_DATABASE: postgresql
-      SPRING_JPA_HIBERNATE_DDL-AUTO: update
-      SPRING_JPA_HIBERNATE_NAMING.PHYSICAL-STRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      SPRING_JPA_SHOW-SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
-      SPRING_SECURITY_LOGGING.REQUESTS: all
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
-      REALM: Dave
+      JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
+        -Xmx1g --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+        --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
+        --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
+        --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
       KEYCLOAK_AUTH-SERVER-URL: https://ssodev.muenchen.de/auth
-      ELASTICSEARCH_USER: elastic
-      ELASTICSEARCH_PORT: "9200"
-      ELASTICSEARCH_CONNECTTIMEOUT: "10"
-      ELASTICSEARCH_SOCKETTIMEOUT: "30"
-      DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
-      DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
-      DAVE_EMAIL_URL_SELFSERVICEPORTAL: "http://localhost:8086"
-      DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
+    # Dave Email Settings
+    email:
       DAVE_EMAIL_RECEIVER_HOSTNAME: imap.muenchen.de
-      DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
-      DAVE_MESSSTELLE_SHEDLOCK: "4M"
-      GEODATEN_EAI_URL: "http://localhost:8088"
-  
-  ## CA-Certfificates Volume for LHM Certtificates
+      DAVE_EMAIL_ADDRESS: dave-dev@muenchen.de
+      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Landeshauptstadt München;Schuh&Co.GmbH;-----Ursprüngliche Nachricht-----;dave-dev@muenchen,
+  # Credentials
+  credentials:    
+    DAVE_EMAIL_PASSWORD: XXXX-SECRET-XXXX
+  # Volume for CA-Certfificates 
   extraVolumeMounts:
     - name: cacerts-lhm
       readOnly: true
@@ -55,47 +37,18 @@ backend:
         secretName: cacerts-lhm
         defaultMode: 420  
 
-
-## Dave-admin-portal
+# Dave Admin-Portal
 admin-portal:
-  replicaCount: 1
-  ## from dave-internal to extraEnvVars
+  # Environment variables
   extraEnvVars:
-    SPRING_REALM: Dave
-    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
-      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
-
-    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
-    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
-
-    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
-    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
-    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
-    
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
+      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
+      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
+      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
+      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/    
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
-    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-
-  ## CA-Certfificates Volume for LHM Certtificates  
+  # Volume for CA-Certfificates 
   extraVolumeMounts:
     - name: cacerts-lhm
       readOnly: true
@@ -106,14 +59,12 @@ admin-portal:
         secretName: cacerts-lhm
         defaultMode: 420
 
-
-## Dave-eai
+# Dave EAI
 eai:
-  replicaCount: 1
-  ## from dave-internal to extraEnvVars
+  # Environment variables
   extraEnvVars:
-    BACKEND_URI: dave-backend-service:8080
-  ## CA-Certfificates Volume for LHM Certtificates  
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
+  # Volume for CA-Certfificates   
   extraVolumeMounts:
     - name: cacerts-lhm
       readOnly: true
@@ -124,68 +75,18 @@ eai:
         secretName: cacerts-lhm
         defaultMode: 420
 
-
-## Dave-frontend
+# Dave Frontend
 frontend:
-  replicaCount: 1
-    ## from dave-internal to extraEnvVars:
+  # Environment variables
   extraEnvVars:
-    SPRING_REALM: Dave
-    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: "'[/**]'"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS_0: http://localhost:8081
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDORIGINS_1: http://127.0.0.1:8081
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDMETHODS: '"*"'
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWEDHEADERS: '"*"'
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_ALLOWCREDENTIALS: "true"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_MAXAGE: "3600"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDORIGINS_0: http://localhost:8081
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDORIGINS_1: http://127.0.0.1:8081
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDMETHODS: '"*"'
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWEDHEADERS: '"*"'
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_ALLOWCREDENTIALS: "true"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_MAXAGE: "3600"
-    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
-      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
-
-    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
+      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
+      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
+      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
+      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
-    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
-
-    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
-    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
-    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET,POST
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-
-    SPRING_CLOUD_GATEWAY_ROUTES_2_ID: eai
-    SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://dave-eai-service:8080/
-    SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0: Path=/api/dave-eai-service/**
-    SPRING_CLOUD_GATEWAY_ROUTES_2_METADATA_RESPONSE-TIMEOUT: "1800000"
-    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
-    SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
-
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
-
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-#    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
-    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-
-  ## CA-Certfificates Volume for LHM Certtificates  
+  # Volume for CA-Certfificates 
   extraVolumeMounts:
     - name: cacerts-lhm
       readOnly: true
@@ -196,47 +97,18 @@ frontend:
         secretName: cacerts-lhm
         defaultMode: 420
 
-
-## Dave-selfservice-portal
+# Dave Selfservice-Portal
 selfservice-portal:
-  replicaCount: 1
-  ## from dave-internal to extraEnvVars
+  # Environment variables
   extraEnvVars:
-    SPRING_REALM: Dave
-    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-#    SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS: |
-#      '[/**]': [allowedOrigins: [http://localhost:8081, http://127.0.0.1:8081], allowedMethods: "*", allowedHeaders: "*", allowCredentials: true, maxAge: 3600]
-
-    SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit
+      --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
+      java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
+      java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
+      --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://ssodev.muenchen.de/
-    SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-    SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
-
-    SPRING_CLOUD_GATEWAY_ROUTES_1_ID: backend
-    SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://dave-backend-service:8080/
-    SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_NAME: Retry
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-    SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
-    
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://ssodev.muenchen.de/auth/realms/${spring.realm}
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_0: LHM
-    #SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE_1: LHM_Extended
-    SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-
-  ## CA-Certfificates Volume for LHM Certtificates  
+  # Volume for CA-Certfificates  
   extraVolumeMounts:
     - name: cacerts-lhm
       readOnly: true
@@ -247,24 +119,7 @@ selfservice-portal:
         secretName: cacerts-lhm
         defaultMode: 420
 
-
-## Elasticsearch
-## https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
+# Elasticsearch
 elasticsearch:
   global:
     imageRegistry: "dockerhub.muenchen.de"
-    storageClass: "thin-csi"
-  sysctlImage:
-    enabled: false
-  master:
-    resources:
-      limits:
-        cpu: 2
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 1Gi
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
