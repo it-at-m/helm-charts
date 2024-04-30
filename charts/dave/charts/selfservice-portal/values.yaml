@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/gislab-augsburg/dave-selfservice-portal
+  repository: ghcr.io/it-at-m/dave-selfservice-portal
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "main-ls1"
