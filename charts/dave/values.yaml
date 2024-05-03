@@ -220,10 +220,9 @@ frontend:
   # Volume for CA-Certfificates   
   extraVolumeMounts: []
   extraVolumes: []
-  # Route
-  route:
-    enabled: true
-    targetPort: service
+  # Ingress
+  service:
+    port: 8080
 
 # Dave Selfservice-Portal
 selfservice-portal:
