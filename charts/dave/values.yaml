@@ -278,9 +278,6 @@ selfservice-portal:
 # https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   clusterName: dave
-  global:
-    imageRegistry: <Elasticsearch Image Registry>
-    storageClass: "thin-csi"
   sysctlImage:
     enabled: false
   coordinating:
@@ -317,5 +314,3 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
-    persistence:
-      storageClass: "thin-csi"
