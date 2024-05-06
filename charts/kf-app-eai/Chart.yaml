@@ -1,6 +1,6 @@
 apiVersion: v2
 name: kf-app-eai
-description: 'Enterprise application interface to allow Munich's kita-app access to kitafinder data.'
+description: Enterprise application interface to allow Munich's kita-app access to kitafinder data.
 type: application
 version: 0.1.0
 appVersion: "0.1.1"
