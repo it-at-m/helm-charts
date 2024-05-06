@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "kf-app-eai.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "kf-app-eai.fullname" . }}:{{ .Values.service.port }}{{ .Values.appUrl }}']
   restartPolicy: Never

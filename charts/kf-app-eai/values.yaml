@@ -102,6 +102,7 @@ affinity: {}
 # List of active spring profiles (include 'keycloak' to activate Keycloak integration)
 activeSpringProfiles: ""
 
+appUrl: "/swagger-ui/index.html"
 keycloak:
   baseUrl: ""
   realm: ""
