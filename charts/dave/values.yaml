@@ -23,8 +23,8 @@ backend:
   replicaCount: 1
   fullnameOverride: dave-backend-service
   # Environment Variables
-  extraEnvVars:    
-    env: 
+  extraEnvVars:
+    env:
       # Hazelcast
       HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
@@ -83,12 +83,12 @@ backend:
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: <Email Body Strings>
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
   # Credentials
-  credentials:    
+  credentials:
     SPRING_DATASOURCE_PASSWORD: dave_pwd
     DAVE_EMAIL_PASSWORD: <Email-Password>
-    ELASTICSEARCH_HOST: dave-elasticsearch 
+    ELASTICSEARCH_HOST: dave-elasticsearch
     ELASTICSEARCH_PASSWORD: ""
-  # Volume for CA-Certfificates 
+  # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
 
@@ -110,7 +110,7 @@ admin-portal:
     SERVER_PORT: "8080"
     # Spring, Keycloak
     SPRING_PROFILES_ACTIVE: dev
-    SPRING_REALM: Dave 
+    SPRING_REALM: Dave
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: <SSO URI>
@@ -131,11 +131,11 @@ admin-portal:
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=  
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave    
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
     SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-  # Volume for CA-Certfificates   
+  # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
   # Ingress
@@ -158,7 +158,7 @@ eai:
     MANAGEMENT_SERVER_PORT: "8079"
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: dev
-  # Volume for CA-Certfificates   
+  # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
 
@@ -211,7 +211,7 @@ frontend:
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
     SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-  # Volume for CA-Certfificates   
+  # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
   # Ingress
@@ -255,11 +255,11 @@ selfservice-portal:
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
     SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=   
+    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: <ISSUER-URI>
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
     SPRING_MVC_LOG-REQUEST-DETAILS: "on"
-  # Volume for CA-Certfificates   
+  # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
   # Ingress
@@ -296,7 +296,7 @@ elasticsearch:
 
 # PostgreSQL
 # https://github.com/bitnami/charts/tree/main/bitnami/postgresql
-postgresql:   
+postgresql:
   auth:
     username: dave
     password: dave_pwd
