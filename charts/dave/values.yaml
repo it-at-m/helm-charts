@@ -91,10 +91,7 @@ backend:
   # Volume for CA-Certfificates 
   extraVolumeMounts: []
   extraVolumes: []
-  # Route 
-  route:
-    enabled: true
-    targetPort: service
+
 
 # Dave Admin-Portal
 admin-portal:
@@ -141,10 +138,10 @@ admin-portal:
   # Volume for CA-Certfificates   
   extraVolumeMounts: []
   extraVolumes: []
-  # Route 
-  route:
-    enabled: true
-    targetPort: service  
+  # Ingress
+  service:
+    port: 8080
+
 
 # Dave EAI
 eai:
@@ -164,10 +161,7 @@ eai:
   # Volume for CA-Certfificates   
   extraVolumeMounts: []
   extraVolumes: []
-  # Route 
-  route:
-    enabled: true
-    targetPort: service
+
 
 # Dave Frontend
 frontend:
@@ -268,10 +262,9 @@ selfservice-portal:
   # Volume for CA-Certfificates   
   extraVolumeMounts: []
   extraVolumes: []
-  # Route 
-  route:
-    enabled: true
-    targetPort: service
+  # Ingress
+  service:
+    port: 8080
 
 # Elasticsearch
 # https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
