@@ -59,6 +59,14 @@ admin-portal:
       secret:
         secretName: cacerts
         defaultMode: 420
+  ingress:
+    enabled: true
+    className: ""
+    hosts:
+      - host: dave-admin-portal.example.de
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
 
 # Dave EAI
 eai:
@@ -97,6 +105,15 @@ frontend:
       secret:
         secretName: cacerts
         defaultMode: 420
+  ingress:
+    enabled: true
+    className: ""
+    hosts:
+      - host: dave.example.de
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+
 
 # Dave Selfservice-Portal
 selfservice-portal:
@@ -119,4 +136,12 @@ selfservice-portal:
       secret:
         secretName: cacerts
         defaultMode: 420
+  ingress:
+    enabled: true
+    className: ""
+    hosts:
+      - host: dave-selfservice-portal.example.de
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
 
