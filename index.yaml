@@ -323,6 +323,25 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
+  kf-app-eai:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2024-05-06T11:24:35.551729447Z"
+    description: Enterprise application interface to allow Munich's kita-app access
+      to kitafinder data.
+    digest: 5fc6ada4521e66b5e9c184aa8f40ff8ee02296ab236067da4306dd730d586cf3
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/kf-app-eai
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: max.zollbrecht@gmail.com
+      name: maximilian-zollbrecht
+    name: kf-app-eai
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/kf-app-eai-0.1.0/kf-app-eai-0.1.0.tgz
+    version: 0.1.0
   wjh-rechner:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -393,4 +412,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
     version: 0.0.1
-generated: "2024-03-08T10:45:13.304392316Z"
+generated: "2024-05-06T11:24:35.551781314Z"
