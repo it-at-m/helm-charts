@@ -3,7 +3,7 @@ name: kf-app-eai
 description: TODO
 type: application
 version: 0.1.0
-appVersion: "0.0.9"
+appVersion: "0.1.0"
 maintainers:
   - name: maximilian-zollbrecht 
     email: max.zollbrecht@gmail.com
