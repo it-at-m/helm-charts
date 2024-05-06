@@ -6,7 +6,6 @@ replicaCount: 1
 
 image:
   repository: itatm/ad2image
-  #repository: itatm/ad2image
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: ""
@@ -147,7 +146,8 @@ extraVolumes:
   #     defaultMode: 420
 
 # can be used to add init containers
-initContainers: []
+initContainers:
+  []
   # - name: my-init-container-name
   #   image: some-image:latest
   #   env:

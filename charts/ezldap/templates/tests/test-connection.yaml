@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "ezldap.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "ezldap.fullname" . }}:{{ .Values.service.port }}/swagger-ui/index.html'] # Swagger UI should be public accessible
   restartPolicy: Never
