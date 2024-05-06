@@ -112,10 +112,9 @@ keycloak:
 # name of existing kubernetes secret containing password and salt
 passwordEncryptorSecretName: ""
 # name of existing kubernetes secret containing url, user and password
-dbSecretName: "" 
+dbSecretName: ""
 kitafinderBaseUrl: ""
 
 extraEnvVars:
 #  - name: "TZ"
 #    value: "Europe/Berlin"
-
