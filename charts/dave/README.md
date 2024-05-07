@@ -10,4 +10,4 @@ Install this chart using:
 helm upgrade --install my-dave it-at-m/dave -f my-values.yaml
 ```
 
-Create your local configuration from [values-minimal.yaml](values-minimal.yaml) and add optional values from [values.yaml](values.yaml)
+Create your local configuration from [ci/test-values.yaml](ci/test-values.yaml) and add optional values from [values.yaml](values.yaml)
