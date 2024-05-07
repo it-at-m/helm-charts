@@ -26,7 +26,7 @@ backend:
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Example City;-----Ursprüngliche Nachricht-----;dave-dev@example.com,
   # Credentials
   credentials:
-    DAVE_EMAIL_PASSWORD: XXXX-SECRET-XXXX
+    DAVE_EMAIL_PASSWORD: WFhYWC1TRUNSRVQtWFhYWAo=
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
