@@ -5,7 +5,7 @@
 
 # Global values
 global:
-  credentials: 
+  credentials:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: XXXX-SECRET-XXXX
 
 # Dave Backend
@@ -25,18 +25,18 @@ backend:
       DAVE_EMAIL_ADDRESS: dave-dev@example.com
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Example City;-----Ursprüngliche Nachricht-----;dave-dev@example.com,
   # Credentials
-  credentials:    
+  credentials:
     DAVE_EMAIL_PASSWORD: XXXX-SECRET-XXXX
-  # Volume for CA-Certfificates 
+  # Volume for CA-Certfificates
   extraVolumeMounts:
     - name: cacerts
       readOnly: true
       mountPath: /mnt
-  extraVolumes: 
+  extraVolumes:
     - name: cacerts
       secret:
         secretName: cacerts
-        defaultMode: 420  
+        defaultMode: 420
 
 # Dave Admin-Portal
 admin-portal:
@@ -47,14 +47,14 @@ admin-portal:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/    
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
-  # Volume for CA-Certfificates 
+  # Volume for CA-Certfificates
   extraVolumeMounts:
     - name: cacerts
       readOnly: true
       mountPath: /mnt
-  extraVolumes: 
+  extraVolumes:
     - name: cacerts
       secret:
         secretName: cacerts
@@ -73,12 +73,12 @@ eai:
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
-  # Volume for CA-Certfificates   
+  # Volume for CA-Certfificates
   extraVolumeMounts:
     - name: cacerts
       readOnly: true
       mountPath: /mnt
-  extraVolumes: 
+  extraVolumes:
     - name: cacerts
       secret:
         secretName: cacerts
@@ -95,12 +95,12 @@ frontend:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
-  # Volume for CA-Certfificates 
+  # Volume for CA-Certfificates
   extraVolumeMounts:
     - name: cacerts
       readOnly: true
       mountPath: /mnt
-  extraVolumes: 
+  extraVolumes:
     - name: cacerts
       secret:
         secretName: cacerts
@@ -126,12 +126,12 @@ selfservice-portal:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
-  # Volume for CA-Certfificates  
+  # Volume for CA-Certfificates
   extraVolumeMounts:
     - name: cacerts
       readOnly: true
       mountPath: /mnt
-  extraVolumes: 
+  extraVolumes:
     - name: cacerts
       secret:
         secretName: cacerts
