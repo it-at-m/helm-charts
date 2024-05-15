@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zammad-ldap-sync
+spec:
+  schedule: {{ .Values.ldapSync.spec.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: zammad-ldap-sync
+            image: ghcr.io/it-at-m/zammad-ldap-sync:dev
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: LDAP_URL
+                value: {{ .Values.ldapSync.env.LDAP_URL | quote }}
+              - name: LDAP_USERSEARCHBASE
+                value: {{ .Values.ldapSync.env.LDAP_USERSEARCHBASE | quote }}
+              - name: LDAP_OUSEARCHBASE
+                value: {{ .Values.ldapSync.env.LDAP_USERSEARCHBASE | quote }}
+              - name: SYNC_DATETIMEMINUSDAY
+                value: {{ .Values.ldapSync.env.SYNC_DATETIMEMINUSDAY | quote }}
+              - name: SYNC_OUBASE
+                value: {{ .Values.ldapSync.env.SYNC_OUBASE | quote }}
+              - name: ZAMMAD_ASSIGNMENT_ROLE_ID
+                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID | quote }}
+              - name: ZAMMAD_TOKEN
+                value: {{ .Values.ldapSync.env.ZAMMAD_TOKEN | quote }}
+              - name: ZAMMAD_URL_BASE
+                value: {{ .Values.ldapSync.env.ZAMMAD_URL_BASE }}
+              - name: ZAMMAD_URL_GROUPS
+                value: {{ .Values.ldapSync.env.ZAMMAD_URL_GROUPS | quote }}
+              - name: ZAMMAD_URL_USERS
+                value: {{ .Values.ldapSync.env.ZAMMAD_URL_USERS | quote }}
+              - name: ZAMMAD_URL_ROLES
+                value: {{ .Values.ldapSync.env.ZAMMAD_URL_ROLES | quote }}      
+            volumeMounts:
+              ## truststore
+              - mountPath: /etc/pki/ca-trust/extracted/java
+                name: cacerts-lhm
+                readOnly: true
+          volumes:
+            ## truststore
+            - name: cacerts-lhm
+              secret:
+                defaultMode: 420
+                secretName: cacerts-lhm
+                items:
+                  - key: cacerts-lhm
+                    path: cacerts
+          restartPolicy: OnFailure
