@@ -11,7 +11,7 @@ spec:
           containers:
           - name: zammad-ldap-sync
             image: ghcr.io/it-at-m/zammad-ldap-sync:dev
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             env:
               - name: LDAP_URL
                 value: {{ .Values.ldapSync.env.LDAP_URL | quote }}
