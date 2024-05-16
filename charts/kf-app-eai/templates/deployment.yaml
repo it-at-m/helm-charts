@@ -67,29 +67,27 @@ spec:
             - name: APP_KITAFINDER_ADAPTER_BASE_URL
               value: {{ quote .Values.kitafinderBaseUrl }}
           {{- end}}
+          {{- if .Values.kitafinderBaseUrl }}
+            - name: APP_KITAFINDER_ADAPTER_EXPORT_RELATIVE_URL
+              value: {{ quote .Values.kitafinderExportRelativeUrl }}
+          {{- end}}
           {{- if .Values.keycloak.baseUrl }}
             - name: APP_SECURITY_SSO_BASE_URL
               value: {{ quote .Values.keycloak.baseUrl }}
           {{- end}}
           {{- if .Values.keycloak.realm }}
-            - name: APP_SECURITY_SSO_REALM
+            - name: APP_SECURITY_REALM
               value: {{ quote .Values.keycloak.realm }}
+          {{- end}}
+          {{- if .Values.keycloak.realm }}
+            - name: APP_SECURITY_CLIENT_ID
+              value: {{ quote .Values.keycloak.clientId }}
           {{- end}}
           {{- with .Values.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
           {{- if contains "keycloak" .Values.activeSpringProfiles }}
           envFrom:
-            - prefix: APP_SECURITY_API_
-              secretRef:
-                {{- if .Values.keycloak.apiSecretName }}
-                name: {{ .Values.keycloak.apiSecretName }}
-                {{- end }}
-            - prefix: APP_SECURITY_INTERNAL_
-              secretRef:
-                {{- if .Values.keycloak.internalSecretName }}
-                name: {{ .Values.keycloak.internalSecretName }}
-                {{- end }}
             - prefix: APP_PASSWORD_ENCODER_
               secretRef:
                 {{- if .Values.passwordEncryptorSecretName }}
