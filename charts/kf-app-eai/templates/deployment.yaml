@@ -83,6 +83,7 @@ spec:
             - name: APP_SECURITY_CLIENT_ID
               value: {{ quote .Values.keycloak.clientId }}
           {{- end}}
+          {{- if .Values.keycloak.realm }}
             - name: APP_SECURITY_SSO_REALM
               value: {{ quote .Values.keycloak.realm }}
           {{- end}}
