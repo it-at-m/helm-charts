@@ -38,7 +38,7 @@ backend:
       TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
       GEODATEN_EAI_URL: "http://localhost:8088"
       # Spring, Keycloak
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: no-security
       SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
       SPRING_DATA_REST_DEFAULT-PAGE-SIZE: "0x7fffffff"
       SPRING_DATA_REST_RETURN-ON-BODY-UPDATE: "true"
