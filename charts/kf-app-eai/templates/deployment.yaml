@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kf-app-eai.fullname" . }}
+  labels:
+    {{- include "kf-app-eai.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "kf-app-eai.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "kf-app-eai.labels" . | nindent 8 }}
+	{{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kf-app-eai.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 60
+            timeoutSeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 20
+          env:
+          {{- if .Values.activeSpringProfiles }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.activeSpringProfiles | quote }}
+          {{- end}}
+          {{- if .Values.kitafinderBaseUrl }}
+            - name: APP_KITAFINDER_ADAPTER_BASE_URL
+              value: {{ quote .Values.kitafinderBaseUrl }}
+          {{- end}}
+          {{- if .Values.kitafinderExportRelativeUrl }}
+            - name: APP_KITAFINDER_ADAPTER_EXPORT_RELATIVE_URL
+              value: {{ quote .Values.kitafinderExportRelativeUrl }}
+          {{- end}}
+          {{- if .Values.keycloak.baseUrl }}
+            - name: APP_SECURITY_SSO_BASE_URL
+              value: {{ quote .Values.keycloak.baseUrl }}
+          {{- end}}
+          {{- if .Values.keycloak.realm }}
+            - name: APP_SECURITY_REALM
+              value: {{ quote .Values.keycloak.realm }}
+          {{- end}}
+          {{- if .Values.keycloak.clientId }}
+            - name: APP_SECURITY_CLIENT_ID
+              value: {{ quote .Values.keycloak.clientId }}
+          {{- end}}
+          {{- if .Values.keycloak.realm }}
+            - name: APP_SECURITY_SSO_REALM
+              value: {{ quote .Values.keycloak.realm }}
+          {{- end}}
+          {{- with .Values.extraEnvVars }}
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          {{- if contains "keycloak" .Values.activeSpringProfiles }}
+          envFrom:
+            - prefix: APP_PASSWORD_ENCODER_
+              secretRef:
+                {{- if .Values.passwordEncryptorSecretName }}
+                name: {{ .Values.passwordEncryptorSecretName }}
+                {{- end }}
+            - prefix: APP_DB_
+              secretRef:
+                {{- if .Values.dbSecretName }}
+                name: {{ .Values.dbSecretName }}
+                {{- end }}
+          {{- end}}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
