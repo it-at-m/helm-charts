@@ -13,6 +13,8 @@ spec:
             image: ghcr.io/it-at-m/zammad-ldap-sync:dev
             imagePullPolicy: Always
             env:
+              - name: SPRING_PROFILES_ACTIVE
+                value: {{ .Values.ldapSync.env.SPRING_PROFILES_ACTIVE }}
               - name: LDAP_URL
                 value: {{ .Values.ldapSync.env.LDAP_URL | quote }}
               - name: LDAP_USERSEARCHBASE
