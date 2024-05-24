@@ -19,7 +19,7 @@ dependencies:
     version: 19.17.0
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 14.3.0
+    version: 14.3.3
   - name: backend
     version: "*"
   - name: frontend
