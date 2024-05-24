@@ -1,0 +1,24 @@
+dependencies:
+- name: elasticsearch
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.17.0
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 14.3.0
+- name: backend
+  repository: ""
+  version: '*'
+- name: frontend
+  repository: ""
+  version: '*'
+- name: admin-portal
+  repository: ""
+  version: '*'
+- name: selfservice-portal
+  repository: ""
+  version: '*'
+- name: eai
+  repository: ""
+  version: '*'
+digest: sha256:b79c0e9e18cc6dc83a0462a95f8383c162119e4c49782e0ffa9b5e436b2a89bb
+generated: "2024-04-03T11:15:12.610176+02:00"
