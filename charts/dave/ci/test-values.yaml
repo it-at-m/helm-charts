@@ -19,6 +19,7 @@ backend:
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
       KEYCLOAK_AUTH-SERVER-URL: https://sso.example.com/auth
+      SPRING_PROFILES_ACTIVE: no-security
     # Dave Email Settings
     email:
       DAVE_EMAIL_RECEIVER_HOSTNAME: imap.example.com
