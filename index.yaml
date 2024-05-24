@@ -288,6 +288,48 @@ entries:
     urls:
     - https://github.com/it-at-m/appswitcher-server-helm-chart/releases/download/appswitcher-server-0.1.0/appswitcher-server-0.1.0.tgz
     version: 0.1.0
+  dave:
+  - apiVersion: v2
+    appVersion: v1.0.0
+    created: "2024-05-24T15:13:23.893014843Z"
+    dependencies:
+    - name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.17.0
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.3.0
+    - name: backend
+      repository: ""
+      version: '*'
+    - name: frontend
+      repository: ""
+      version: '*'
+    - name: admin-portal
+      repository: ""
+      version: '*'
+    - name: selfservice-portal
+      repository: ""
+      version: '*'
+    - name: eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: e0caaf7fc622d569985c892869e37f16908a68986eeba487803ecbf0fdf7d246
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: martymcfly333@gmail.com
+      name: gislab-augsburg
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.0.2/dave-0.0.2.tgz
+    version: 0.0.2
   ezldap:
   - apiVersion: v2
     appVersion: v1.0.0
@@ -430,4 +472,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
     version: 0.0.1
-generated: "2024-05-16T15:18:38.200420575Z"
+generated: "2024-05-24T15:13:23.89306684Z"
