@@ -120,8 +120,8 @@ initContainers:
   #     - name: AWS_DEFAULT_REGION
   #       value: "eu-central-1"
   #   volumeMounts:
-  #     - name: help-zammad
-  #       mountPath: /opt/zammad
+  #     - name: help-dave
+  #       mountPath: /opt/dave
 
 credentials:
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
