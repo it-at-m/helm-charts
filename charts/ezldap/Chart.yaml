@@ -2,7 +2,7 @@ apiVersion: v2
 name: ezldap
 description: ezLDAP - easy read access for LDAP
 type: application
-version: 1.0.2
+version: 1.0.3
 appVersion: "v1.0.0"
 maintainers:
   - name: eidottermihi
