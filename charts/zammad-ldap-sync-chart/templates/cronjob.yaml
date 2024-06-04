@@ -25,8 +25,12 @@ spec:
                 value: {{ .Values.ldapSync.env.SYNC_DATETIMEMINUSDAY | quote }}
               - name: SYNC_OUBASE
                 value: {{ .Values.ldapSync.env.SYNC_OUBASE | quote }}
-              - name: ZAMMAD_ASSIGNMENT_ROLE_ID
-                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID | quote }}
+              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_AGENT
+                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_AGENT | quote }}  
+              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_ERSTELLEN
+                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_ERSTELLEN | quote }}
+              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_VOLLZUGRIFF
+                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_VOLLZUGRIFF | quote }}
               - name: ZAMMAD_TOKEN
                 value: {{ .Values.ldapSync.env.ZAMMAD_TOKEN | quote }}
               - name: ZAMMAD_URL_BASE
