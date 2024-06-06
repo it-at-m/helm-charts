@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.ldapSync.configMap.name }}
+data:
+   {{- with .Values.ldapSync.configMap.yaml }}
+  application.yml: |
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
