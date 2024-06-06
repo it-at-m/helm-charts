@@ -4,6 +4,6 @@ metadata:
   name: {{ .Values.ldapSync.configMap.name }}
 data:
    {{- with .Values.ldapSync.configMap.yaml }}
-  application.yml: |
+  application.yaml: |
     {{- toYaml . | nindent 4 }}
   {{- end }}

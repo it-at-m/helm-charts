@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: zammad-ldap-sync
 spec:
-  schedule: {{ .Values.ldapSync.spec.schedule | quote }}
+  schedule: {{ .Values.ldapSync.cronjob.schedule | quote }}
   jobTemplate:
     spec:
       template:
@@ -12,40 +12,17 @@ spec:
           - name: zammad-ldap-sync
             image: ghcr.io/it-at-m/zammad-ldap-sync:dev
             imagePullPolicy: Always
-            env:
-              - name: SPRING_PROFILES_ACTIVE
-                value: {{ .Values.ldapSync.env.SPRING_PROFILES_ACTIVE }}
-              - name: LDAP_URL
-                value: {{ .Values.ldapSync.env.LDAP_URL | quote }}
-              - name: LDAP_USERSEARCHBASE
-                value: {{ .Values.ldapSync.env.LDAP_USERSEARCHBASE | quote }}
-              - name: LDAP_OUSEARCHBASE
-                value: {{ .Values.ldapSync.env.LDAP_USERSEARCHBASE | quote }}
-              - name: SYNC_DATETIMEMINUSDAY
-                value: {{ .Values.ldapSync.env.SYNC_DATETIMEMINUSDAY | quote }}
-              - name: SYNC_OUBASE
-                value: {{ .Values.ldapSync.env.SYNC_OUBASE | quote }}
-              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_AGENT
-                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_AGENT | quote }}  
-              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_ERSTELLEN
-                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_ERSTELLEN | quote }}
-              - name: ZAMMAD_ASSIGNMENT_ROLE_ID_VOLLZUGRIFF
-                value: {{ .Values.ldapSync.env.ZAMMAD_ASSIGNMENT_ROLE_ID_VOLLZUGRIFF | quote }}
-              - name: ZAMMAD_TOKEN
-                value: {{ .Values.ldapSync.env.ZAMMAD_TOKEN | quote }}
-              - name: ZAMMAD_URL_BASE
-                value: {{ .Values.ldapSync.env.ZAMMAD_URL_BASE }}
-              - name: ZAMMAD_URL_GROUPS
-                value: {{ .Values.ldapSync.env.ZAMMAD_URL_GROUPS | quote }}
-              - name: ZAMMAD_URL_USERS
-                value: {{ .Values.ldapSync.env.ZAMMAD_URL_USERS | quote }}
-              - name: ZAMMAD_URL_ROLES
-                value: {{ .Values.ldapSync.env.ZAMMAD_URL_ROLES | quote }}      
+            secretFrom:
+            - secretKeyRef:
+                name: {{ .Values.ldapSync.cronjob.secret }}
             volumeMounts:
               ## truststore
               - mountPath: /etc/pki/ca-trust/extracted/java
                 name: cacerts-lhm
                 readOnly: true
+              - name: properties-volume
+                subPath: application.yaml
+                mountPath: /deployments/application.yaml
           volumes:
             ## truststore
             - name: cacerts-lhm
@@ -55,4 +32,10 @@ spec:
                 items:
                   - key: cacerts-lhm
                     path: cacerts
+            - name: properties-volume
+              configMap:
+                name: {{ .Values.ldapSync.configMap.name }}
+                items:
+                  - key: application.yaml
+                    path: application.yaml
           restartPolicy: OnFailure
