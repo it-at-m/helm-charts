@@ -12,8 +12,8 @@ spec:
           - name: zammad-ldap-sync
             image: ghcr.io/it-at-m/zammad-ldap-sync:dev
             imagePullPolicy: Always
-            secretFrom:
-            - secretKeyRef:
+            envFrom:
+            - secretRef:
                 name: {{ .Values.ldapSync.cronjob.secret }}
             volumeMounts:
               ## truststore
