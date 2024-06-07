@@ -1,0 +1,40 @@
+ldapSync:
+  cronjob:
+    schedule: "0 2 * * *"
+  # Must be present.
+    secret: kubernetes-secret
+  configMap: 
+  # Created by helm.
+    name: kubernets-configmap
+    yaml:
+      spring:
+        main:
+          web-application-type: none
+        profiles:
+      # Profile influences log output. May be you don't want to write ldap entries in your log files.
+          active: default,prod
+      ldap:
+        url: ldaps://...
+        user-search-base: ou=...
+        ou-search-base: o=...
+      sync:
+      # Every date-time-minus-day > 0 is converted to 'startDateTime - date-time-minus-day' to restrict ldap user search.
+        date-time-minus-day: 0
+      # List of LDAP distinguished name(s) to synchronize to zammad.
+        ou-bases:
+          - 'ou=...'
+      zammad:
+      # Zammad roles which must exist. Register role with correct role id.
+        assignment:
+          role:
+      # Default zammad role. Is created by zammad.
+            id-agent: 2
+      # Zammad role with permission ticket.agent. Must be created.     
+            id-erstellen: 4
+      # Zammad role with permission ticket.agent. Must be created.     
+            id-vollzugriff: 5
+        url:
+          base: http://zammad-nginx:8080/api/v1/
+          groups: groups
+          users: users
+          roles: roles
