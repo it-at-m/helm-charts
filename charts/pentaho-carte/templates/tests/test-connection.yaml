@@ -10,6 +10,6 @@ spec:
   containers:
     - name: wget
       image: busybox
-      command: ['wget']
-      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}', "--header 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'"]
+      command: ["wget --header 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'"]
+      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
