@@ -16,6 +16,10 @@ values-local.yaml
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+### JetBrains IDEs ###
+.idea
+*.iml
+
 # Local History for Visual Studio Code
 .history/
 

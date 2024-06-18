@@ -87,13 +87,19 @@ resources:
     memory: 1024Mi
 
 livenessProbe:
-  httpGet:
-    path: /
-    port: http
+  exec:
+    command:
+      - curl -G --fail --silent --output=/dev/null http://cluster:cluster@localhost:8080
+#  httpGet:
+#    path: /
+#    port: http
 readinessProbe:
-  httpGet:
-    path: /
-    port: http
+  exec:
+    command:
+      - curl -G --fail --silent --output=/dev/null http://cluster:cluster@localhost:8080
+#  httpGet:
+#    path: /
+#    port: http
 
 autoscaling:
   enabled: false
