@@ -5,7 +5,7 @@ type: application
 # Chart version.
 version: 0.1.0
 # Pentaho Dataintegration version
-appVersion: "9.3.0.0-428"
+appVersion: "0.0.2"
 maintainers:
   - name: ejcsid
     email: ejcsid@gmail.com
