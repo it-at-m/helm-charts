@@ -8,8 +8,8 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}', '--username cluster', '--password cluster']
+    - name: curl
+      image: alpine/curl
+      command: ['curl']
+      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}', '--user cluster:cluster']
   restartPolicy: Never
