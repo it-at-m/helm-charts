@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}', '--username cluster', '--password cluster']
   restartPolicy: Never
