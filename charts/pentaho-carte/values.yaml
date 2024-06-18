@@ -61,7 +61,7 @@ ingress:
   #      - chart-example.local
 
 route:
-  enabled: true
+  enabled: false
   annotations: {}
   host: ""
   path: ""
