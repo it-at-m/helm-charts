@@ -86,20 +86,20 @@ resources:
     cpu: 100m
     memory: 1024Mi
 
-livenessProbe:
-  exec:
-    command:
-      - curl -G --fail --silent --output=/dev/null http://cluster:cluster@localhost:8080
-#  httpGet:
-#    path: /
-#    port: http
-readinessProbe:
-  exec:
-    command:
-      - curl -G --fail --silent --output=/dev/null http://cluster:cluster@localhost:8080
-#  httpGet:
-#    path: /
-#    port: http
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+      httpHeaders:
+        - name: Authorization
+          value: Basic Y2x1c3RlcjpjbHVzdGVy
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+      httpHeaders:
+        - name: Authorization
+          value: Basic Y2x1c3RlcjpjbHVzdGVy
 
 autoscaling:
   enabled: false
