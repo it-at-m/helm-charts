@@ -9,7 +9,8 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: busybox
-      command: ["wget"]
-      args: ["--header 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy' {{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}"]
+      image: alpine/curl
+      command: ["curl"]
+      args: ['--help']
+#      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
