@@ -12,6 +12,5 @@ spec:
       image: curlimages/curl
       command:
         - 'curl'
-        - '--user "cluster:cluster"'
-        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+        - 'http://cluster:cluster@{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
