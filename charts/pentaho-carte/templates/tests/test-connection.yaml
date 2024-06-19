@@ -11,6 +11,5 @@ spec:
     - name: wget
       image: alpine/curl
       command: ["curl"]
-      args: ['--help']
-#      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
+      args: ['--user cluster:cluster {{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
