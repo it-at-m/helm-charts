@@ -13,5 +13,5 @@ spec:
       command:
        - 'curl'
        - '--user cluster:cluster'
-      - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+       - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
