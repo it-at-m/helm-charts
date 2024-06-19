@@ -11,7 +11,8 @@ spec:
     - name: wget
       image: busybox
       command:
-        - "wget"
-        - "--header='Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'"
+        - wget
+        - --header
+        - 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'
         - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
