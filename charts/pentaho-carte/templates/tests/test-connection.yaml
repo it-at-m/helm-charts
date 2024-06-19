@@ -8,11 +8,9 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
+    - name: curl
+      image: curlimages/curl
       command:
-        - wget
-        - --header
-        - 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'
-        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+        - curl
+        - 'http://cluster:cluster@{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
