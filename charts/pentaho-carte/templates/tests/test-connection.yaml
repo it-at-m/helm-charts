@@ -13,5 +13,7 @@ spec:
       command:
         - ping
         - '{{ include "pentaho-carte.fullname" . }}'
+        - '-w'
+        - 10
 #        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
