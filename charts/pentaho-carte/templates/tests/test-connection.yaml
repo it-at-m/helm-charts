@@ -9,10 +9,9 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: curlimages/curl
+      image: busybox
       command:
-        - curl
-        - --user
-        - 'cluster:cluster'
+        - "wget"
+        - "--header='Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'"
         - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
