@@ -12,6 +12,6 @@ spec:
       image: alpine/curl
       command:
        - 'curl'
-       - '--user cluster:cluster'
+       - '--user "cluster:cluster"'
        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
