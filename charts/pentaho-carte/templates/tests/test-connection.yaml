@@ -9,9 +9,9 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: alpine/curl
+      image: curlimages/curl
       command:
-       - 'curl'
-       - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
-  #       - '--user "cluster:cluster"'
+        - 'curl'
+        - '--user "cluster:cluster"'
+        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
