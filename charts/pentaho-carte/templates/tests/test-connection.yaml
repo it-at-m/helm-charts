@@ -8,9 +8,10 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: curl
-      image: curlimages/curl
+    - name: ping
+      image: busybox
       command:
-        - curl
-        - 'http://cluster:cluster@{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+        - ping
+        - '{{ include "pentaho-carte.fullname" . }}'
+#        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
