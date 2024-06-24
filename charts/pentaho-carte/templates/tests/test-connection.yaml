@@ -11,11 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      #      args: ['--help']
-      args:
-        - ["--header 'Authorization: Basic Y2x1c3RlcjpjbHVzdGVy'"]
-        - ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
-  # Fails with ' 401 authentication failed'
-  #      args:
-  #        - ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
