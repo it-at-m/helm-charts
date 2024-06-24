@@ -1,4 +1,4 @@
-# ad2image
+# pentaho-carte
 
 ## Introduction
 
