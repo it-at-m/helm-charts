@@ -8,10 +8,17 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
+    - name: curl
+      image: alpine/curl
+      command: ["curl"]
       args:
-        - '--header "Authorization: Basic Y2x1c3RlcjpjbHVzdGVy"'
-        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+        - '--user cluster:cluster'
+        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}']
+# Fails with error 'wget: unrecognized option '--header "Authorization: Basic Y2x1c3RlcjpjbHVzdGVy"'
+#    - name: wget
+#      image: busybox
+#      command: ['wget']
+#      args:
+#        - '--header "Authorization: Basic Y2x1c3RlcjpjbHVzdGVy"'
+#        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
