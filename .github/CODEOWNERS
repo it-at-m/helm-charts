@@ -1,0 +1,15 @@
+# These team members will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# all members of @it-at-m/helm-charts_maintainer will be requested for
+# review when someone opens a pull request.
+* @it-at-m/helm-charts_maintainer
+
+# individual chart owners
+/charts/ad2image/ @eidottermihi
+/charts/appswitcher-server/ @eidottermihi
+/charts/dave/ @gislab-augsburg @klml
+/charts/ezldap/ @eidottermihi
+/charts/kf-app-eai/ @maximilian-zollbrecht
+/charts/pentaho-carte/ @ejcsid
+/charts/wjh-rechner/ @maximilian-zollbrecht
+/charts/zammad-ldap-sync/ @klml
