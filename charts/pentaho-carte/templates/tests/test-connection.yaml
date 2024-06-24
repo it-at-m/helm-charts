@@ -15,16 +15,6 @@ spec:
         - '--help'
   restartPolicy: Never
   #Fails with curl: option --user "cluster:cluster": is unknown
-  #apiVersion: v1
-  #kind: Pod
-  #metadata:
-  #  name: "{{ include "pentaho-carte.fullname" . }}-test-connection"
-  #  labels:
-  #    {{- include "pentaho-carte.labels" . | nindent 4 }}
-  #  annotations:
-  #    "helm.sh/hook": test
-  #spec:
-  #  containers:
   #    - name: curl
   #      image: curlimages/curl
   #      command: ['curl']
@@ -33,18 +23,7 @@ spec:
   #        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   #  restartPolicy: Never
   #####
-  #####
   # Fails with Connection refused
-  #apiVersion: v1
-  #kind: Pod
-  #metadata:
-  #  name: "{{ include "pentaho-carte.fullname" . }}-test-connection"
-  #  labels:
-  #    {{- include "pentaho-carte.labels" . | nindent 4 }}
-  #  annotations:
-  #    "helm.sh/hook": test
-  #spec:
-  #  containers:
   #    - name: wget
   #      image: busybox
   #      command: ['wget']
