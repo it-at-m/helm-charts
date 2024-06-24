@@ -8,12 +8,9 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: ping
+    - name: wget
       image: busybox
       command:
-        - ping
-        - '{{ include "pentaho-carte.fullname" . }}'
-        - '-w'
-        - '10'
-  #        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+        - wget
+        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
   restartPolicy: Never
