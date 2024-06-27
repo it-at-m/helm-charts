@@ -153,5 +153,5 @@ initContainers: []
   #     - name: AWS_DEFAULT_REGION
   #       value: "eu-central-1"
   #   volumeMounts:
-  #     - name: help-zammad
-  #       mountPath: /opt/zammad
+  #     - name: help-appswitcher-server
+  #       mountPath: /opt/appswitcher-server

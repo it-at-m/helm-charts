@@ -154,5 +154,5 @@ initContainers:
   #     - name: AWS_DEFAULT_REGION
   #       value: "eu-central-1"
   #   volumeMounts:
-  #     - name: help-zammad
-  #       mountPath: /opt/zammad
+  #     - name: help-ad2image
+  #       mountPath: /opt/ad2image
