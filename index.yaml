@@ -139,6 +139,23 @@ entries:
     version: 1.0.4
   appswitcher-server:
   - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2024-07-09T12:07:30.71907808Z"
+    description: Server component for a Google-like app switching experience.
+    digest: 4e6b2746e4b2cb38d294957314552a2efb7c32576c2dce8680028ce4cd186892
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-1.1.4/appswitcher-server-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
     appVersion: 1.0.3
     created: "2024-03-01T10:09:17.865700477Z"
     description: Server component for a Google-like app switching experience.
@@ -547,4 +564,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-24T11:39:37.297215302Z"
+generated: "2024-07-09T12:07:30.71915842Z"
