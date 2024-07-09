@@ -1,0 +1,9 @@
+apiVersion: v2
+name: refarch-gateway
+description: A Helm chart for Kubernetes
+type: application
+version: 0.0.1
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
+icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+sources:
+  - "https://github.com/it-at-m/helm-charts"
