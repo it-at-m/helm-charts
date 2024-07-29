@@ -105,12 +105,13 @@ volumeMounts: []
 #   mountPath: "/etc/foo"
 #   readOnly: true
 
+# Additional env on the output Deployment definition.
+env: []
+
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
-additionalEnv:
 
 applicationYML:
