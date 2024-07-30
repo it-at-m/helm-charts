@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "refarch-gateway.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "refarch-gateway.fullname" . }}:{{ .Values.service.port }}/actuator/info']
   restartPolicy: Never
