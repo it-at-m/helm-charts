@@ -1,0 +1,4 @@
+applicationYML:
+  spring:
+    profiles:
+      active: "no-security"
