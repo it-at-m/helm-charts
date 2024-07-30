@@ -7,7 +7,6 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: it-at-m/refarch/refarch-gateway
-  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
