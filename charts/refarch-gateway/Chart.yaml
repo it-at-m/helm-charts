@@ -8,3 +8,8 @@ home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
 icon: https://opensource.muenchen.de/assets/itm-logo-256.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
+maintainers:
+  - name: DanielOber
+    url: https://github.com/DanielOber
+  - name: devtobi
+    url: https://github.com/devtobi
