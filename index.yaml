@@ -479,6 +479,28 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/pentaho-carte-0.1.0/pentaho-carte-0.1.0.tgz
     version: 0.1.0
+  refarch-gateway:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-07-31T06:26:50.926605751Z"
+    description: Helm chart for deploying the it@M refarch-gateway
+    digest: 1fc620f1359a7e00f3e3d0a08a65d48eb66d862216a6331365b49a6e6b1ff7dd
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - name: DanielOber
+      url: https://github.com/DanielOber
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    name: refarch-gateway
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-gateway-1.0.0/refarch-gateway-1.0.0.tgz
+    version: 1.0.0
   wjh-rechner:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -578,4 +600,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-31T06:24:57.147718343Z"
+generated: "2024-07-31T06:26:50.926704206Z"
