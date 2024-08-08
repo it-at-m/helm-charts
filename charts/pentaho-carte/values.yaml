@@ -45,6 +45,7 @@ service:
   targetPort: 8080
 
 ingress:
+  # Specifies whether an Ingress should be created
   enabled: false
   className: ""
   annotations: {}
@@ -60,19 +61,34 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+## -- Openshift Route Configuration
+## see: https://docs.openshift.com/container-platform/3.11/rest_api/route_openshift_io/route-route-openshift-io-v1.html
 route:
+  # Specifies whether an Openshift Route should be created
   enabled: false
+  # Annotations for Openshift Route
   annotations: {}
+  # Alias/DNS that points to the service.
   host: ""
+  # Path that the router watches for, to route traffic for to the service.
   path: ""
+  # Wildcard policy if any for the route.
   wildcardPolicy: "None"
+  # Defines config used to secure a route and provide termination
 #  tls:
+#    # Indicates termination type.
 #    termination: "Edge"
+#    # Indicates the desired behavior for insecure connections to a route
 #    insecureEdgeTerminationPolicy: "Redirect"
+#    # Provides key file contents
 #    key: ""
+#    # Provides certificate contents
 #    certificate: ""
+#    # Provides the cert authority certificate contents
 #    caCertificate: ""
+#    # Provides the contents of the ca certificate of the final destination
 #    destinationCACertificate: ""
+## -- Openshift Route Configuration
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -80,16 +96,22 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
+    # Limits CPU to 1000m to run Pentaho Carte Server
     cpu: 1000m
+    # Limits Memory to 2048Mi to run Pentaho Carte Server
     memory: 2048Mi
   requests:
+    # Requests at least 100m CPU to run Pentaho Carte Server
     cpu: 100m
+    # Requests at least 1024Mi Memory to run Pentaho Carte Server
     memory: 1024Mi
 
   livenessProbe:
     httpGet:
       path: /
       port: http
+      # Authorization Header to login to Pentaho Carte Server
+      # Encrypted for Default User (see https://pentaho-public.atlassian.net/wiki/spaces/EAI/pages/372704158/Carte+User+Documentation)
       httpHeaders:
         - name: Authorization
           value: Basic Y2x1c3RlcjpjbHVzdGVy
@@ -97,11 +119,14 @@ resources:
     httpGet:
       path: /
       port: http
+      # Authorization Header to login to Pentaho Carte Server
+      # Encrypted for Default User (see https://pentaho-public.atlassian.net/wiki/spaces/EAI/pages/372704158/Carte+User+Documentation)
       httpHeaders:
         - name: Authorization
           value: Basic Y2x1c3RlcjpjbHVzdGVy
 
 autoscaling:
+  # Specifies whether an HorizontalPodAutoscaler should be created
   enabled: false
   minReplicas: 1
   maxReplicas: 100
