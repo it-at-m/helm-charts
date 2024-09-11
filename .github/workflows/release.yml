@@ -23,7 +23,7 @@ jobs:
       - name: Add dependency repos
         run: |
          helm repo add bitnami https://charts.bitnami.com/bitnami
-         helm repo add bitnami https://it-at-m.github.io/helm-charts
+         helm repo add it-at-m https://it-at-m.github.io/helm-charts
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
