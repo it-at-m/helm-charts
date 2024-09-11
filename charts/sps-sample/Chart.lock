@@ -9,4 +9,4 @@ dependencies:
   repository: https://it-at-m.github.io/helm-charts
   version: 1.0.0
 digest: sha256:397d7ff033bd920edfa3e73415d5f72c53a421c095236944bb1fea867ac63eef
-generated: "2024-09-11T15:39:42.3027911+02:00"
+generated: "2024-09-11T15:56:17.7384345+02:00"
