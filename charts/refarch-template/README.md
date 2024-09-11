@@ -1,3 +1,3 @@
-# RefArch Helm-Chart Template
+# Helm-Chart for Sample RefArch Application
 
 TODO
