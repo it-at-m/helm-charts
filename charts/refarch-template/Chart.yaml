@@ -1,5 +1,5 @@
 apiVersion: v2
-name: refarch-template
+name: sps-sample
 description: Helm Chart for deploying a it@M Reference Architecture based sample application.
 type: application
 version: 1.0.0
