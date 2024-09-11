@@ -1,6 +1,6 @@
 apiVersion: v2
 name: refarch-template
-description: Helm chart template for deploying it@M Reference Architecture based applications.
+description: Helm Chart for deploying a it@M Reference Architecture based sample application.
 type: application
 version: 1.0.0
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-template
