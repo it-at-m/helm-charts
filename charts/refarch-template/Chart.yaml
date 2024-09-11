@@ -12,3 +12,10 @@ dependencies:
     version: 1.0.0
   - name: frontend
     version: 1.0.0
+maintainers:
+  - name: banzuu
+    url: https://github.com/banzuu
+  - name: hupling
+    url: https://github.com/hupling
+  - name: ejcsid
+    url: https://github.com/ejcsid
