@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "frontend.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "frontend.fullname" . }}:{{ .Values.service.port }}/actuator/health']
   restartPolicy: Never
