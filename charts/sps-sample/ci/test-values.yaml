@@ -1,5 +1,0 @@
-applicationYML:
-  SSO_ISSUER_URL: https://sso.muenchen.de/auth/realms/muenchen.de
-  spring:
-    profiles:
-      active: "no-security"
