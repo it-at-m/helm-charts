@@ -5,7 +5,5 @@ metadata:
   labels: 
     {{- include "refarch-gateway.labels" . | nindent 4 }}
 data:
-  {{- with .Values.applicationYML }}
   application.yml: |
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- tpl ( toYaml .Values.applicationYML) . | nindent 4 }}
