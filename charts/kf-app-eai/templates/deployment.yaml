@@ -92,7 +92,7 @@ spec:
           {{- end}}
           {{- if contains "keycloak" .Values.activeSpringProfiles }}
           envFrom:
-            - prefix: APP_PASSWORD_ENCODER_
+            - prefix: APP_PASSWORDENCODER_ENCRYPTOR_
               secretRef:
                 {{- if .Values.passwordEncryptorSecretName }}
                 name: {{ .Values.passwordEncryptorSecretName }}
