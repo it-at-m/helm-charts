@@ -59,6 +59,48 @@ spec:
             successThreshold: 1
             failureThreshold: 20
           env:
+          {{- if .Values.passwordEncryptorSecretName }}
+            - name: APP_PASSWORDENCODER_ENCRYPTOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.passwordEncryptorSecretName }}
+                  key: password
+          {{- end }}
+          {{- if .Values.passwordEncryptorSecretName }}
+            - name: APP_PASSWORDENCODER_ENCRYPTOR_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.passwordEncryptorSecretName }}
+                  key: salt
+          {{- end }}
+          {{- if .Values.dbSecretName }}
+            - name: APP_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecretName }}
+                  key: password
+          {{- end }}
+          {{- if .Values.dbSecretName }}
+            - name: APP_DB_SCHEMA
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecretName }}
+                  key: schema
+          {{- end }}
+          {{- if .Values.dbSecretName }}
+            - name: APP_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecretName }}
+                  key: url
+          {{- end }}
+          {{- if .Values.dbSecretName }}
+            - name: APP_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecretName }}
+                  key: user
+          {{- end }}
           {{- if .Values.activeSpringProfiles }}
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.activeSpringProfiles | quote }}
@@ -89,19 +131,6 @@ spec:
           {{- end}}
           {{- with .Values.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
-          {{- end}}
-          {{- if contains "keycloak" .Values.activeSpringProfiles }}
-          envFrom:
-            - prefix: APP_PASSWORDENCODER_ENCRYPTOR_
-              secretRef:
-                {{- if .Values.passwordEncryptorSecretName }}
-                name: {{ .Values.passwordEncryptorSecretName }}
-                {{- end }}
-            - prefix: APP_DB_
-              secretRef:
-                {{- if .Values.dbSecretName }}
-                name: {{ .Values.dbSecretName }}
-                {{- end }}
           {{- end}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
