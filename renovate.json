@@ -1,13 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "helmv3": {
-    "enabled": false
-  },
-  "helm-values": {
-    "enabled": false
-  },
-  "helm-requirements": {
-    "enabled": false
-  }
+  "extends": ["config:recommended"]
 }
