@@ -5,6 +5,7 @@
 * @it-at-m/helm-charts_maintainer
 
 # individual chart owners
+# preferably use teams instead of single persons, if possible
 /charts/ad2image/ @eidottermihi
 /charts/appswitcher-server/ @eidottermihi
 /charts/dave/ @gislab-augsburg @klml
