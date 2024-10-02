@@ -9,7 +9,7 @@
 /charts/appswitcher-server/ @eidottermihi
 /charts/dave/ @gislab-augsburg @klml
 /charts/ezldap/ @eidottermihi
-/charts/kf-app-eai/ @maximilian-zollbrecht
+/charts/kf-app-eai/ @it-at-m/kf-app-eai_admin
 /charts/pentaho-carte/ @lenabMUC @ejcsid
 /charts/wjh-rechner/ @maximilian-zollbrecht
 /charts/zammad-ldap-sync/ @klml
