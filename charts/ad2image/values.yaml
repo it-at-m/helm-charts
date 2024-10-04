@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: itatm/ad2image
+  repository: ghcr.io/it-at-m/ad2image
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: ""
