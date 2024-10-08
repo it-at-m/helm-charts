@@ -29,6 +29,8 @@ Please see [ArtifactHub][artifacthub-url]
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+More documentation on how this repo is used to manage and publish it@M Helm Charts please see [internal documentation](https://git.muenchen.de/ccse/ospo/-/wikis/artifacthub).
+
 ## License
 
 Distributed under the MIT License. See [LICENSE](./LICENSE) file for more information.
