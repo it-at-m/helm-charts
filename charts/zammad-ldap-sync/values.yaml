@@ -15,7 +15,7 @@ ldapSync:
           active: default,prod
       # Send email in caseof invalid distinguished-names.
         mail:
-          host: test.host.com
+          host: mail.example.com
           port: 1
           username: email-user
           password: email-password
@@ -35,8 +35,8 @@ ldapSync:
             user-search-base: user-dn-search-base-dent-2
             ou-search-base: ou-dn-search-base-dent-2
         message:
-          from: me
-          to: to-you
+          from: test@example.com
+          to: test@example.com
           subject: Ooopps..
     subject:
       zammad:
