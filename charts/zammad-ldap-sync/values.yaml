@@ -34,7 +34,7 @@ ldapSync:
               - dn-identifier-2
             user-search-base: user-dn-search-base-dent-2
             ou-search-base: ou-dn-search-base-dent-2
-        message: 
+        message:
           from: me
           to: to-you
           subject: Ooopps..
