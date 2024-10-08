@@ -14,7 +14,7 @@ dependencies:
     version: 1.0.0
   - name: refarch-gateway
     version: 1.0.0
-    repository: "https://it-at-m.github.io/helm-charts"
+    alias: haus
 maintainers:
   - name: banzuu
     url: https://github.com/banzuu
