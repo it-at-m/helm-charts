@@ -13,16 +13,32 @@ ldapSync:
         profiles:
       # Profile influences log output. May be you don't want to write ldap entries in your log files.
           active: default,prod
+      # Send email in caseof invalid distinguished-names.
+        mail:
+          host: mail.example.com
+          port: 1
+          username: email-user
+          password: email-password
       ldap:
         url: ldaps://...
-        user-search-base: ou=...
-        ou-search-base: o=...
       sync:
-      # Every date-time-minus-day > 0 is converted to 'startDateTime - date-time-minus-day' to restrict ldap user search.
-        date-time-minus-day: 0
-      # List of LDAP distinguished name(s) to synchronize to zammad.
-        ou-bases:
-          - 'ou=...'
+      # If necessary, set different distinguished-names with their own ldap-search-bases.
+        organizational-units:
+          identifier-1:
+            distinguished-names:
+              - dn-identifier-1
+            user-search-base: user-dn-search-base-dent-1
+            ou-search-base: ou-dn-search-base-dent-1
+          identifier-2:
+            distinguished-names:
+              - dn-identifier-2
+            user-search-base: user-dn-search-base-dent-2
+            ou-search-base: ou-dn-search-base-dent-2
+        message:
+          from: test@example.com
+          to: test@example.com
+          subject: Ooopps..
+    subject:
       zammad:
       # Zammad roles which must exist. Register role with correct role id.
         assignment:
