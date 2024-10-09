@@ -55,7 +55,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            {{- if gt (len .Values.env) 0 }}
             {{- toYaml .Values.env | nindent 12 }}
+            {{- end}}
             {{- if .Values.hazelcast.enabled }}
             - name: HAZELCAST_JAVA_OPTS_APPEND
               value: "--add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
