@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "pentaho-carte.fullname" . }}-test-connection"
+  labels:
+    {{- include "pentaho-carte.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ['curl']
+      args:
+        - '--help'
+  restartPolicy: Never
+  #Fails with curl: option --user "cluster:cluster": is unknown
+  #    - name: curl
+  #      image: curlimages/curl
+  #      command: ['curl']
+  #      args:
+  #        - '--user "cluster:cluster"'
+  #        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+  #  restartPolicy: Never
+  #####
+  # Fails with Connection refused
+  #    - name: wget
+  #      image: busybox
+  #      command: ['wget']
+  #      args:
+  #        - '--header "Authorization: Basic Y2x1c3RlcjpjbHVzdGVy"'
+  #        - '{{ include "pentaho-carte.fullname" . }}:{{ .Values.service.port }}'
+  #  restartPolicy: Never

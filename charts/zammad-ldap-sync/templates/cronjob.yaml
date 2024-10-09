@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zammad-ldap-sync
+spec:
+  schedule: {{ .Values.ldapSync.cronjob.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: zammad-ldap-sync
+            image: ghcr.io/it-at-m/zammad-ldap-sync:dev
+            imagePullPolicy: Always
+            envFrom:
+            - secretRef:
+                name: {{ .Values.ldapSync.cronjob.secret }}
+            volumeMounts:
+              ## truststore
+              - mountPath: /etc/pki/ca-trust/extracted/java
+                name: cacerts-lhm
+                readOnly: true
+              - name: properties-volume
+                subPath: application.yaml
+                mountPath: /deployments/application.yaml
+          volumes:
+            ## truststore
+            - name: cacerts-lhm
+              secret:
+                defaultMode: 420
+                secretName: cacerts-lhm
+                items:
+                  - key: cacerts-lhm
+                    path: cacerts
+            - name: properties-volume
+              configMap:
+                name: {{ .Values.ldapSync.configMap.name }}
+                items:
+                  - key: application.yaml
+                    path: application.yaml
+          restartPolicy: OnFailure

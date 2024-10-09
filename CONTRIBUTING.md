@@ -2,24 +2,28 @@
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-Contributions are welcome via GitHub pull requests. This document outlines the process to help get your contribution accepted.
+Contributions are welcome via GitHub Pull Requests. This document outlines the process to help get your contribution accepted.
 
-## Issue/Pull request template
+## Contributing a new Chart
 
-Isssues or Pull requests to a chart should be created with prefix `[charts/<name>]` eg: `[charts/ezldap]`
+All it@M developers have direct write access to the repo (through team [`itm-devs`](https://github.com/orgs/it-at-m/teams/itm-devs)) and therefore don't have to fork the repository to contribute.
+
+To contribute a Chart please create a Pull Request. Make sure to also add the maintainer(s) of the new Chart as code-owner in [CODEOWNERS](.github/CODEOWNERS), preferably referencing a corresponding team.
+
+Charts without maintainers **can not be accepted**.
 
 ## Bumping chart version
 
-Every PR should include chart version bump, because we can not have different version of the charts with the same version name.
+Every Pull Request that changes a Chart **must include a chart version bump**, because we can not have different versions of the Charts with the same version name.
 
-_If not, the CI lint will fail and PR can't be accepted_
+If not, the CI lint will fail and the Pull Request **can not be accepted**.
 
 ## Automated Pull Request Checks
 
-Every chart gets _linted_ and _tested_ by [chart-testing](https://github.com/helm/chart-testing).
+Every changed Chart gets _linted_ and _tested_ using [chart-testing](https://github.com/helm/chart-testing).
 
-For testing, the chart is deployed to a Kubernetes cluster (created with [kind](https://kind.sigs.k8s.io/)) using the charts default `values.yaml` _or_ a special `values.yaml` for testing (`<chart-dir>/ci/test-values.yaml`).
+For testing, the Chart is deployed to a Kubernetes cluster (created with [kind](https://kind.sigs.k8s.io/)) using the charts default `values.yaml` _or_ a special `values.yaml` for testing (`<chart-dir>/ci/test-values.yaml`).
 
 After successful deployment, all specified tests (`chart-dir/templates/tests/**`) are executed.
 
-_If linting and testing fails the PR can't be accepted_
+If linting or testing fails the Pull Request **can not be accepted**.
