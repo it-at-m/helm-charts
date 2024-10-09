@@ -2,7 +2,7 @@ apiVersion: v2
 name: appswitcher-server
 description: Server component for a Google-like app switching experience.
 type: application
-version: 1.2.0
+version: 1.2.1
 appVersion: "1.1.1"
 maintainers:
   - name: eidottermihi
