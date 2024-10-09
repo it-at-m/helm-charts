@@ -11,5 +11,11 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    {{- if .Values.hazelcast.enabled }}
+    - name: hazelcast
+      protocol: TCP
+      port: 5701
+      targetPort: 5701
+    {{- end }}
   selector:
     {{- include "refarch-gateway.selectorLabels" . | nindent 4 }}

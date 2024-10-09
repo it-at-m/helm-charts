@@ -114,3 +114,6 @@ tolerations: []
 affinity: {}
 
 applicationYML:
+
+hazelcast:
+  enabled: true

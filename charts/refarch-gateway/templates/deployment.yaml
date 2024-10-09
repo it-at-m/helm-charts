@@ -41,6 +41,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+            {{- if .Values.hazelcast.enabled }}
+            - name: hazelcast
+              containerPort: 5701
+              protocol: TCP
+            {{- end }}
           startupProbe:
             {{- toYaml .Values.startupProbe | nindent 12 }}
           livenessProbe:
