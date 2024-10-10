@@ -105,11 +105,12 @@ volumeMounts: []
 #   readOnly: true
 
 # Additional env on the output Deployment definition.
-env: 
- - name: GC_MAX_METASPACE_SIZE
-   value: "200"
- - name: TZ
-   value: Europe/Berlin
+env:
+  - name: GC_MAX_METASPACE_SIZE
+    value: "200"
+  - name: TZ
+    value: Europe/Berlin
+
 # Additional env on the output Deployment definition.
 envAppend: []
 
