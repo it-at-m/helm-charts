@@ -56,7 +56,10 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             {{- if gt (len .Values.env) 0 }}
-            {{- toYaml .Values.env | nindent 12 }}
+            {{- tpl (toYaml .Values.env) . | nindent 12 }}
+            {{- end}}
+            {{- if gt (len .Values.envAppend) 0 }}
+            {{- tpl (toYaml .Values.envAppend) . | nindent 12 }}
             {{- end}}
             {{- if .Values.hazelcast.enabled }}
             - name: HAZELCAST_JAVA_OPTS_APPEND
