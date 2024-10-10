@@ -1,4 +1,4 @@
-refarch-gateway:
+haus:
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: no-security
@@ -8,7 +8,7 @@ refarch-gateway:
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
       value: backend
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-      value: "http://a-backend:8080/"
+      value: "http://{{ include \"frontend.fullname\" $ }}:8080/"
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
       value: Path=/api/beispielprojekt-backend-service/**
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0
@@ -26,7 +26,11 @@ refarch-gateway:
       value: RewritePath=/(?<urlsegments>.*), /$\{urlsegments}
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1
       value: RemoveResponseHeader=WWW-Authenticate
-
+  applicationYML:
+      name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+      value: "http://{{ include \"refarch-gateway.fullname\" $.Subcharts.haus }}-frontend:8080/"
+      name1: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0
+      value1: Path=/**
   ingress:
     enabled: true
     annotations:
