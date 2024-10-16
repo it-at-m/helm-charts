@@ -41,6 +41,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+            {{- if .Values.hazelcast.enabled }}
+            - name: hazelcast
+              containerPort: 5701
+              protocol: TCP
+            {{- end }}
           startupProbe:
             {{- toYaml .Values.startupProbe | nindent 12 }}
           livenessProbe:
@@ -50,7 +55,18 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            {{- if gt (len .Values.env) 0 }}
+            {{- tpl (toYaml .Values.env) . | nindent 12 }}
+            {{- end}}
+            {{- if gt (len .Values.envAppend) 0 }}
+            {{- tpl (toYaml .Values.envAppend) . | nindent 12 }}
+            {{- end}}
+            {{- if .Values.hazelcast.enabled }}
+            - name: HAZELCAST_JAVA_OPTS_APPEND
+              value: "--add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+            - name: REFARCH_HAZELCAST_SERVICENAME
+              value: {{ include "refarch-gateway.fullname" . }}
+            {{- end }}
           volumeMounts:
             - name: config
               mountPath: /deployments/config
