@@ -3,7 +3,7 @@ ldapSync:
     registry: ghcr.io
     repository: it-at-m/zammad-ldap-sync
     pullPolicy: Always
-    #tag: '' # default is 'dev'
+    tag: dev # default is 'dev'
   cronjob:
     schedule: "0 2 * * *"
   # Must be present.

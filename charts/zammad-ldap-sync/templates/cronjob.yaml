@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: zammad-ldap-sync
-            image: "{{ .Values.ldapSync.image.registry }}/{{ .Values.ldapSync.image.repository }}:{{ .Values.ldapSync.image.tag | default 'dev' }}"
+            image: "{{ .Values.ldapSync.image.registry }}/{{ .Values.ldapSync.image.repository }}:{{ .Values.ldapSync.image.tag }}"
             imagePullPolicy: {{ .Values.ldapSync.image.pullPolicy }}
             envFrom:
             - secretRef:
