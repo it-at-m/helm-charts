@@ -1,5 +1,3 @@
-
-
 ldapSync:
   image:
     registry: ghcr.io
