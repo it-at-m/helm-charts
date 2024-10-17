@@ -10,8 +10,8 @@ spec:
         spec:
           containers:
           - name: zammad-ldap-sync
-            image: ghcr.io/it-at-m/zammad-ldap-sync:dev
-            imagePullPolicy: Always
+            image: "{{ .Values.ldapSync.image.registry }}/{{ .Values.ldapSync.image.repository }}:{{ .Values.ldapSync.image.tag | default 'dev' }}"
+            imagePullPolicy: {{ .Values.ldapSync.image.pullPolicy }}
             envFrom:
             - secretRef:
                 name: {{ .Values.ldapSync.cronjob.secret }}
