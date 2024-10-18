@@ -8,7 +8,7 @@ haus:
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
       value: backend
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-      value: "http://{{ include \"frontend.fullname\" $ }}:8080/"
+      value: "http://{{ include \"frontend.fullname\" $.Subcharts.frontend}}:8080/"
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
       value: Path=/api/beispielprojekt-backend-service/**
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0
