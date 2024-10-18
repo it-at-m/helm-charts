@@ -17,7 +17,7 @@ The command deploys pentaho-carte on the Kubernetes cluster with some default co
 ## Configuration
 
 | Key                                        | Type   | Default                 | Description                             |
-|--------------------------------------------|--------|-------------------------|-----------------------------------------|
+| ------------------------------------------ | ------ | ----------------------- | --------------------------------------- |
 | replicaCount                               | int    | `1`                     | Number of replicas                      |
 | image.repository                           | string | `"itatm/pentaho-carte"` | Image to use for deploying              |
 | image.pullPolicy                           | string | `"IfNotPresent"`        | Image pull policy                       |
@@ -66,3 +66,5 @@ The command deploys pentaho-carte on the Kubernetes cluster with some default co
 | nodeSelector                               | object | `{}`                    | Kubernetes node selector                |
 | tolerations                                | list   | `[]`                    | Kubernetes tolerations                  |
 | affinity                                   | object | `{}`                    | Kubernetes node affinity                |
+| initContainers                             | list   | `[]`                    | Extra initContainers for the pods       |
+| extraEnvVars                               | list   | `[]`                    | Extra environment variables             |
