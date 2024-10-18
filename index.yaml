@@ -567,6 +567,24 @@ entries:
   pentaho-carte:
   - apiVersion: v2
     appVersion: 0.0.2
+    created: "2024-10-18T12:04:53.328112484Z"
+    description: Pentaho Data Integration installation and starts the Pentaho Carte
+      Server
+    digest: 018ef56b6f422800931933304883de5b24722dcc1460774d5e2f59270cbb652f
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/pentaho-carte
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - email: ejcsid@gmail.com
+      name: ejcsid
+    name: pentaho-carte
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/pentaho-carte-0.1.1/pentaho-carte-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.0.2
     created: "2024-06-24T11:39:37.29715515Z"
     description: Pentaho Data Integration installation and starts the Pentaho Carte
       Server
@@ -760,4 +778,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-16T08:14:40.943617876Z"
+generated: "2024-10-18T12:04:53.328204055Z"
