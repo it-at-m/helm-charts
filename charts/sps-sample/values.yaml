@@ -3,8 +3,6 @@ global:
   name: backend
  frontend: 
   name: frontend
- refarchgateway: 
-  name: refarchgateway
 
 
 refarch-gateway:
