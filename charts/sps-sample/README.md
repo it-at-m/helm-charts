@@ -1,3 +1,3 @@
 # Helm-Chart for Sample RefArch Application
 
-TODO
+Sample to test a refarch application.

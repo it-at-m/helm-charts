@@ -6,11 +6,30 @@ global:
 
 
 refarch-gateway:
-  env:
+  envAppend:
     - name: SPRING_PROFILES_ACTIVE
-      value: no-security
+      value: no-security #,hazelcast-k8s
+    #- name: SSO_CLIENT_ID
+    #  valueFrom:
+    #    secretKeyRef:
+    #      key: sps-sample-dev
+    #      name: sso-client-id
+    #- name: SSO_CLIENT_SECRET
+    #  valueFrom:
+    #    secretKeyRef:
+    #      key: sps-sample-dev
+    #      name: sso-client-secret
+
     - name: SSO_ISSUER_URL
       value: https://sso.muenchen.de/auth/realms/muenchen.de
+
+    #- name: ALLOWED_ORIGINS_PUBLIC
+    #  value: 'https://*.muenchen.de'
+    #- name: ALLOWED_ORIGINS_CLIENTS
+    #  value: 'https://*.muenchen.de'
+    #- name: INFO_APPSWITCHER_URL
+    #  value: 'https://appswitcher.muenchen.de/'
+
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
       value: backend
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
@@ -46,7 +65,19 @@ refarch-gateway:
             backend:
               serviceName: '{{ include "refarch-gateway.fullname" . }}'
               servicePort: 8080
-
+  # Truststore
+  #volumeMounts:
+  #  - mountPath: /etc/pki/ca-trust/extracted/java
+  #    name: cacerts-lhm
+  #    readOnly: true
+  #volumes:
+  #  - name: cacerts-lhm
+  #    secret:
+  #      defaultMode: 420
+  #      secretName: cacerts-lhm
+  #      items:
+  #        - key: cacerts-lhm
+  #          path: cacerts
 frontend:
   image:
     repository: ghcr.io/it-at-m/sps/sps-frontend
@@ -58,4 +89,21 @@ backend:
     tag: "latest"
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: no-security
+      value: no-security #,dev
+    #- name: REALM
+    #  value: beispielprojekt
+
+  # Truststore
+  #volumeMounts:
+  #  - mountPath: /etc/pki/ca-trust/extracted/java
+  #    name: cacerts-lhm
+  #    readOnly: true
+  #volumes:
+  #  - name: cacerts-lhm
+  #    secret:
+  #      defaultMode: 420
+  #      secretName: cacerts-lhm
+  #      items:
+  #        - key: cacerts-lhm
+  #          path: cacerts
+
