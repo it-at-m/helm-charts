@@ -1,12 +1,12 @@
 global:
- backend:
-  name: backend
- frontend:
-  name: frontend
+  backend:
+    name: backend
+  frontend:
+    name: frontend
 
 
 refarch-gateway:
- envAppend:
+  envAppend:
     - name: SPRING_PROFILES_ACTIVE
       value: no-security #,hazelcast-k8s
     # - name: SSO_CLIENT_ID
