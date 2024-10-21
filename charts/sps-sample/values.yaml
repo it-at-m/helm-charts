@@ -89,7 +89,7 @@ backend:
     tag: "latest"
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: no-security # dev
+      value: no-security    # dev
     # - name: REALM
     #   value: beispielprojekt
 
