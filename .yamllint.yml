@@ -1,4 +1,0 @@
----
-rules:
-  comments:
-    min-spaces-from-content: 1 # Changed this to stop a mess between linters from Prettier (vscode) to yamllint - https://github.com/prettier/prettier/pull/10926
