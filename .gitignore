@@ -4,6 +4,7 @@
 ### Helm ###
 # Chart dependencies
 **/charts/*.tgz
+**/Chart.lock
 
 ## local values file
 values-local.yaml
