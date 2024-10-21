@@ -66,18 +66,18 @@ refarch-gateway:
               serviceName: '{{ include "refarch-gateway.fullname" . }}'
               servicePort: 8080
   # Truststore
-  #volumeMounts:
-  #  - mountPath: /etc/pki/ca-trust/extracted/java
-  #    name: cacerts-lhm
-  #    readOnly: true
-  #volumes:
+  # volumeMounts:
+  #   - mountPath: /etc/pki/ca-trust/extracted/java
+  #     name: cacerts-lhm
+  #     readOnly: true
+  # volumes:
   #  - name: cacerts-lhm
-  #    secret:
-  #      defaultMode: 420
-  #      secretName: cacerts-lhm
-  #      items:
-  #        - key: cacerts-lhm
-  #          path: cacerts
+  #     secret:
+  #       defaultMode: 420
+  #       secretName: cacerts-lhm
+  #       items:
+  #         - key: cacerts-lhm
+  #           path: cacerts
 frontend:
   image:
     repository: ghcr.io/it-at-m/sps/sps-frontend
@@ -89,21 +89,20 @@ backend:
     tag: "latest"
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: no-security #,dev
-    #- name: REALM
-    #  value: beispielprojekt
+      value: no-security # ,dev
+    # - name: REALM
+    #   value: beispielprojekt
 
   # Truststore
-  #volumeMounts:
-  #  - mountPath: /etc/pki/ca-trust/extracted/java
-  #    name: cacerts-lhm
-  #    readOnly: true
-  #volumes:
+  # volumeMounts:
+  #   - mountPath: /etc/pki/ca-trust/extracted/java
+  #     name: cacerts-lhm
+  #     readOnly: true
+  # volumes:
   #  - name: cacerts-lhm
-  #    secret:
-  #      defaultMode: 420
-  #      secretName: cacerts-lhm
-  #      items:
-  #        - key: cacerts-lhm
-  #          path: cacerts
-
+  #     secret:
+  #       defaultMode: 420
+  #       secretName: cacerts-lhm
+  #       items:
+  #         - key: cacerts-lhm
+  #           path: cacerts
