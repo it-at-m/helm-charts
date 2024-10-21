@@ -88,6 +88,10 @@ backend:
     repository: ghcr.io/it-at-m/sps/sps-backend
     tag: "latest"
   env:
+    - name: GC_MAX_METASPACE_SIZE
+      value: "200"
+    - name: TZ
+      value: Europe/Berlin
     - name: SPRING_PROFILES_ACTIVE
       value: no-security    # dev
     # - name: REALM
