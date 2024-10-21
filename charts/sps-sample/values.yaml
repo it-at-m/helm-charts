@@ -9,7 +9,6 @@ refarch-gateway:
   envAppend:
     - name: SPRING_PROFILES_ACTIVE
       value: no-security    # hazelcast-k8s
-      
     # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
     #   valueFrom:
     #     secretKeyRef:
@@ -21,7 +20,7 @@ refarch-gateway:
     #       key: sps-sample-dev
     #       name: sso-client-secret
     # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
-    #   value: 'sso'  
+    #   value: 'sso'
     # - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI
     #   value: https://sso.muenchen.de/auth/realms/muenchen.de
     # - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUERURI
