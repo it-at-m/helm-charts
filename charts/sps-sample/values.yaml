@@ -8,7 +8,7 @@ global:
 refarch-gateway:
   envAppend:
     - name: SPRING_PROFILES_ACTIVE
-      value: no-security #,hazelcast-k8s
+      value: no-security # ,hazelcast-k8s
     # - name: SSO_CLIENT_ID
     #   valueFrom:
     #     secretKeyRef:
@@ -106,3 +106,4 @@ backend:
   #       items:
   #         - key: cacerts-lhm
   #           path: cacerts
+  
