@@ -1,14 +1,20 @@
+global:
+ backend:
+  name: backend
+ frontend: 
+  name: frontend
+
+
 refarch-gateway:
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: no-security
     - name: SSO_ISSUER_URL
       value: https://sso.muenchen.de/auth/realms/muenchen.de
-
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
       value: backend
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-      value: "http://a-backend:8080/"
+      value: "http://{{ include \"backend.fullname\" . }}:8080/"
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
       value: Path=/api/beispielprojekt-backend-service/**
     - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0
@@ -19,7 +25,7 @@ refarch-gateway:
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
       value: frontend
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
-      value: "http://a-frontend:8080/"
+      value: "http://{{ include \"frontend.fullname\" . }}:8080/"
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0
       value: Path=/**
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0
