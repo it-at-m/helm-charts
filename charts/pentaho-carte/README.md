@@ -53,10 +53,12 @@ The command deploys pentaho-carte on the Kubernetes cluster with some default co
 | route.tls.caCertificate                    | string | `""`                    | Route tls ca certificate                |
 | route.tls.destinationCACertificate         | string | `""`                    | Route tls destination ca certificate    |
 | resources                                  | object | `{}`                    | Pod resources                           |
-| livenessProbe.httpGet.path                 | string | `/`                     | Path to use for liveness probe          |
-| livenessProbe.httpGet.port                 | string | `http`                  | Port to use for liveness probe          |
-| readinessProbe.httpGet.path                | string | `/`                     | Path to use for readiness probe         |
-| readinessProbe.httpGet.port                | string | `http`                  | Path to use for readiness probe         |
+| livenessProbe.tcpSocket.port               | int    | `8080`                  | Path to use for liveness probe          |
+| livenessProbe.initialDelaySeconds          | int    | `60`                    | Initial delay before probe starts       |
+| livenessProbe.periodSeconds                | int    | `10`                    | The delay between performing probes     |
+| readinessProbe.tcpSocket.port              | int    | `8080`                  | Path to use for liveness probe          |
+| readinessProbe.initialDelaySeconds         | int    | `60`                    | Initial delay before probe starts       |
+| readinessProbe.periodSeconds               | int    | `10`                    | The delay between performing probes     |
 | autoscaling.enabled                        | bool   | `false`                 | Enable autoscaling                      |
 | autoscaling.minReplicas                    | int    | `1`                     | Minimal replicas                        |
 | autoscaling.maxReplicas                    | int    | `100`                   | Maximal replicas                        |
