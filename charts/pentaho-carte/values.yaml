@@ -89,20 +89,16 @@ resources:
     cpu: 100m
     memory: 1024Mi
 
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
-      httpHeaders:
-        - name: Authorization
-          value: Basic Y2x1c3RlcjpjbHVzdGVy
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
-      httpHeaders:
-        - name: Authorization
-          value: Basic Y2x1c3RlcjpjbHVzdGVy
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 60
+  periodSeconds: 10
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 60
+  periodSeconds: 10
 
 autoscaling:
   enabled: false
