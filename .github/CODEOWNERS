@@ -13,5 +13,5 @@
 /charts/kf-app-eai/ @it-at-m/kf-app-eai_admin
 /charts/pentaho-carte/ @lenabMUC @ejcsid
 /charts/wjh-rechner/ @it-at-m/wjh_admin
-/charts/zammad-ldap-sync/ @klml
+/charts/zammad-ldap-sync/ @klml @sfi2022
 /charts/refarch-gateway/ @it-at-m/refarch-maintainer
