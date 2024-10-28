@@ -32,12 +32,12 @@ ldapSync:
         organizational-units:
           identifier-1:
             distinguished-names:
-              - dn-identifier-1
+#              - dn-identifier-1
             user-search-base: user-dn-search-base-dent-1
             ou-search-base: ou-dn-search-base-dent-1
           identifier-2:
             distinguished-names:
-              - dn-identifier-2
+#              - dn-identifier-2
             user-search-base: user-dn-search-base-dent-2
             ou-search-base: ou-dn-search-base-dent-2
         message:
