@@ -36,6 +36,7 @@ podSecurityContext:
   # fsGroup: 2000
 
 securityContext:
+  # Security-Settings recommended from https://github.com/Checkmarx/kics
   capabilities:
     drop:
     - ALL
