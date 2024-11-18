@@ -122,9 +122,9 @@ affinity: {}
 extraInitContainers: {}
 
 lifecycle:
-            preStop:
-              exec:
-                command:
-                  - sh
-                  - -c
-                  - sleep 10
+  preStop:
+    exec:
+      command:
+        - sh
+        - -c
+        - sleep 10
