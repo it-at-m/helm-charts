@@ -15,3 +15,4 @@
 /charts/wjh-rechner/ @it-at-m/wjh_admin
 /charts/zammad-ldap-sync/ @klml @sfi2022
 /charts/refarch-gateway/ @it-at-m/refarch-maintainer
+/charts/sps-sample/ @it-at-m/sps
