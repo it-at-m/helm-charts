@@ -683,6 +683,38 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/refarch-gateway-1.0.0/refarch-gateway-1.0.0.tgz
     version: 1.0.0
+  sps-sample:
+  - apiVersion: v2
+    created: "2024-11-19T14:00:37.563290122Z"
+    dependencies:
+    - name: backend
+      repository: ""
+      version: 1.0.0
+    - name: frontend
+      repository: ""
+      version: 1.0.0
+    - name: refarch-gateway
+      repository: '@it-at-m'
+      version: ^1.0.0
+    description: Helm Chart for deploying a it@M Reference Architecture based sample
+      application.
+    digest: 038cbd12a91c76a9f36574dbbf10147e6f0f839ab57d68f665302f52e07656ba
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/sps-sample
+    icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+    maintainers:
+    - name: banzuu
+      url: https://github.com/banzuu
+    - name: hupling
+      url: https://github.com/hupling
+    - name: ejcsid
+      url: https://github.com/ejcsid
+    name: sps-sample
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/sps-sample-1.0.0/sps-sample-1.0.0.tgz
+    version: 1.0.0
   wjh-rechner:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -824,4 +856,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-28T09:56:02.384012561Z"
+generated: "2024-11-19T14:00:37.563387875Z"
