@@ -58,7 +58,7 @@ refarch-gateway:
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1
       value: RemoveResponseHeader=WWW-Authenticate
 
-## This ingress config is spezific to openshift. 
+## This ingress config is spezific to openshift.
 ## If you have plain kubernetes, you will need to change the annotations, className.
 
   ingress:
@@ -75,7 +75,7 @@ refarch-gateway:
     #           serviceName: '{{ include "refarch-gateway.fullname" . }}'
     #           servicePort: 8080
 
-## Truststore 
+## Truststore
 ## If you have custome certificates you can add them in secret as truststore.
 ## The secret you can inject on the right position, so you can override the default truststore.
 
@@ -110,10 +110,10 @@ backend:
     # - name: REALM
     #   value: beispielprojekt
 
-## Truststore 
+## Truststore
 ## If you have custome certificates you can add them in secret as truststore.
 ## The secret you can inject on the right position, so you can override the default truststore.
-  
+
   # volumeMounts:
   #   - mountPath: /etc/pki/ca-trust/extracted/java
   #     name: cacerts-lhm
