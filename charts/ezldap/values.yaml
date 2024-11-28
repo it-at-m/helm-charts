@@ -112,8 +112,8 @@ initContainers:
   #     - name: AWS_DEFAULT_REGION
   #       value: "eu-central-1"
   #   volumeMounts:
-  #     - name: help-zammad
-  #       mountPath: /opt/zammad
+  #     - name: help-ezldap
+  #       mountPath: /opt/ezldap
 
 credentials:
   # Bind User-DN for LDAP authentication
