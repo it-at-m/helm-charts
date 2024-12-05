@@ -1,7 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: zammad-ldap-sync
+  name: {{ include "zammad-ldap-sync.name" . }}
+  labels:
+    {{- include "zammad-ldap-sync.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.ldapSync.cronjob.schedule | quote }}
   jobTemplate:
@@ -34,7 +36,7 @@ spec:
                     path: cacerts
             - name: properties-volume
               configMap:
-                name: {{ .Values.ldapSync.configMap.name }}
+                name: {{ include "zammad-ldap-sync.name" . }}
                 items:
                   - key: application.yaml
                     path: application.yaml
