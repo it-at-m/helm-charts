@@ -30,8 +30,7 @@ backend:
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
       HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
       # Java
-      JAVA_OPTIONS: <Java Options>
-      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
+      JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
       # Other
       GC_MAX_METASPACE_SIZE: "256"
       SERVER_PORT: "8080"
@@ -105,8 +104,7 @@ admin-portal:
     HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
     # Java
-    JAVA_OPTIONS: <Java Options>
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8 -Dhz.integritychecker.enabled=false
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
@@ -151,8 +149,7 @@ eai:
   # Environment variables
   extraEnvVars:
     # Java
-    JAVA_OPTIONS: <Java Options>
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
     # Other
     GC_MAX_METASPACE_SIZE: "256"
     BACKEND_URI: dave-backend-service:8080
@@ -175,8 +172,7 @@ frontend:
     HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
     # Java
-    JAVA_OPTIONS: <Java Options>
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
@@ -229,8 +225,7 @@ selfservice-portal:
     HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
     # Java
-    JAVA_OPTIONS: <Java Options>
-    JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
