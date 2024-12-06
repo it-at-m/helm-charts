@@ -61,8 +61,8 @@ backend:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
       # SPRING_FLYWAY_BASELINE-ON-MIGRATE and SPRING_FLYWAY_BASELINE-VERSION have to be set on initial startup
       # to create flyway table in database, can be commented out after initial startup.
-      SPRING_FLYWAY_BASELINE-ON-MIGRATE: true
-      SPRING_FLYWAY_BASELINE-VERSION: 1
+      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
+      SPRING_FLYWAY_BASELINE-VERSION: "1"
       REALM: Dave
       KEYCLOAK_AUTH-SERVER-URL: <Auth-Server URL>
       # Elasticsearch
