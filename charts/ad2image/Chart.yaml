@@ -2,8 +2,8 @@ apiVersion: v2
 name: ad2image
 description: "easy avatars powered by AD / Exchange & Identicons"
 type: application
-version: 1.2.1
-appVersion: "1.0.8"
+version: 1.2.2
+appVersion: "1.1.0"
 maintainers:
   - name: eidottermihi
     email: eidottermihi@gmail.com
