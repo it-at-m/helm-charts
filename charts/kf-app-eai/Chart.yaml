@@ -2,12 +2,12 @@ apiVersion: v2
 name: kf-app-eai
 description: Enterprise application interface to allow Munich's kita-app access to kitafinder data.
 type: application
-version: 0.1.3
+version: 0.1.4
 appVersion: "1.0.2"
 maintainers:
   - name: maximilian-zollbrecht
     email: max.zollbrecht@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/kf-app-eai
-icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
