@@ -2,8 +2,8 @@ apiVersion: v2
 name: refarch-gateway
 description: Helm chart for deploying the it@M refarch-gateway
 type: application
-version: 1.4.3
-appVersion: 1.4.2
+version: 1.4.4
+appVersion: 1.4.3
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
 icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 sources:
