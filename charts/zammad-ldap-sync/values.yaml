@@ -1,4 +1,5 @@
 ldapSync:
+  # base64 encode.
   zammadToken: Y2ljZC1zZWNyZXQK
   image:
     registry: ghcr.io
@@ -20,6 +21,7 @@ ldapSync:
       mail:
         host: mail.example.com
         port: 1
+        # base64 encode.
         username: ZW1haWwtdXNlcgo=
         password: ZW1haWwtcGFzc3dvcmQK
     ldap:
