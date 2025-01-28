@@ -1,6 +1,5 @@
 ldapSync:
-  # base64 encode.
-  zammadToken: Y2ljZC1zZWNyZXQK
+  zammadToken: ReplaceWithZammadAccessToken
   image:
     registry: ghcr.io
     repository: it-at-m/zammad-ldap-sync
@@ -21,9 +20,8 @@ ldapSync:
       mail:
         host: mail.example.com
         port: 1
-        # base64 encode.
-        username: ZW1haWwtdXNlcgo=
-        password: ZW1haWwtcGFzc3dvcmQK
+        username: ReplaceWithMailAccountUsername
+        password: ReplaceWithMailAccountPassword
     ldap:
       url: ldaps://...
     sync:
