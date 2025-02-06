@@ -1,10 +1,10 @@
 apiVersion: v2
 name: zammad-ldap-sync
-version: 0.4.1
+version: 0.6.1
 maintainers:
   - name: klml
     email: klml@muenchen.de
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
-icon: https://opensource.muenchen.de/assets/itm-logo-256.png
+icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 sources:
   - "https://github.com/it-at-m/helm-charts"

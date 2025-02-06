@@ -1,9 +1,11 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ .Values.ldapSync.configMap.name }}
+  name: {{ include "zammad-ldap-sync.name" . }}
+  labels:
+    {{- include "zammad-ldap-sync.labels" . | nindent 4 }}
 data:
-   {{- with .Values.ldapSync.configMap.yaml }}
+   {{- with .Values.ldapSync.applicationYML }}
   application.yaml: |
     {{- toYaml . | nindent 4 }}
   {{- end }}

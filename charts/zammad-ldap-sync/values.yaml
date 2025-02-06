@@ -1,4 +1,5 @@
 ldapSync:
+  zammadToken: ReplaceWithZammadAccessToken
   image:
     registry: ghcr.io
     repository: it-at-m/zammad-ldap-sync
@@ -7,56 +8,39 @@ ldapSync:
     tag: dev
   cronjob:
     schedule: "0 2 * * *"
-  # Must be present.
+    # Must be present.
     secret: kubernetes-secret
-  configMap:
-  # Created by helm.
-    name: kubernets-configmap
-    yaml:
-      spring:
-        main:
-          web-application-type: none
-        profiles:
-      # Profile influences log output. May be you don't want to write ldap entries in your log files.
-          active: default,prod
-      # Send email in caseof invalid distinguished-names.
-        mail:
-          host: mail.example.com
-          port: 1
-          username: email-user
-          password: email-password
-      ldap:
-        url: ldaps://...
-      sync:
-      # If necessary, set different distinguished-names with their own ldap-search-bases.
-        organizational-units:
-          identifier-1:
-            distinguished-names:
-#              - dn-identifier-1
-            user-search-base: user-dn-search-base-dent-1
-            ou-search-base: ou-dn-search-base-dent-1
-          identifier-2:
-            distinguished-names:
-#              - dn-identifier-2
-            user-search-base: user-dn-search-base-dent-2
-            ou-search-base: ou-dn-search-base-dent-2
-        message:
-          from: test@example.com
-          to: test@example.com
-          subject: Ooopps..
-    subject:
-      zammad:
-      # Zammad roles which must exist. Register role with correct role id.
-        assignment:
-          role:
-      # Default zammad role. Is created by zammad.
-            name-agent: Agent
-      # Zammad role with permission ticket.agent. Must be created.
-            name-erstellen: Erstellen
-      # Zammad role with permission ticket.agent. Must be created.
-            name-vollzugriff: Vollzugriff
-        url:
-          base: http://zammad-nginx:8080/api/v1/
-          groups: groups
-          users: users
-          roles: roles
+
+  applicationYML:
+    spring:
+      profiles:
+    # Profile influences log output. May be you don't want to write ldap entries in your log files.
+        active: default,prod
+    # Send email in caseof invalid distinguished-names.
+      mail:
+        host: mail.example.com
+        port: 1
+        username: ReplaceWithMailAccountUsername
+        password: ReplaceWithMailAccountPassword
+    ldap:
+      url: ldaps://...
+    sync:
+    # If necessary, set different distinguished-names with their own ldap-search-bases.
+      organizational-units:
+        identifier-1:
+          distinguished-names:
+#          - dn-identifier-1
+          user-search-base: user-dn-search-base-dent-1
+          ou-search-base: ou-dn-search-base-dent-1
+        identifier-2:
+          distinguished-names:
+#          - dn-identifier-2
+          user-search-base: user-dn-search-base-dent-2
+          ou-search-base: ou-dn-search-base-dent-2
+      message:
+        from: test@example.com
+        to: test@example.com
+        subject: Ooopps..
+    zammad:
+      url:
+        base: http://zammad-nginx:8080/api/v1/
