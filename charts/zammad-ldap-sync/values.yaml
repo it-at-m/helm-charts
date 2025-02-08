@@ -1,5 +1,7 @@
 ldapSync:
-  zammadToken: ReplaceWithZammadAccessToken
+  pipeline:
+    mailPassword: ReplaceWithMailAccountPassword
+    zammadToken: ReplaceWithZammadAccessToken
   image:
     registry: ghcr.io
     repository: it-at-m/zammad-ldap-sync
@@ -21,7 +23,6 @@ ldapSync:
         host: mail.example.com
         port: 1
         username: ReplaceWithMailAccountUsername
-        password: ReplaceWithMailAccountPassword
     ldap:
       url: ldaps://...
     sync:
