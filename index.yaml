@@ -1237,6 +1237,20 @@ entries:
     version: 0.0.1
   zammad-ldap-sync:
   - apiVersion: v2
+    created: "2025-02-12T11:36:01.759218254Z"
+    digest: 1bfde112d201c3aa61bb300686275300e086137eaa01e933695a03db966b1935
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
+    icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: zammad-ldap-sync
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.6.2/zammad-ldap-sync-0.6.2.tgz
+    version: 0.6.2
+  - apiVersion: v2
     created: "2025-01-29T14:04:39.265919395Z"
     digest: e37edd4601a2cbd798a88d092d57b28898e12259b989cbe81ba87df258d0ffbe
     home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
@@ -1362,4 +1376,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-06T13:43:57.984371942Z"
+generated: "2025-02-12T11:36:01.759355601Z"
