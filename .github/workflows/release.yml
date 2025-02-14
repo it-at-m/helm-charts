@@ -21,8 +21,10 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
       - name: Add dependency repos
-        run: helm repo add bitnami https://charts.bitnami.com/bitnami
+        run: |
+         helm repo add bitnami https://charts.bitnami.com/bitnami
+         helm repo add it-at-m https://it-at-m.github.io/helm-charts
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: helm/chart-releaser-action@v1.7.0
         env:
           CR_TOKEN: "${{ github.token }}"

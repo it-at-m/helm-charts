@@ -1,0 +1,128 @@
+global:
+  backend:
+    name: backend
+  frontend:
+    name: frontend
+
+
+refarch-gateway:
+  envAppend:
+  ### Here you see the avaiable config for the apigateway
+  ### https://github.com/it-at-m/refarch/tree/main/refarch-gateway#configuration
+    - name: SPRING_PROFILES_ACTIVE
+      value: no-security    # hazelcast-k8s
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
+    #   valueFrom:
+    #     secretKeyRef:
+    #       key: sps-sample-dev
+    #       name: sso-client-id
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
+    #   valueFrom:
+    #     secretKeyRef:
+    #       key: sps-sample-dev
+    #       name: sso-client-secret
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
+    #   value: 'sso'
+    # - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI
+    #   value: https://sso.muenchen.de/auth/realms/muenchen.de
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUERURI
+    #   value: '${spring.security.oauth2.resourceserver.jwt.issuer-uri}'
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
+    #   value: 'profile, openid'
+    # - name: ALLOWED_ORIGINS_PUBLIC
+    #   value: 'https://*.muenchen.de'
+    # - name: ALLOWED_ORIGINS_CLIENTS
+    #   value: 'https://*.muenchen.de'
+    # - name: INFO_APPSWITCHER_URL
+    #   value: 'https://appswitcher.muenchen.de/'
+
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
+      value: backend
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+      value: "http://{{ include \"backend.fullname\" . }}:8080/"
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
+      value: Path=/api/beispielprojekt-backend-service/**
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0
+      value: RewritePath=/api/beispielprojekt-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_1
+      value: RemoveResponseHeader=WWW-Authenticate
+
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
+      value: frontend
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+      value: "http://{{ include \"frontend.fullname\" . }}:8080/"
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0
+      value: Path=/**
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0
+      value: RewritePath=/(?<urlsegments>.*), /$\{urlsegments}
+    - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1
+      value: RemoveResponseHeader=WWW-Authenticate
+
+## This ingress config is spezific to openshift.
+## If you have plain kubernetes, you will need to change the annotations, className.
+
+  ingress:
+    enabled: false
+    # annotations:
+    #   route.openshift.io/termination: "edge"
+    # className: openshift-default
+    # hosts:
+    #   - host: beispiel.muenchen.de
+    #     paths:
+    #       - path: /
+    #         pathType: "ImplementationSpecific"
+    #         backend:
+    #           serviceName: '{{ include "refarch-gateway.fullname" . }}'
+    #           servicePort: 8080
+
+## Truststore
+## If you have custome certificates you can add them in secret as truststore.
+## The secret you can inject on the right position, so you can override the default truststore.
+
+  # volumeMounts:
+  #   - mountPath: /etc/pki/ca-trust/extracted/java
+  #     name: cacerts-lhm
+  #     readOnly: true
+  # volumes:
+  #  - name: cacerts-lhm
+  #     secret:
+  #       defaultMode: 420
+  #       secretName: cacerts-lhm
+  #       items:
+  #         - key: cacerts-lhm
+  #           path: cacerts
+frontend:
+  image:
+    repository: ghcr.io/it-at-m/sps/sps-frontend
+    tag: "latest"
+
+backend:
+  image:
+    repository: ghcr.io/it-at-m/sps/sps-backend
+    tag: "latest"
+  env:
+    - name: GC_MAX_METASPACE_SIZE
+      value: "200"
+    - name: TZ
+      value: Europe/Berlin
+    - name: SPRING_PROFILES_ACTIVE
+      value: no-security    # dev
+    # - name: REALM
+    #   value: beispielprojekt
+
+## Truststore
+## If you have custome certificates you can add them in secret as truststore.
+## The secret you can inject on the right position, so you can override the default truststore.
+
+  # volumeMounts:
+  #   - mountPath: /etc/pki/ca-trust/extracted/java
+  #     name: cacerts-lhm
+  #     readOnly: true
+  # volumes:
+  #  - name: cacerts-lhm
+  #     secret:
+  #       defaultMode: 420
+  #       secretName: cacerts-lhm
+  #       items:
+  #         - key: cacerts-lhm
+  #           path: cacerts
