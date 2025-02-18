@@ -147,7 +147,7 @@ selfservice-portal:
           - path: /
             pathType: ImplementationSpecific
 
-# Dave will otherwise attempt to connect to a non-existing keycloak instance
+# Dave will otherwise attempt to connect to a non-existing Keycloak instance
 applicationYML:
   spring:
     profiles:
