@@ -37,7 +37,6 @@ backend:
       TOMCAT_GRACEFULSHUTDOWN_PRE_WAIT_SECONDS: "40"
       GEODATEN_EAI_URL: "http://localhost:8088"
       # Spring, Keycloak
-      SPRING_PROFILES_ACTIVE: dev
       SPRING_DATA_REST_MAX-PAGE-SIZE: "0x7fffffff"
       SPRING_DATA_REST_DEFAULT-PAGE-SIZE: "0x7fffffff"
       SPRING_DATA_REST_RETURN-ON-BODY-UPDATE: "true"
@@ -51,20 +50,20 @@ backend:
       SPRING_JPA_SHOW-SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
       SPRING_SECURITY_LOGGING.REQUESTS: all
-      SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
+      # SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
+      # SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+      # SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+      # SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+      # SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+      # SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: TBD
+      # SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
+      # SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
       # SPRING_FLYWAY_BASELINE-ON-MIGRATE and SPRING_FLYWAY_BASELINE-VERSION have to be set on initial startup
       # to create flyway table in database, can be commented out after initial startup.
       SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
       SPRING_FLYWAY_BASELINE-VERSION: "1"
-      REALM: Dave
-      KEYCLOAK_AUTH-SERVER-URL: <Auth-Server URL>
+      # REALM: Dave
+      # KEYCLOAK_AUTH-SERVER-URL: <Auth-Server URL>
       # Elasticsearch
       ELASTICSEARCH_USER: elastic
       ELASTICSEARCH_PORT: "9200"
@@ -112,7 +111,6 @@ admin-portal:
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
-    SPRING_PROFILES_ACTIVE: dev
     SPRING_REALM: Dave
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
@@ -159,7 +157,6 @@ eai:
     BACKEND_URI: dave-backend-service:8080
     MANAGEMENT_SERVER_PORT: "8079"
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
@@ -180,7 +177,6 @@ frontend:
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
-    SPRING_PROFILES_ACTIVE: dev
     SPRING_REALM: Dave
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
@@ -233,7 +229,6 @@ selfservice-portal:
     # Other
     SERVER_PORT: "8080"
     # Spring, Keycloak
-    SPRING_PROFILES_ACTIVE: dev
     SPRING_REALM: Dave
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_0_ID: sso
