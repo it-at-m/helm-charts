@@ -1,0 +1,57 @@
+name: Update Versions in Chart.yml
+
+on:
+  workflow_dispatch:
+    inputs:
+      app-version: 
+        description: "New App-Version"
+        required: true
+      path-to-chart-yaml:
+        description: "Path to Chart.yaml"
+        required: true
+permissions:
+  contents: write
+  pull-requests: write
+env:
+  GH_TOKEN: ${{ github.token }}
+  REPO_URL: "https://github.com/${{ github.repository }}"
+  APP_VERSION: ${{ inputs.app-version }}
+  PATH_TO_CHART: ${{ inputs.path-to-chart-yaml }}
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Python script
+        run: python update_chart_versions.py --appVersion $APP_VERSION --pathToChart $PATH_TO_CHART
+      - name: Commit Files and create Pull-Request
+        run: |
+          git config --global user.name 'Update Chart Version Bot'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          if [ -n "$(git status --porcelain)" ]; then
+            NEW_BRANCH="update-$PATH_TO_CHART-$APP_VERSION"
+            PR_TITLE="Update Chart $PATH_TO_CHART to v$APP_VERSION"
+            PR_BODY="This PR updates Chart [$PATH_TO_CHART]($REPO_URL/blob/$NEW_BRANCH/$PATH_TO_CHART) to App-Version $APP_VERSION."
+            git fetch --all
+            git commit -am "Update Chart $PATH_TO_CHART to v$APP_VERSION"
+            if git show-ref --verify --quiet refs/remotes/origin/$NEW_BRANCH; then
+              git checkout $NEW_BRANCH
+              git pull
+            else
+              git checkout -b $NEW_BRANCH
+            fi
+            git push --set-upstream origin $NEW_BRANCH
+            gh pr create --base main --head $NEW_BRANCH --title "$PR_TITLE" --body "$PR_BODY"
+          else
+            echo "No changes to commit"
+          fi
