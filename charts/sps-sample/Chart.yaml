@@ -2,7 +2,7 @@ apiVersion: v2
 name: sps-sample
 description: Helm Chart for deploying a it@M Reference Architecture based sample application.
 type: application
-version: 1.0.2
+version: 1.0.3
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/sps-sample
 icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 sources:
