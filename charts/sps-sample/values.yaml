@@ -126,3 +126,28 @@ backend:
   #       items:
   #         - key: cacerts-lhm
   #           path: cacerts
+
+# PostgreSQL
+# https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+# To deactivate PostgreSQL set enabled to false
+postgresql:
+  enabled: true
+  auth:
+    username: admin
+    password: admin
+    database: postgres
+  primary:
+    podSecurityContext:
+      fsGroup: null
+    containerSecurityContext:
+      runAsUser: null
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      seccompProfile: 
+        type: RuntimeDefault
+      capabilities:
+        drop: ["ALL"]
+  volumePermissions:
+    enabled: false
+  shmVolume:
+    enabled: false
