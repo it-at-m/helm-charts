@@ -15,6 +15,9 @@ dependencies:
   - name: refarch-gateway
     version: ^1.0.0
     repository: "@it-at-m"
+  - name: postgresql
+    version: 16.4.14
+    repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: banzuu
     url: https://github.com/banzuu
