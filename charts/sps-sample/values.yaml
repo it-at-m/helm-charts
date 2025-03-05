@@ -58,6 +58,22 @@ refarch-gateway:
     - name: SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1
       value: RemoveResponseHeader=WWW-Authenticate
 
+    # KEYCLOAK
+    # - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI
+    #   value: http://keycloak1-spseval.apps.capk.muenchen.de/realms/myrealm
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUERURI
+    #   value: '${spring.security.oauth2.resourceserver.jwt.issuer-uri}'
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTID
+    #   value: myapp
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTSECRET
+    #   value: "testpassword"
+    # - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE
+    #   value: openid
+
+    # APPSWITCHER
+    # - name: INFO_APPSWITCHER_URL
+    #   value: 'https://appswitcher-spseval.apps.capk.muenchen.de'
+
 ## This ingress config is spezific to openshift.
 ## If you have plain kubernetes, you will need to change the annotations, className.
 
@@ -110,6 +126,25 @@ backend:
     # - name: REALM
     #   value: beispielprojekt
 
+    # DATABASE
+    # - name: SECURITY_REQUESTLOGGING
+    #   value: all
+    # - name: SECURITY_USERINFOURI
+    #   value: ${sso.url}/auth/realms/${sso.realm}/protocol/openid-connect/userinfo
+    # - name: SPRING_DATASOURCE_URL
+    #   value: jdbc:postgresql://sps-sample-database:5432/db
+    # - name: SPRING_DATASOURCE_USERNAME
+    #   value: user
+    # - name: SPRING_DATASOURCE_PASSWORD
+    #   value: admin
+    # - name: SPRING_DATASOURCE_DRIVERCLASSNAME
+    #   value: org.postgresql.Driver
+    # - name: SPRING_JPA_DATABASEPLATFORM
+    #   value: org.hibernate.dialect.PostgreSQLDialect
+    # - name: SPRING_JPA_HIBERNATE_DDLAUTO
+    #   value: create-drop
+
+
 ## Truststore
 ## If you have custome certificates you can add them in secret as truststore.
 ## The secret you can inject on the right position, so you can override the default truststore.
@@ -127,15 +162,16 @@ backend:
   #         - key: cacerts-lhm
   #           path: cacerts
 
+
 # PostgreSQL
 # https://github.com/bitnami/charts/tree/main/bitnami/postgresql
-# To deactivate PostgreSQL set enabled to false
-postgresql:
-  enabled: true
+# To deactivate PostgreSQL database set enabled to false
+database:
+  enabled: false
   auth:
-    username: admin
+    username: user
     password: admin
-    database: postgres
+    database: db
   primary:
     podSecurityContext:
       fsGroup: null
@@ -147,7 +183,128 @@ postgresql:
         type: RuntimeDefault
       capabilities:
         drop: ["ALL"]
+    persistence:
+      enabled: false
   volumePermissions:
     enabled: false
   shmVolume:
     enabled: false
+
+
+# Keycloak
+# https://github.com/bitnami/charts/tree/main/bitnami/keycloak
+# To deactivate Keycloak set enabled to false
+keycloak:
+  enabled: false
+  auth:
+    adminUser: admin
+    adminPassword: admin
+  extraEnvVars:
+    - name: KC_HOSTNAME_STRICT
+      value: "false"
+    - name: KC_HEALTH_ENABLED
+      value: "true"
+    - name: KC_HTTP_PORT
+      value: "8080"
+
+  postgresql:
+    enabled: true
+    primary:
+      auth:
+        username: keycloak-user
+        password: admin
+        database: keycloak-db
+      podSecurityContext:
+        fsGroup: null
+      containerSecurityContext:
+        runAsUser: null
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        seccompProfile: 
+          type: RuntimeDefault
+        capabilities:
+          drop: ["ALL"]
+      persistence:
+        enabled: false
+    volumePermissions:
+      enabled: false
+    shmVolume:
+      enabled: false
+  resources: 
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "300m"
+      memory: "1Gi"
+  extraStartupArgs: --import-realm
+  extraDeploy:
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: keycloak-realm-config
+      data:
+        realm.json: |
+          {
+            "id": "myrealm",
+            "realm": "myrealm",
+            "enabled": true,
+            "clients": [
+              {
+                "clientId": "myapp",
+                "name": "${client_myapp}",
+                "rootUrl": "${authBaseUrl}",
+                "baseUrl": "/realms/myrealm/myapp/",
+                "enabled": true,
+                "publicClient": true,
+                "redirectUris": ["*"]
+              }
+            ],
+            "users": [
+              {
+                "username": "testuser",
+                "enabled": true,
+                "credentials": [
+                  {
+                    "type": "password",
+                    "value": "testpassword"
+                  }
+                ]
+              }
+            ]
+          }
+  extraVolumes:
+    - name: realm-config
+      configMap:
+        name: keycloak-realm-config
+  extraVolumeMounts:
+    - name: realm-config
+      mountPath: /opt/bitnami/keycloak/data/import
+      readOnly: true
+
+
+# Appswitcher
+# https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+# To deactivate Appswitcher set enabled to false
+appswitcher-server:
+  enabled: false
+  applications:
+    demo-phone-book:
+      display-name: Phone book
+      url: https://www.gelbeseiten.de/
+      image-url: https://i.imgur.com/PA25O7T.png
+      tags:
+        - global
+    google:
+      display-name: Google
+      url: https://google.com
+      image-url: https://www.google.com/favicon.ico
+      tags:
+        - global
+  resources: 
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "300m"
+      memory: "1Gi"

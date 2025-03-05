@@ -18,7 +18,16 @@ dependencies:
   - name: postgresql
     version: 16.4.14
     repository: https://charts.bitnami.com/bitnami
-    condition: postgresql.enabled
+    condition: database.enabled
+    alias: database
+  - name: keycloak
+    version: 24.4.10
+    repository: https://charts.bitnami.com/bitnami
+    condition: keycloak.enabled
+  - name: appswitcher-server
+    version: 1.2.2
+    repository: "@it-at-m"
+    condition: appswitcher-server.enabled
 maintainers:
   - name: banzuu
     url: https://github.com/banzuu
