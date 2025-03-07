@@ -8,7 +8,7 @@
 # preferably use teams instead of single persons, if possible
 /charts/ad2image/ @eidottermihi
 /charts/appswitcher-server/ @eidottermihi
-/charts/dave/ @gislab-augsburg @klml @boal @martind260 @Der-Alex-K @vermali
+/charts/dave/ @gislab-augsburg @klml @it-at-m/dave_admin
 /charts/ezldap/ @eidottermihi
 /charts/kf-app-eai/ @it-at-m/kf-app-eai_admin
 /charts/pentaho-carte/ @lenabMUC @ejcsid
