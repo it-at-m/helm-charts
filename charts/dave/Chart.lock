@@ -20,5 +20,5 @@ dependencies:
 - name: eai
   repository: ""
   version: '*'
-digest: sha256:c50f02bd28aecfae0cd393e22e6f2e3d375769160c5cf1a6f1331fb22b97c26c
-generated: "2024-05-24T15:08:36.553513836Z"
+digest: sha256:5209fef7581d40af348f283859c60aac82c45118869ab475e29c7681c0155e80
+generated: "2025-03-12T17:04:15.0370364+01:00"
