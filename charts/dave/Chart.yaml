@@ -17,9 +17,11 @@ dependencies:
   - name: elasticsearch
     repository: https://charts.bitnami.com/bitnami
     version: 19.17.0
+    condition: externalCharts.elasticsearch.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 14.3.3
+    condition: externalCharts.postgresql.enabled
   - name: backend
     version: "*"
   - name: frontend
