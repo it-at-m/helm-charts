@@ -4,7 +4,7 @@ dependencies:
   version: 19.17.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 14.3.3
+  version: 16.5.0
 - name: backend
   repository: ""
   version: '*'
@@ -20,5 +20,5 @@ dependencies:
 - name: eai
   repository: ""
   version: '*'
-digest: sha256:5209fef7581d40af348f283859c60aac82c45118869ab475e29c7681c0155e80
-generated: "2025-03-12T17:04:15.0370364+01:00"
+digest: sha256:b4d0471bc9e6ce64dd8849f3b316998373df480a2fe011dbde17ed1600b8bc98
+generated: "2025-03-13T13:21:55.363407698Z"
