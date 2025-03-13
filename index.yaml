@@ -444,6 +444,49 @@ entries:
   dave:
   - apiVersion: v2
     appVersion: v1.0.0
+    created: "2025-03-13T13:21:04.997059925Z"
+    dependencies:
+    - condition: externalCharts.elasticsearch.enabled
+      name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.17.0
+    - condition: externalCharts.postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.3.3
+    - name: backend
+      repository: ""
+      version: '*'
+    - name: frontend
+      repository: ""
+      version: '*'
+    - name: admin-portal
+      repository: ""
+      version: '*'
+    - name: selfservice-portal
+      repository: ""
+      version: '*'
+    - name: eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: 465ee7c51e185d7881e60d78efe9d9bcec3686bd1715b50c4edc728c1fd28d0d
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+    maintainers:
+    - email: martymcfly333@gmail.com
+      name: gislab-augsburg
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.0.7/dave-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
+    appVersion: v1.0.0
     created: "2025-02-06T13:43:57.984233925Z"
     dependencies:
     - name: elasticsearch
@@ -1455,4 +1498,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-12T09:56:26.62430239Z"
+generated: "2025-03-13T13:21:04.997204104Z"
