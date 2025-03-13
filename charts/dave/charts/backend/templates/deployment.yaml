@@ -63,10 +63,12 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "daveBackend.fullname" . }}
-            - configMapRef:
-                name: {{ include "daveBackend.fullname" . }}-email
             - secretRef:
+                {{- if .Values.backend.existingSecret }}
+                name: {{ .Values.backend.existingSecret }}  
+                {{- else }}
                 name: {{ include "daveBackend.fullname" . }}-secret
+                {{- end }}  
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}
