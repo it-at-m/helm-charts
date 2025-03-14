@@ -19,7 +19,7 @@ backend:
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
       KEYCLOAK_AUTH-SERVER-URL: https://sso.example.com/auth
-      SPRING_PROFILES_ACTIVE: no-security
+      SPRING_PROFILES_ACTIVE: dev,no-security
     # Dave Email Settings
     email:
       DAVE_EMAIL_RECEIVER_HOSTNAME: imap.example.com
@@ -50,6 +50,7 @@ admin-portal:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_PROFILES_ACTIVE: dev,no-security
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -97,6 +98,7 @@ frontend:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_PROFILES_ACTIVE: dev,no-security
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -128,6 +130,7 @@ selfservice-portal:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_PROFILES_ACTIVE: dev,no-security
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
