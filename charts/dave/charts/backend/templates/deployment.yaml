@@ -68,7 +68,7 @@ spec:
                 name: {{ .Values.backend.existingSecret }}  
                 {{- else }}
                 name: {{ include "daveBackend.fullname" . }}-secret
-                {{- end }}  
+                {{- end }}
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}
