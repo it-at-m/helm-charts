@@ -62,7 +62,7 @@ backend:
       SPRING_SECURITY_LOGGING_REQUESTS: all
       REALM: Dave
       KEYCLOAK_AUTHSERVERURL: <Auth-Server URL>
-      SPRING_SECURITY_OAUTH2_RESOURCE_USERINFOURI: ${keycloak.authserver-url}/realms/${realm}/protocol/openid-connect/userinfo
+      SPRING_SECURITY_OAUTH2_RESOURCE_USERINFOURI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: ${keycloak.auth-server-url}/realms/${realm}
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
       SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
@@ -70,12 +70,10 @@ backend:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTSECRET: TBD
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATIONGRANTTYPE: client_credentials
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTAUTHENTICATIONMETHOD: client_secret_post
-      
       # SPRING_FLYWAY_BASELINE-ON-MIGRATE and SPRING_FLYWAY_BASELINE-VERSION have to be set on initial startup
       # to create flyway table in database, can be commented out after initial startup.
       # SPRING_FLYWAY_BASELINEONMIGRATE: "true"
       # SPRING_FLYWAY_BASELINEVERSION: "1"
-
       # Elasticsearch
       ELASTICSEARCH_USER: elastic
       ELASTICSEARCH_PORT: "9200"
@@ -105,7 +103,6 @@ backend:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Admin-Portal
 admin-portal:
@@ -155,7 +152,6 @@ admin-portal:
   service:
     port: 8080
 
-
 # Dave EAI
 eai:
   replicaCount: 1
@@ -173,7 +169,6 @@ eai:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Frontend
 frontend:
