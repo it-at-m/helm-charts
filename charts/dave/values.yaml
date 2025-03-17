@@ -30,6 +30,7 @@ externalCharts:
 backend:
   replicaCount: 1
   fullnameOverride: dave-backend-service
+  existingSecret: dave-backend-secret
   # Environment Variables
   extraEnvVars:
     env:
