@@ -54,7 +54,7 @@ backend:
       SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
       SPRING_DATASOURCE_USERNAME: dave
       SPRING_JPA_DATABASE: postgresql
-      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
       SPRING_JPA_HIBERNATE_NAMING.PHYSICAL-STRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       SPRING_JPA_SHOW-SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
