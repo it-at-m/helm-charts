@@ -1,11 +1,12 @@
 {{- range $module := .Values.modules -}}
+{{- $Chart := .Chart }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $module.name }}-application-yml
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ $Chart.Name }}
     module: {{ $module.name }}
 data:
   {{- with $module.applicationYML }}
