@@ -1,0 +1,48 @@
+{{- range $module := .Values.modules -}}
+{{- $Chart := .Chart }}
+{{- if $module.ingress -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $module.name }}
+  labels:
+    app: {{ $Chart.Name }}
+    module: {{ $module.name }}
+  {{- with $module.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if $module.ingress.className }}
+  ingressClassName: {{ $module.ingress.className }}
+  {{- end }}
+  {{- if $module.ingress.tls }}
+  tls:
+    {{- range $tls := $module.ingress.tls }}
+    - hosts:
+        {{- range $tls.hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ $tls.secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range $host :=  $module.ingress.hosts }}
+    - host: {{ $host.host | quote }}
+      http:
+        paths:
+          {{- range $host.paths }}
+          - path: {{ $host.path }}
+            {{- if $host.pathType }}
+            pathType: {{ $host.pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ $module.name }}
+                port:
+                  number: {{ $module.ingress.port | default 8080 }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+{{- end }}
