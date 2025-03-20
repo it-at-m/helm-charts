@@ -18,6 +18,14 @@ global:
     - name: "SPRING_SESSION_TIMEOUT"
       value: "3600"
 
+externalCharts:
+  elasticsearch:
+    # enable/disable elasticsearch chart dependency
+    enabled: true
+  postgresql:
+    # enable/disable postgresql chart dependency
+    enabled: true
+
 # Dave Backend
 backend:
   replicaCount: 1

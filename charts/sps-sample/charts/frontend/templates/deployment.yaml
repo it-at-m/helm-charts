@@ -6,7 +6,7 @@ metadata:
     {{- include "frontend.labels" . | nindent 4 }}
   {{- with .Values.deploymentAnnotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
