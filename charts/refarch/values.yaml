@@ -41,7 +41,6 @@ modules:
           name: nameOfConfigMap
       - secretRef:
           name: nameOfConfigMap
-
     volumeMounts:
       - mountPath: /etc/pki/ca-trust/extracted/java
         name: cacerts-lhm
@@ -54,13 +53,20 @@ modules:
           items:
             - key: cacerts-lhm
               path: cacerts
-
     applicationYML:
       ENV_VARIABLE: someValue # alternative to env.value
       spring:
         profiles:
           active: "myprofile"
-
+    service:
+      type: ClusterIP
+      http: true # adds default http port mapping
+      javaDebug: true # adds default java debug port mapping
+      ports:
+        - name: myport
+          protocol: TCP
+          port: 8888
+          targetPort: http
 
 
 frontend:

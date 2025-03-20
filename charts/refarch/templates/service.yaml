@@ -1,0 +1,33 @@
+{{- range $module := .Values.modules -}}
+{{- $Chart := .Chart }}
+{{- if $module.service }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $module.name }}
+  labels:
+    app: {{ $Chart.Name}}
+    module: {{ $module.name }}
+spec:
+  type: {{ $module.service.type }}
+  ports:
+    {{- if $module.service.javaDebug }}
+    - name: debug
+      protocol: TCP
+      port: 8778
+      targetPort: http
+    {{- end }}
+    {{- if $module.service.http }}
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+    {{- end }}
+    {{- if $module.service.ports }}
+    {{- $module.service.ports | toYaml | nindent 4 }}
+    {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ $module.name }}
+{{- end }}
+{{- end }}
