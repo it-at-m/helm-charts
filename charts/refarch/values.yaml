@@ -13,7 +13,7 @@ configMaps:
       # file-like keys
       game.properties: |
         enemy.types=aliens,monsters
-        player.maximum-lives=5  
+        player.maximum-lives=5
 
 modules:
   - name: backend

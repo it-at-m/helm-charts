@@ -1,0 +1,14 @@
+{{- range $configmap := .Values.configMaps -}}
+{{- $Chart := .Chart }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $configmap.name }}
+  labels:
+    app: {{ $Chart.Name }}
+data:
+{{- range $key, $value := $configmap.data }}
+{{ $key | indent 2 }}: {{ $value | toYaml | indent 2 | trim }}
+{{- end }}
+{{- end }}
