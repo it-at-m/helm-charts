@@ -1,0 +1,39 @@
+{{- range $module := .Values.modules -}}
+{{- $Chart := .Chart }}
+{{- if $module.autoscaling }}
+{{- if or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $module.name }}
+  labels:
+    app: {{ $Chart.Name }}
+    module: {{ $module.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $module.name }}
+  minReplicas: {{ $module.autoscaling.minReplicas | default 1 }}
+  maxReplicas: {{ $module.autoscaling.maxReplicas | default 10 }}
+  metrics:
+    {{- if $module.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $module.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if $module.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ $module.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
