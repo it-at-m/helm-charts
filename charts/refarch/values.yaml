@@ -19,7 +19,8 @@ modules:
   - name: backend
     image:
       repository: ghcr.io/it-at-m/sps/sps-frontend
-      tag: "latest"
+      # pullPolicy: Always # Defaults to IfNotPresent
+      tag: "latest" # Defaults to AppVersion of Chart.yaml
     env:
       # static
       - name: STATIC_ENV_EXAMPLE
@@ -87,25 +88,81 @@ modules:
     #   #  - secretName: chart-example-tls
     #   #    hosts:
     #   #      - chart-example.local
+    # replicas: 2 # defaults to 1
+    ###########################################################################################
 
-frontend:
-  image:
-    repository: ghcr.io/it-at-m/sps/sps-frontend
-    tag: "latest"
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
 
-backend:
-  image:
-    repository: ghcr.io/it-at-m/sps/sps-backend
-    tag: "latest"
-  env:
-    - name: GC_MAX_METASPACE_SIZE
-      value: "200"
-    - name: TZ
-      value: Europe/Berlin
-    - name: SPRING_PROFILES_ACTIVE
-      value: no-security    # dev
-    # - name: REALM
-    #   value: beispielprojekt
+    serviceAccount:
+      # Specifies whether a service account should be created
+      create: true
+      # Automatically mount a ServiceAccount's API credentials?
+      automount: true
+      # Annotations to add to the service account
+      annotations: { }
+      # The name of the service account to use.
+      # If not set and create is true, a name is generated using the fullname template
+      name: ""
+
+
+    args:
+
+
+    securityContext:
+      # Security-Settings recommended from https://github.com/Checkmarx/kics
+      capabilities:
+        drop:
+          - ALL
+      # readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      # runAsUser: 1000
+
+    resources:
+      { }
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+    startupProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+      initialDelaySeconds: 60
+    livenessProbe:
+      httpGet:
+        path: /actuator/health/liveness
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health/readiness
+        port: http
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    extraInitContainers: { }
+
+    lifecycle:
+      preStop:
+        exec:
+          command:
+            - sh
+            - -c
+            - sleep 10
+
+
 
   ## Truststore
   ## If you have custome certificates you can add them in secret as truststore.

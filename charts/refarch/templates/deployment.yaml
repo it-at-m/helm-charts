@@ -1,0 +1,91 @@
+{{- range $module := .Values.modules -}}
+{{- $Chart := .Chart }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $module.name }}
+  labels:
+    app: {{ $Chart.Name}}
+    module: {{ $module.name }}
+    app.kubernetes.io/name: {{ $module.name }}
+spec:
+  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
+  replicas: {{ $module.replicas | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      module: {{ $module.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $Chart.Name }}
+        module: {{ $module.name }}
+    spec:
+      {{- if $module.initContainers }}
+      initContainers:
+        {{ toYaml $module.initContainers | nindent 8 }}
+      {{- end }}
+      {{- with $module.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ $module.name }}
+      containers:
+        - name: {{ $module.name }}
+          securityContext:
+            {{- toYaml $module.securityContext | nindent 12 }}
+          image: "{{ $module.image.repository }}:{{ $module.image.tag | default $Chart.AppVersion }}"
+          imagePullPolicy: {{ $module.image.pullPolicy | default IfNotPresent }}
+          ports:
+            {{- if $module.service.javaDebug }}
+            - name: debug
+              protocol: TCP
+              containerPort: 8778
+            {{- end }}
+            {{- if $module.service.http }}
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+            {{- end }}
+            {{- range $port := $module.service.ports }}
+            - name: {{ $port.name }}
+              containerPort: {{ $port.port }}
+              protocol: {{ $port.protocol }}
+            {{- end }}
+          # CONTINUE HERE ########################################################################
+          startupProbe:
+            {{- toYaml $module.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml $module.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml $module.readinessProbe | nindent 12 }}
+          {{- if $module.lifecycle }}
+          lifecycle:
+            {{ toYaml $module.lifecycle | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml $module.resources | nindent 12 }}
+          env:
+            {{- toYaml $module.env | nindent 12 }}
+          {{- with $module.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with $module.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $module.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $module.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $module.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
