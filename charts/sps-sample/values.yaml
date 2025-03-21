@@ -179,7 +179,7 @@ database:
       runAsUser: null
       runAsNonRoot: true
       allowPrivilegeEscalation: false
-      seccompProfile: 
+      seccompProfile:
         type: RuntimeDefault
       capabilities:
         drop: ["ALL"]
@@ -220,7 +220,7 @@ keycloak:
         runAsUser: null
         runAsNonRoot: true
         allowPrivilegeEscalation: false
-        seccompProfile: 
+        seccompProfile:
           type: RuntimeDefault
         capabilities:
           drop: ["ALL"]
@@ -230,7 +230,7 @@ keycloak:
       enabled: false
     shmVolume:
       enabled: false
-  resources: 
+  resources:
     requests:
       cpu: "200m"
       memory: "512Mi"
@@ -301,7 +301,7 @@ appswitcher-server:
       image-url: https://www.google.com/favicon.ico
       tags:
         - global
-  resources: 
+  resources:
     requests:
       cpu: "200m"
       memory: "512Mi"
