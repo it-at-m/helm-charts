@@ -60,6 +60,9 @@ spec:
           {{- with .Values.global.extraEnvVars }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
+          {{- with .Values.extraEnvVarsSources }}
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ include "daveBackend.fullname" . }}

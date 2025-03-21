@@ -100,6 +100,8 @@ backend:
     DAVE_EMAIL_PASSWORD: <Email-Password>
     ELASTICSEARCH_HOST: dave-elasticsearch
     ELASTICSEARCH_PASSWORD: ""
+  # Environment variables from other secrets/config maps
+  extraEnvVarsSources: []
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
