@@ -25,6 +25,9 @@ externalCharts:
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
+  keycloak:
+    # enable/disable keycloak chart dependency
+    enabled: true
 
 # Dave Backend
 backend:
@@ -314,3 +317,32 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
+
+# Keycloak
+# https://github.com/bitnami/charts/tree/bitnami/keycloak
+keycloak:
+  keycloakConfigCli:
+    enabled: true
+    initContainers: |
+      - name: fetch-config
+        image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
+        command:
+          - /bin/sh
+          - -c
+          - |
+            curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
+              jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /config/sso.json
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+        securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.keycloakConfigCli.containerSecurityContext "context" $) | nindent 4 }}
+    extraVolumes:
+      - name: config-volume
+        emptyDir:
+          sizeLimit: 10Mi
+    extraVolumeMounts:
+      - name: config-volume
+        mountPath: /config
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: /config/*
