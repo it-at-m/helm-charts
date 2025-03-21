@@ -29,8 +29,10 @@ dependencies:
     repository: "@it-at-m"
     condition: appswitcher-server.enabled
 maintainers:
-  - name: banzuu
-    url: https://github.com/banzuu
+  - name: ffmuc
+    url: https://github.com/ffmuc
+  - name: tobiasholler
+    url: https://github.com/tobiasholler
   - name: hupling
     url: https://github.com/hupling
   - name: ejcsid
