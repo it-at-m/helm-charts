@@ -321,6 +321,9 @@ postgresql:
 # Keycloak
 # https://github.com/bitnami/charts/tree/bitnami/keycloak
 keycloak:
+  postgresql:
+    nameOverride: keycloak-postgresql
+
   keycloakConfigCli:
     enabled: true
     initContainers: |
