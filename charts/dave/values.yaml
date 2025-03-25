@@ -94,7 +94,7 @@ backend:
       DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
       DAVE_EMAIL_RECEIVER_HOSTNAME: <Hostname>
       DAVE_EMAIL_ADDRESS: <Email-Adress>
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
+      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: "Von:;Gesendet:"
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: <Email Body Strings>
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
   # Credentials
@@ -106,7 +106,6 @@ backend:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Admin-Portal
 admin-portal:
@@ -156,7 +155,6 @@ admin-portal:
   service:
     port: 8080
 
-
 # Dave EAI
 eai:
   replicaCount: 1
@@ -174,7 +172,6 @@ eai:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Frontend
 frontend:
