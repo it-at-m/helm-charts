@@ -50,7 +50,7 @@ admin-portal:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -97,7 +97,7 @@ frontend:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -128,7 +128,7 @@ selfservice-portal:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
