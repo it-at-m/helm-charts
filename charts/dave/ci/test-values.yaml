@@ -150,3 +150,27 @@ selfservice-portal:
 
 keycloak:
   fullnameOverride: "dave-keycloak"
+  # supply realm / client configuration using init-container and "--import-realm" (see https://artifacthub.io/packages/helm/bitnami/keycloak#importing-a-realm )
+  initContainers: |
+    - name: fetch-config
+      image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
+      command:
+        - /bin/sh
+        - -c
+        - |
+          curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
+            jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /realm-config/sso.json
+      volumeMounts:
+        - name: config-volume
+          mountPath: /realm-config
+      securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 4 }}
+  extraVolumes:
+    - name: config-volume
+      emptyDir:
+        sizeLimit: 10Mi
+  extraVolumeMounts:
+    - name: config-volume
+      mountPath: /opt/bitnami/keycloak/data/import
+  extraEnvVars:
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: --import-realm

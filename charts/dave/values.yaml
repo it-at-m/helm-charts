@@ -329,6 +329,11 @@ keycloak:
         - |
           curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
             jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /realm-config/sso.json
+      env:
+        - name: HTTP_PROXY
+          value: "http://internet-proxy-client.muenchen.de:80"
+        - name: HTTPS_PROXY
+          value: "http://internet-proxy-client.muenchen.de:80"
       volumeMounts:
         - name: config-volume
           mountPath: /realm-config
@@ -339,11 +344,10 @@ keycloak:
         sizeLimit: 10Mi
   extraVolumeMounts:
     - name: config-volume
-      mountPath: /realm-config
+      mountPath: /opt/bitnami/keycloak/data/import
   extraEnvVars:
-    - name: KEYCLOAK_IMPORT
-      value: /realm-config/sso.json
-  extraArgs: --import-realm
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: --import-realm
 
   keycloakConfigCli:
     enabled: false
