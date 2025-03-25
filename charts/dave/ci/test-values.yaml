@@ -18,7 +18,7 @@ backend:
         --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-      KEYCLOAK_AUTH-SERVER-URL: http://keycloak.local/auth
+      KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak/auth
       SPRING_PROFILES_ACTIVE: no-security
     # Dave Email Settings
     email:
@@ -49,8 +49,8 @@ admin-portal:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://keycloak.local/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://keycloak.local/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -96,8 +96,8 @@ frontend:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://keycloak.local/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://keycloak.local/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -127,8 +127,8 @@ selfservice-portal:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://keycloak.local/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://keycloak.local/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/auth/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -149,5 +149,4 @@ selfservice-portal:
             pathType: ImplementationSpecific
 
 keycloak:
-  ingress:
-    enabled: true
+  fullnameOverride: "dave-keycloak"
