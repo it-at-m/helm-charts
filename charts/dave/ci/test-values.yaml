@@ -151,4 +151,5 @@ keycloak:
   fullnameOverride: "dave-keycloak"
   keycloakConfigCli:
     annotations:
-      helm.sh/hook: null # to trigger immediate execution of keycloak-config-ci
+      # to trigger immediate execution of keycloak-config-ci
+      helm.sh/hook: null
