@@ -2,7 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-
 # Global values
 global:
   credentials:
@@ -13,7 +12,8 @@ backend:
   # Environment Variables
   extraEnvVars:
     env:
-      JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+      JAVA_OPTIONS:
+        -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
         -Xmx1g --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
         --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
@@ -43,7 +43,8 @@ backend:
 admin-portal:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
@@ -85,12 +86,12 @@ eai:
   #       secretName: cacerts
   #       defaultMode: 420
 
-
 # Dave Frontend
 frontend:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
@@ -116,12 +117,12 @@ frontend:
           - path: /
             pathType: ImplementationSpecific
 
-
 # Dave Selfservice-Portal
 selfservice-portal:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
@@ -146,3 +147,6 @@ selfservice-portal:
         paths:
           - path: /
             pathType: ImplementationSpecific
+
+keycloak:
+  fullnameOverride: "dave-keycloak"
