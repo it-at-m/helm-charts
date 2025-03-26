@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.0.8
+version: 0.0.9
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg

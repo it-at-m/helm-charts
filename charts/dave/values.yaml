@@ -305,11 +305,21 @@ elasticsearch:
 # PostgreSQL
 # https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
+  fullnameOverride: dave-postgresql
   auth:
     username: dave
     password: dave_pwd
     database: dave_db
   primary:
+    initdb:
+      scripts:
+        init.sql: |
+          -- Connect to the custom database
+          \connect dave_db;
+          -- Create the schema named "dave"
+          CREATE SCHEMA dave;
+          -- Grant all privileges on the schema "dave" to the user "dave"
+          GRANT ALL PRIVILEGES ON SCHEMA dave TO dave;
     containerSecurityContext:
       enabled: false
     podSecurityContext:
