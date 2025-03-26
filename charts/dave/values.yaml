@@ -25,6 +25,9 @@ externalCharts:
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
+  keycloak:
+    # enable/disable keycloak chart dependency
+    enabled: true
 
 # Dave Backend
 backend:
@@ -91,7 +94,7 @@ backend:
       DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
       DAVE_EMAIL_RECEIVER_HOSTNAME: <Hostname>
       DAVE_EMAIL_ADDRESS: <Email-Adress>
-      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: 'Von:;Gesendet:'
+      DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_BEGINS_WITH_STRINGS: "Von:;Gesendet:"
       DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: <Email Body Strings>
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
   # Credentials
@@ -103,7 +106,6 @@ backend:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Admin-Portal
 admin-portal:
@@ -153,7 +155,6 @@ admin-portal:
   service:
     port: 8080
 
-
 # Dave EAI
 eai:
   replicaCount: 1
@@ -171,7 +172,6 @@ eai:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
-
 
 # Dave Frontend
 frontend:
@@ -314,3 +314,35 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
+
+# Keycloak
+# https://github.com/bitnami/charts/tree/bitnami/keycloak
+keycloak:
+  postgresql:
+    nameOverride: keycloak-postgresql
+
+  keycloakConfigCli:
+    enabled: true
+    initContainers: |
+      - name: fetch-config
+        image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
+        command:
+          - /bin/sh
+          - -c
+          - |
+            curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
+              jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /config/sso.json
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+        securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.keycloakConfigCli.containerSecurityContext "context" $) | nindent 4 }}
+    extraVolumes:
+      - name: config-volume
+        emptyDir:
+          sizeLimit: 10Mi
+    extraVolumeMounts:
+      - name: config-volume
+        mountPath: /config
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: /config/*

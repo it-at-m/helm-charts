@@ -2,7 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-
 # Global values
 global:
   credentials:
@@ -13,13 +12,13 @@ backend:
   # Environment Variables
   extraEnvVars:
     env:
-      JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+      JAVA_OPTIONS:
+        -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
         -Xmx1g --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
         --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-      KEYCLOAK_AUTH-SERVER-URL: https://sso.example.com/auth
-      SPRING_PROFILES_ACTIVE: no-security
+      KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
     # Dave Email Settings
     email:
       DAVE_EMAIL_RECEIVER_HOSTNAME: imap.example.com
@@ -43,13 +42,14 @@ backend:
 admin-portal:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -85,18 +85,18 @@ eai:
   #       secretName: cacerts
   #       defaultMode: 420
 
-
 # Dave Frontend
 frontend:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -116,18 +116,18 @@ frontend:
           - path: /
             pathType: ImplementationSpecific
 
-
 # Dave Selfservice-Portal
 selfservice-portal:
   # Environment variables
   extraEnvVars:
-    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
+    JAVA_OPTIONS:
+      -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit
       --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: https://sso.example.com/
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: https://sso.example.com/auth/realms/${spring.realm}
+    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -146,3 +146,10 @@ selfservice-portal:
         paths:
           - path: /
             pathType: ImplementationSpecific
+
+keycloak:
+  fullnameOverride: "dave-keycloak"
+  keycloakConfigCli:
+    annotations:
+      # to trigger immediate execution of keycloak-config-ci
+      helm.sh/hook: null
