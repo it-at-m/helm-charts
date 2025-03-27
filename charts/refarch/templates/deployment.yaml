@@ -37,7 +37,7 @@ spec:
           securityContext:
             {{- toYaml $module.securityContext | nindent 12 }}
           image: "{{ $module.image.repository }}:{{ $module.image.tag | default $Chart.AppVersion }}"
-          imagePullPolicy: {{ $module.image.pullPolicy | default IfNotPresent }}
+          imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
           ports:
             {{- if $module.service.javaDebug }}
             - name: debug
@@ -54,7 +54,6 @@ spec:
               containerPort: {{ $port.port }}
               protocol: {{ $port.protocol }}
             {{- end }}
-          # CONTINUE HERE ########################################################################
           startupProbe:
             {{- if $module.startupProbe }}
             {{- toYaml $module.startupProbe | nindent 12 }}
@@ -65,34 +64,46 @@ spec:
             initialDelaySeconds: 60
             {{- end }}
           livenessProbe:
+            {{- if $module.livenessProbe }}
             {{- toYaml $module.livenessProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            {{- end }}
           readinessProbe:
+            {{- if $module.readinessProbe }}
             {{- toYaml $module.readinessProbe | nindent 12 }}
-          {{- if $module.lifecycle }}
-          lifecycle:
-            {{ toYaml $module.lifecycle | nindent 12 }}
-          {{- end }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            {{- end }}
           resources:
+            {{- if and $module.resources $module.resources.request  }}
             {{- toYaml $module.resources | nindent 12 }}
+            {{- else }}
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            {{- end }}
+            {{- if and $module.resources $module.resources.limits }}
+            {{- toYaml $module.resources | nindent 12 }}
+            {{- else }}
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            {{- end }}
           env:
             {{- toYaml $module.env | nindent 12 }}
-          {{- with $module.volumeMounts }}
+          envFrom:
+            {{- toYaml $module.envFrom | nindent 12 }}
+          {{- if $module.volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml $module.volumeMounts | nindent 12 }}
           {{- end }}
-      {{- with $module.volumes }}
+      {{- if $module.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml $module.volumes | nindent 8 }}
       {{- end }}
-      {{- with $module.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $module.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $module.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+{{- end }}
