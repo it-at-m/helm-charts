@@ -10,7 +10,7 @@ metadata:
     app: {{ $Chart.Name}}
     module: {{ $module.name }}
 spec:
-  type: {{ $module.service.type | default ClusterIP }}
+  type: {{ $module.service.type | default "ClusterIP" }}
   ports:
     {{- if $module.service.javaDebug }}
     - name: debug
