@@ -36,8 +36,10 @@ backend:
   # Environment Variables
   extraEnvVars:
     env:
-      # Hazelcast
+      # DB
+      # [By default such tables (and other objects) are automatically put into a schema named “public”. Every new database contains such a schema](https://www.postgresql.org/docs/current/ddl-schemas.html#DDL-SCHEMAS-PUBLIC).
       DB_SCHEMA: public
+      # Hazelcast
       HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
       HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-backend-service
