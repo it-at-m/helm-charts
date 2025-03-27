@@ -56,7 +56,14 @@ spec:
             {{- end }}
           # CONTINUE HERE ########################################################################
           startupProbe:
+            {{- if $module.startupProbe }}
             {{- toYaml $module.startupProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 60
+            {{- end }}
           livenessProbe:
             {{- toYaml $module.livenessProbe | nindent 12 }}
           readinessProbe:
