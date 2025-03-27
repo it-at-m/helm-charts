@@ -36,6 +36,7 @@ backend:
   # Environment Variables
   extraEnvVars:
     env:
+      DB_SCHEMA: dave
       # Hazelcast
       HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
