@@ -47,9 +47,8 @@ modules:
 
     ### NETWORKING
     service:
-      #type: NodePort   # defaults to ClusterIP
       http: true # adds default http port mapping
-      javaDebug: true   # adds default java debug port mapping
+      javaDebug: false   # adds default java debug port mapping
       ports:
         - name: myport
           protocol: TCP
@@ -102,7 +101,7 @@ modules:
     #     port: http
 
     ### RESOURCES & SCALING
-    ### It is possible to define requests or limits individually
+    ## It is possible to define requests or limits individually but both (cpu and memory) need to be set!
     # resources:
     #   requests:
     #     cpu: 100m
@@ -111,37 +110,12 @@ modules:
     #     cpu: 500m
     #     memory: 512Mi
     # replicas: 2 # defaults to 1
+    ## Is disabled by default and enabled by defining this object
     # autoscaling:
-    #   minReplicas: 1
-    #   maxReplicas: 10
+    #   minReplicas: 2 # defaults to 1
+    #   maxReplicas: 5 # defaults to 10
     #   targetCPUUtilizationPercentage: 80
     #   targetMemoryUtilizationPercentage: 80
-
-
-    ### TODO - check below
-    imagePullSecrets: [ ] # TODO - needed in future?
-
-    args: # TODO - needed?
-
-    ### SECURITY
-    securityContext: # TODO - maybe default
-      # Security-Settings recommended from https://github.com/Checkmarx/kics
-      capabilities:
-        drop:
-          - ALL
-      # readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      # runAsUser: 1000
-    # serviceAccount: # TODO - what for?
-    #   # Specifies whether a service account should be created
-    #   create: true
-    #   # Automatically mount a ServiceAccount's API credentials?
-    #   automount: true
-    #   # Annotations to add to the service account
-    #   annotations: { }
-    #   # The name of the service account to use.
-    #   # If not set and create is true, a name is generated using the fullname template
-    #   name: ""
 
 
 #######################################

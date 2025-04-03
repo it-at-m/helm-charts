@@ -35,7 +35,12 @@ spec:
       containers:
         - name: {{ $module.name }}
           securityContext:
-            {{- toYaml $module.securityContext | nindent 12 }}
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
           image: "{{ $module.image.repository }}:{{ $module.image.tag | default $Chart.AppVersion }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
           ports:
