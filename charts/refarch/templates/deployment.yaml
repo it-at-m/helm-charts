@@ -1,13 +1,12 @@
 {{- range $module := .Values.modules -}}
-{{- $Chart := .Chart }}
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $module.name }}
+  name: {{ include "getFullname" $module.name }}
   labels:
-    app: {{ $Chart.Name}}
+    app: {{ $.Chart.Name}}
     module: {{ $module.name }}
     app.kubernetes.io/name: {{ $module.name }}
 spec:
@@ -20,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ $Chart.Name }}
+        app: {{ $.Chart.Name }}
         module: {{ $module.name }}
     spec:
       {{- if $module.initContainers }}
@@ -41,7 +40,7 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-          image: "{{ $module.image.repository }}:{{ $module.image.tag | default $Chart.AppVersion }}"
+          image: "{{ $module.image.repository }}:{{ $module.image.tag | default $.Chart.AppVersion }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
           ports:
             {{- if $module.service.javaDebug }}

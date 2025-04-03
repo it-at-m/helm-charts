@@ -1,5 +1,4 @@
 {{- range $module := .Values.modules -}}
-{{- $Chart := .Chart }}
 {{- if $module.service }}
 ---
 apiVersion: v1
@@ -7,7 +6,7 @@ kind: Service
 metadata:
   name: {{ $module.name }}
   labels:
-    app: {{ $Chart.Name}}
+    app: {{ $.Chart.Name}}
     module: {{ $module.name }}
 spec:
   type: ClusterIP

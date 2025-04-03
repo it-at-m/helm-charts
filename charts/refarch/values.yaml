@@ -1,7 +1,6 @@
 ##########################################################
 ### DISCLAIMER: Unused lines can and should be deleted ###
 ##########################################################
-
 configMaps:
   # - name: ABC
   #   data:
@@ -117,10 +116,9 @@ modules:
     #   targetCPUUtilizationPercentage: 80
     #   targetMemoryUtilizationPercentage: 80
 
-
-#######################################
-
-
+##############################
+### API-GATEWAY DEFINITION ###
+##############################
 refarch-gateway:
   envAppend:
     ### Here you see the avaiable config for the apigateway
@@ -172,11 +170,8 @@ refarch-gateway:
                 - "RemoveRequestHeader=x-xsrf-token"
                 - "TokenRelay="
 
-
-
   ## This ingress config is spezific to openshift.
   ## If you have plain kubernetes, you will need to change the annotations, className.
-
   ingress:
     enabled: false
     # annotations:
@@ -190,7 +185,6 @@ refarch-gateway:
     #         backend:
     #           serviceName: '{{ include "refarch-gateway.fullname" . }}'
     #           servicePort: 8080
-
   ## Truststore
   ## If you have custome certificates you can add them in secret as truststore.
   ## The secret you can inject on the right position, so you can override the default truststore.

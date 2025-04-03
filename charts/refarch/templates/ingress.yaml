@@ -1,5 +1,4 @@
 {{- range $module := .Values.modules -}}
-{{- $Chart := .Chart }}
 {{- if $module.ingress -}}
 ---
 apiVersion: networking.k8s.io/v1
@@ -7,7 +6,7 @@ kind: Ingress
 metadata:
   name: {{ $module.name }}
   labels:
-    app: {{ $Chart.Name }}
+    app: {{ $.Chart.Name }}
     module: {{ $module.name }}
   {{- with $module.ingress.annotations }}
   annotations:
