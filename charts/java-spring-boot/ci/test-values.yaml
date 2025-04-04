@@ -1,0 +1,20 @@
+# use appswitcher-server for testing
+image.repository: "ghcr.io/it-at-m/appswitcher-server"
+image.tag: "1.2.1"
+
+applicationYml:
+  applications:
+    demo-phone-book:
+      display-name: Phone book
+      url: https://www.gelbeseiten.de/
+      image-url: https://i.imgur.com/PA25O7T.png
+      tags:
+        - global
+      sort-order: 10
+    google:
+      display-name: Google
+      url: https://google.com
+      image-url: https://www.google.com/favicon.ico
+      tags:
+        - global
+      sort-order: 20
