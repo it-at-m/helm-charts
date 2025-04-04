@@ -1,0 +1,7 @@
+{{- if .Values.build.enabled }}
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: {{ required "build.outputImageStreamName must be configured" .Values.build.outputImageStreamName }}
+  labels: {{- include "java-spring-boot.labels" . | nindent 4 }}
+{{- end }}

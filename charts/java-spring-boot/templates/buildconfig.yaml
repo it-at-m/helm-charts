@@ -1,0 +1,32 @@
+{{- if .Values.build.enabled }}
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: {{ include "java-spring-boot.fullname" . }}
+  labels: {{- include "java-spring-boot.labels" . | nindent 4 }}
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: {{ required "build.outputImageStreamName must be configured" .Values.build.outputImageStreamName }}:{{ .Values.build.outputImageStreamTag }}
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: {{ .Values.build.builderImageStreamNamespace | quote }}
+        name: {{ .Values.build.builderImageStreamName }}:{{ .Values.build.builderImageStreamTag }} 
+  postCommit: {}
+  source:
+    type: Binary
+    binary: {}
+{{- end }}
