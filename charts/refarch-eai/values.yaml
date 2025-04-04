@@ -1,17 +1,14 @@
-global:
- backend:
-  name: backend
-# Default values for backend.
+# Default values for refarch-eai.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: ghcr.io/it-at-m/refarch/refarch-backend
+  repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -28,28 +25,28 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podSecurityContext:
-  {}
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  # Security-Settings recommended from https://github.com/Checkmarx/kics
-  capabilities:
-    drop:
-    - ALL
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
   # readOnlyRootFilesystem: true
-  runAsNonRoot: true
+  # runAsNonRoot: true
   # runAsUser: 1000
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 80
 
 ingress:
   enabled: false
   className: ""
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -62,8 +59,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -75,18 +71,13 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-startupProbe:
-  httpGet:
-    path: /actuator/health
-    port: http
-  initialDelaySeconds: 60
 livenessProbe:
   httpGet:
-    path: /actuator/health/liveness
+    path: /
     port: http
 readinessProbe:
   httpGet:
-    path: /actuator/health/readiness
+    path: /
     port: http
 
 autoscaling:
@@ -108,20 +99,9 @@ volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
-# Additional env on the output Deployment definition.
-env: []
+
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
-extraInitContainers: {}
-
-lifecycle:
-  preStop:
-    exec:
-      command:
-        - sh
-        - -c
-        - sleep 10
