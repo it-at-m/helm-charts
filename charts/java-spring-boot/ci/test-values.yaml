@@ -19,3 +19,8 @@ applicationYml:
       tags:
         - global
       sort-order: 20
+
+credentials:
+  dummy:
+    data:
+      spring.profiles.active: "json-logging"

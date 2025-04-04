@@ -48,7 +48,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_CONFIG_IMPORT
-              value: "configtree:{{ .Values.imageWorkDir | default "/deployments" }}/config/*/"
+              value: "optional:configtree:{{ .Values.imageWorkDir | default "/deployments" }}/config/*/"
           {{- with .Values.envVars }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
