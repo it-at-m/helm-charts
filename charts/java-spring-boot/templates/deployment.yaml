@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "java-spring-boot.fullname" . }}
+  labels:
+    {{- include "java-spring-boot.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "java-spring-boot.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/generated-secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "java-spring-boot.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "java-spring-boot.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ required "image.repository must be specified" .Values.image.repository }}:{{ required "image.tag must be specified" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SPRING_CONFIG_IMPORT
+              value: "configtree:{{ .Values.imageWorkDir | default "/deployments" }}/config/*/"
+          {{- with .Values.envVars }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.imageWorkDir | default "/deployments" }}/config
+          {{- if .Values.javaTruststore.enabled }}
+            - name: java-truststore
+              mountPath: {{ default "/etc/pki/ca-trust/extracted/java" .Values.javaTruststore.mountPath }}
+              readOnly: true
+          {{- end }}
+          {{- $credentials := .Values.credentials }}
+          {{- range $name, $credential := $credentials }}
+            - name: secret-{{ $name }}
+              mountPath: {{ $.Values.imageWorkDir | default "/deployments" }}/config/{{ $name }}
+              readOnly: true 
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "java-spring-boot.fullname" . }}
+            defaultMode: 420
+      {{- if .Values.javaTruststore.enabled }}
+        - name: java-truststore
+          secret:
+            secretName: {{ default "cacerts-lhm" .Values.javaTruststore.secretName }}
+            defaultMode: 420
+            items:
+              - key: {{ default "cacerts-lhm" .Values.javaTruststore.secretKey }}
+                path: cacerts
+      {{- end }}
+      {{- $credentials := .Values.credentials }}
+      {{- range $name, $credential := $credentials }}
+        - name: secret-{{ $name }}
+          secret:
+            secretName: {{ include "java-spring-boot.secretName" (dict "existingSecret" $credential.existingSecret "defaultNameSuffix" $name "context" $) }}
+            defaultMode: 420
+      {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

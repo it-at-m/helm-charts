@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "java-spring-boot.fullname" . }}-test-connection"
+  labels:
+    {{- include "java-spring-boot.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "java-spring-boot.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

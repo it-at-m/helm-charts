@@ -1,0 +1,15 @@
+{{- if .Values.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "java-spring-boot.fullname" . }}
+spec:
+  endpoints:
+    - interval: 15s
+      port: "http"
+      scheme: http
+      path: {{ default "/actuator/prometheus" .Values.serviceMonitor.path | quote }}
+  selector:
+    matchLabels:
+      {{- include "java-spring-boot.selectorLabels" . | nindent 6 }}
+{{- end }}
