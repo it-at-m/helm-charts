@@ -3,7 +3,7 @@ image:
   repository: "ghcr.io/it-at-m/appswitcher-server"
   tag: "1.2.1"
 
-applicationYml:
+applicationYml: |-
   applications:
     demo-phone-book:
       display-name: Phone book
