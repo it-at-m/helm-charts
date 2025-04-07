@@ -172,7 +172,7 @@ envFrom:
   #   secretRef:
   #     name: my-secret
 
-# configures application.yml content thats get mounted on the output Deployment definition. Helm template functions are supported.
+# configures application.yml content that get mounted on the output Deployment definition. Helm template functions are supported.
 applicationYml: ""
 # applicationYml: |-
 #   spring:
