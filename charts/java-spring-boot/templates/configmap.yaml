@@ -7,5 +7,5 @@ metadata:
 data:
   {{- with .Values.applicationYml }}
   application.yml: |-
-    {{- toYaml . | nindent 4 }}
+    {{- tpl . $ | nindent 4 }}
   {{- end }}

@@ -172,14 +172,17 @@ envFrom:
   #   secretRef:
   #     name: my-secret
 
-# configures application.yml content thats get mounted on the output Deployment definition
-applicationYml:
-  # spring:
-  #   profiles:
-  #     active: "local"
-  # logging:
-  #   level:
-  #     root: "DEBUG"
+# configures application.yml content thats get mounted on the output Deployment definition. Helm template functions are supported.
+applicationYml: ""
+# applicationYml: |-
+#   spring:
+#     application:
+#       name: "{{ .Release.Name }}"
+#     profiles:
+#       active: "local"
+#   logging:
+#     level:
+#       root: "DEBUG"
 
 javaTruststore:
   # enables mounting a java truststore containing additional certificates
