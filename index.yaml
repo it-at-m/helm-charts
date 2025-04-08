@@ -902,6 +902,22 @@ entries:
     version: 1.0.1
   java-spring-boot:
   - apiVersion: v2
+    created: "2025-04-08T11:34:56.62695782Z"
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: ca3672f9aecd846e3502a653d13b6b576ec9eab5ed2eda5d2db00adcef4e812b
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-0.2.1/java-spring-boot-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
     created: "2025-04-07T11:22:55.978451894Z"
     description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
     digest: 27b4f568108d73d64eb1c8d28f09e37837751d1347ac6e2c018a447180f8060c
@@ -1672,4 +1688,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-07T11:22:55.978621641Z"
+generated: "2025-04-08T11:34:56.62711783Z"
