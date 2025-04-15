@@ -2,7 +2,7 @@ apiVersion: v2
 name: java-spring-boot
 description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
 type: application
-version: 0.2.1
+version: 0.3.0
 maintainers:
   - name: eidottermihi
     email: eidottermihi@gmail.com
