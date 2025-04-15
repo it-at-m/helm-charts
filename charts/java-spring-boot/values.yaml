@@ -246,6 +246,8 @@ credentials:
   #   #   spring.datasource.password: "password"
   # sso:
   #   # existingSecret: my-sso-secret
+  #   # to keep the generated secret after helm uninstall, see https://helm.sh/docs/howto/charts_tips_and_tricks/#tell-helm-not-to-uninstall-a-resource
+  #   # keepSecret: true
   #   # to generate a secret based on key/value data
   #   data:
   #     app.security.client-id: "myClient"

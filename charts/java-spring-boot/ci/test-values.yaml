@@ -24,3 +24,8 @@ credentials:
   dummy:
     data:
       spring.profiles.active: "json-logging"
+      dummy.number.prop: 123
+  dummy2:
+    keepSecret: true
+    data:
+      dummy.prop: "dummy"
