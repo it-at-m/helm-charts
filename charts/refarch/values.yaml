@@ -11,12 +11,15 @@ configMaps:
   #       enemy.types=aliens,monsters
   #       player.maximum-lives=5
 
+# imagePullSecrets:
+#   - name: testSecret
+
 modules:
   - name: frontend
     image:
       repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
       # pullPolicy: Always # Defaults to IfNotPresent
-      tag: "latest" # Defaults to AppVersion of Chart.yaml
+      tag: "latest"
     ### NETWORKING
     service:
       http: true # adds default http port mapping
@@ -24,7 +27,7 @@ modules:
     image:
       repository: ghcr.io/it-at-m/refarch-templates/refarch-webcomponent
       # pullPolicy: Always # Defaults to IfNotPresent
-      tag: "latest" # Defaults to AppVersion of Chart.yaml
+      tag: "latest"
     ### NETWORKING
     service:
       http: true # adds default http port mapping
@@ -32,7 +35,7 @@ modules:
     image:
       repository: ghcr.io/it-at-m/refarch-templates/refarch-eai
       # pullPolicy: Always # Defaults to IfNotPresent
-      tag: "latest" # Defaults to AppVersion of Chart.yaml
+      tag: "latest"
     applicationYML:
       ENV_VARIABLE: someValue # alternative to env.value
       spring:
@@ -135,7 +138,7 @@ modules:
     image:
       repository: ghcr.io/it-at-m/refarch-templates/refarch-backend
       # pullPolicy: Always # Defaults to IfNotPresent
-      tag: "latest" # Defaults to AppVersion of Chart.yaml
+      tag: "latest"
     applicationYML:
       ENV_VARIABLE: someValue # alternative to env.value
       spring:
@@ -178,7 +181,7 @@ modules:
   #  image:
   #    repository: ghcr.io/it-at-m/refarch-templates/example
   #    # pullPolicy: Always # Defaults to IfNotPresent
-  #    tag: "latest" # Defaults to AppVersion of Chart.yaml
+  #    tag: "latest"
   #  applicationYML:
   #    ENV_VARIABLE: someValue # alternative to env.value
   #    spring:

@@ -26,21 +26,20 @@ spec:
       initContainers:
         {{ toYaml $module.initContainers | nindent 8 }}
       {{- end }}
-      {{- with $module.imagePullSecrets }}
+      {{- with $.Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ $module.name }}
       containers:
         - name: {{ $module.name }}
           securityContext:
             capabilities:
               drop:
                 - ALL
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-          image: "{{ $module.image.repository }}:{{ $module.image.tag | default $.Chart.AppVersion }}"
+          image: "{{ $module.image.repository }}:{{ $module.image.tag }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
           ports:
             {{- if $module.service.javaDebug }}
