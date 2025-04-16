@@ -1,5 +1,13 @@
 {{/*
-Append "-test" suffix to a given string
+Get the truncated module name #backend
+*/}}
+{{- define "getName" -}}
+{{- $moduleName := . }}
+{{- printf "%s" $moduleName | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Get the truncated module name with the release name #dev-backend
 */}}
 {{- define "getFullname" -}}
 {{- $moduleName := . }}
@@ -7,33 +15,19 @@ Append "-test" suffix to a given string
 {{- end -}}
 
 {{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-umgebung-release.name-service
+Get the truncated chart name
 */}}
-{{- define "backend.fullname" -}}
-{{- $name := "name" }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- define "getChartName" -}}
+{{- printf "%s" .Chart.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
-Create chart name and version as used by the chart label.
+Get the Common labels
 */}}
-{{- define "backend.chart" -}}
-{{- printf "%s-%s" .Values.global.backend.name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "backend.labels" -}}
-helm.sh/chart: {{ include "backend.chart" . }}
-{{ include "backend.selectorLabels" . }}
+{{- define "getLabels" -}}
+{{- $moduleName := . }}
+helm.sh/chart: {{ include "getChartName" . }}
+{{ include "getSelectorLabels" $moduleName }}
 {{- if .Chart.Version }}
 app.kubernetes.io/version: {{ .Chart.Version | quote }}
 {{- end }}
@@ -41,20 +35,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+Get the Selector labels for connection between service and pods
 */}}
-{{- define "backend.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "backend.name" . }}
+{{- define "getSelectorLabels" -}}
+{{- $moduleName := . }}
+app.kubernetes.io/name: {{ include "getName" $moduleName }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "backend.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "backend.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}
