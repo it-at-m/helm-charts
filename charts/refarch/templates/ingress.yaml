@@ -1,13 +1,14 @@
+{{- $dot := . }}
 {{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
 {{- if $module.ingress -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $module.name }}
+  name: {{ include "getFullname" $module.name }}
   labels:
-    app: {{ $.Chart.Name }}
-    module: {{ $module.name }}
+    {{- include "getLabels" $data | trim | nindent 4 }}
   {{- with $module.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

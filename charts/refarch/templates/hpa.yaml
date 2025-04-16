@@ -1,14 +1,15 @@
+{{- $dot := . }}
 {{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
 {{- if $module.autoscaling }}
 {{- if or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage }}
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $module.name }}
+  name: {{ include "getFullname" $module.name }}
   labels:
-    app: {{ $.Chart.Name }}
-    module: {{ $module.name }}
+    {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

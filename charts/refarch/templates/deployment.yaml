@@ -1,26 +1,24 @@
+{{- $dot := . }}
 {{- range $module := .Values.modules -}}
-
+{{ $data := dict "dot" $dot "module" $module }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "getFullname" $module.name }}
   labels:
-    app: {{ $.Chart.Name}}
-    module: {{ $module.name }}
-    app.kubernetes.io/name: {{ $module.name }}
+    {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
   {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
   replicas: {{ $module.replicas | default 1 }}
   {{- end }}
   selector:
     matchLabels:
-      module: {{ $module.name }}
+      {{- include "getSelectorLabels" $data | trim | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ $.Chart.Name }}
-        module: {{ $module.name }}
+        {{- include "getLabels" $data | trim | nindent 8 }}
     spec:
       {{- if $module.initContainers }}
       initContainers:

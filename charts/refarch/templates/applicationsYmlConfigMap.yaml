@@ -1,13 +1,14 @@
+{{- $dot := . }}
 {{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
 {{ if $module.applicationYML }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $module.name }}-application-yml
+  name: {{ include "getFullname" $module.name }}-application-yml
   labels:
-    app: {{ $.Chart.Name }}
-    module: {{ $module.name }}
+    {{- include "getLabels" $data | trim | nindent 4 }}
 data:
   {{- with $module.applicationYML }}
   application.yml: |

@@ -25,20 +25,22 @@ Get the truncated chart name
 Get the Common labels
 */}}
 {{- define "getLabels" -}}
-{{- $moduleName := . }}
-helm.sh/chart: {{ include "getChartName" . }}
-{{ include "getSelectorLabels" $moduleName }}
-{{- if .Chart.Version }}
-app.kubernetes.io/version: {{ .Chart.Version | quote }}
+{{- $moduleName := .module.name }}
+helm.sh/chart: {{ include "getChartName" .dot }}
+{{- include "getSelectorLabels" . }}
+{{- if ".Chart.Version" }}
+app.kubernetes.io/version: {{ .dot.Chart.Version | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/managed-by: {{ .dot.Release.Service }}
 {{- end }}
 
 {{/*
 Get the Selector labels for connection between service and pods
 */}}
 {{- define "getSelectorLabels" -}}
-{{- $moduleName := . }}
+{{- $moduleName := .module.name }}
+{{- if $moduleName }}
 app.kubernetes.io/name: {{ include "getName" $moduleName }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+app.kubernetes.io/instance: {{ .dot.Release.Name }}
 {{- end }}

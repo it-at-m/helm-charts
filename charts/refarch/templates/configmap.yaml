@@ -1,11 +1,13 @@
+{{- $dot := . }}
 {{- range $configmap := .Values.configMaps -}}
+{{ $data := dict "dot" $dot "module" $configmap }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $configmap.name }}
+  name: {{ include "getFullname" $configmap.name }}
   labels:
-    app: {{ $.Chart.Name }}
+    {{- include "getLabels" $data | trim  | nindent 4 }}
 data:
 {{- range $key, $value := $configmap.data }}
 {{ $key | indent 2 }}: {{ $value | toYaml | indent 2 | trim }}
