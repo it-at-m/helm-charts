@@ -114,6 +114,7 @@ env:
 # Additional env on the output Deployment definition.
 envAppend: []
 
+# List of ConfigMapRef or SecretRef to inject environment variables
 envFrom: []
 
 nodeSelector: {}
