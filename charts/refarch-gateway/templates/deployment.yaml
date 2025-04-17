@@ -67,6 +67,10 @@ spec:
             - name: REFARCH_HAZELCAST_SERVICENAME
               value: {{ include "refarch-gateway.fullname" . }}
             {{- end }}
+          {{- if .Values.envFrom }}
+          envFrom:
+            {{- toYaml .Values.envFrom | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: config
               mountPath: /deployments/config

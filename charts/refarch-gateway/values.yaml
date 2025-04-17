@@ -114,6 +114,8 @@ env:
 # Additional env on the output Deployment definition.
 envAppend: []
 
+envFrom: []
+
 nodeSelector: {}
 
 tolerations: []
