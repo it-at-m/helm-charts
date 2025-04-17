@@ -9,7 +9,7 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: refarch-gateway
-    version: 1.4.4
+    version: 1.4.5
     repository: "@it-at-m"
 maintainers:
   - name: devtobi
