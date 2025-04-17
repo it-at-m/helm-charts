@@ -28,7 +28,7 @@ modules:
           active: "myprofile"
     env:
       # static
-      - name: STATIC_ENV_EXAMPLE
+      - name: JAVA_OPTS_APPEND
         value: someStaticValue
       # single reference dynamic
       - name: SECRET_ENV_EXAMPLE
