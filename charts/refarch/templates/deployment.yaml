@@ -95,10 +95,14 @@ spec:
               cpu: 500m
               memory: 512Mi
             {{- end }}
+          {{- if $module.env }}
           env:
             {{- toYaml $module.env | nindent 12 }}
+          {{- end }}
+          {{- if $module.envFrom }}
           envFrom:
             {{- toYaml $module.envFrom | nindent 12 }}
+          {{- end }}
           {{- if $module.volumeMounts }}
           volumeMounts:
             {{- toYaml $module.volumeMounts | nindent 12 }}
