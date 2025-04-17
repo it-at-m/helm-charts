@@ -90,6 +90,9 @@ backend:
       DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
       DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
       DAVE_MESSSTELLE_SHEDLOCK: "4M"
+      DAVE_MAP_CENTER_LAT: "48.137227"
+      DAVE_MAP_CENTER_LNG: "11.575517"
+      DAVE_MAP_CENTER_ZOOM: 8
     # Dave Email Settings
     email:
       DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
