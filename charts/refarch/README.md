@@ -34,19 +34,19 @@ modules:
       - name: SECRET_ENV_EXAMPLE
         valueFrom:
           secretKeyRef:
-            key: sps-sample-dev # secret-name
-            name: sso-client-id
+            name: nameOfSecret
+            key: keyOfSecret
       - name: SECRET_ENV_EXAMPLE
         valueFrom:
           configMapKeyRef:
-            key: sps-sample-dev # secret-name
-            name: sso-client-id
+            name: nameOfConfigMap
+            key: keyOfConfigMap
     envFrom:
       # whole files of envs
       - configMapRef:
           name: nameOfConfigMap
       - secretRef:
-          name: nameOfConfigMap
+          name: nameOfSecret
 
     ### NETWORKING
     service:
