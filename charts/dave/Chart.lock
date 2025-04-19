@@ -1,7 +1,7 @@
 dependencies:
 - name: elasticsearch
   repository: https://charts.bitnami.com/bitnami
-  version: 19.17.0
+  version: 21.6.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 14.3.3
@@ -23,5 +23,5 @@ dependencies:
 - name: eai
   repository: ""
   version: '*'
-digest: sha256:04fa1828de8ba6c5e62a70c1fe9306eb4d651a8fd79beddc49c415b06cd1857e
-generated: "2025-03-20T10:49:05.232444674+01:00"
+digest: sha256:682b2ad42ae7cc27a59c23aa60191fac75334954d345adb54cf478e8b20fbab9
+generated: "2025-04-16T17:57:07.516425488Z"
