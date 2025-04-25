@@ -16,7 +16,7 @@ spec:
     kind: Deployment
     name: {{ $module.name }}
   minReplicas: {{ $module.autoscaling.minReplicas | default 1 }}
-  maxReplicas: {{ $module.autoscaling.maxReplicas | default 10 }}
+  maxReplicas: {{ $module.autoscaling.maxReplicas }}
   metrics:
     {{- if $module.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource

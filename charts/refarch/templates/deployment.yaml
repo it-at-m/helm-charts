@@ -40,11 +40,6 @@ spec:
           image: "{{ $module.image.repository }}:{{ $module.image.tag }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
           ports:
-            {{- if $module.service.javaDebug }}
-            - name: debug
-              protocol: TCP
-              containerPort: 8778
-            {{- end }}
             {{- if $module.service.http }}
             - name: http
               protocol: TCP

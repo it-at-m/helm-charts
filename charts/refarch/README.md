@@ -120,9 +120,9 @@ Example:
 ```yaml
   autoscaling:
     minReplicas: 1 # defaults to 1
-    maxReplicas: 10 # defaults to 10
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
+    maxReplicas: 10 
+    targetCPUUtilizationPercentage: 80 # optional
+    targetMemoryUtilizationPercentage: 80 # optional
 ```
 
 #### Configuration management
@@ -173,9 +173,9 @@ Example:
   envFrom:
     # whole files of envs
     - configMapRef:
-      name: my-global-configmap
+        name: my-global-configmap
     - secretRef:
-      name: my-global-secret
+        name: my-global-secret
 ```
 
 #### Networking
@@ -191,19 +191,10 @@ Setting `http` to `true` maps to:
       targetPort: http
 ```
 
-Setting `javaDebug` to `true` maps to:
-```yaml
-    - name: debug
-      protocol: TCP
-      port: 8778
-      targetPort: http
-```
-
 Example for configuring the service:
 ```yaml
   service:
     http: true
-    javaDebug: false
     ports:
       - name: custom-port
         protocol: TCP

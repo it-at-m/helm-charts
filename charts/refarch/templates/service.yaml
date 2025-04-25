@@ -12,12 +12,6 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    {{- if $module.service.javaDebug }}
-    - name: debug
-      protocol: TCP
-      port: 8778
-      targetPort: http
-    {{- end }}
     {{- if $module.service.http }}
     - name: http
       protocol: TCP
