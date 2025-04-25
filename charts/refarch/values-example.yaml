@@ -135,6 +135,17 @@ refarch-gateway:
               uri: "http://myrelease-frontend:8080/"
               predicates:
                 - "Path=/**"
+  ingress:
+    enabled: true
+    hosts:
+      - host: mygateway.example.com
+        paths:
+          - path: /
+            pathType: "ImplementationSpecific"
+    # OpenShift-specific configuration, if you have plain Kubernetes, you will need to change the annotations, className.
+    # annotations:
+    #   route.openshift.io/termination: "edge"
+    # className: openshift-default
   volumes:
     *cacertsVolume
   volumeMounts:
