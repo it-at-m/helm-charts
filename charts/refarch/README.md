@@ -16,10 +16,10 @@ It consists of the following components:
 Install this chart using:
 
 ```bash
-helm install my-refarch-release it-at-m/refarch --values values.yaml
+helm install my-refarch-release it-at-m/refarch --values my-values.yaml
 ```
 
-The command deploys a minimal example on the Kubernetes cluster with some default configuration. The [Configuration](#configuration) section lists the parameters that can be configured during via `values.yaml`.
+The file `values-example.yaml` contains a minimal example. The [Configuration](#configuration) section lists all the parameters that can be configured via `values.yaml`.
 
 ## Configuration
 
