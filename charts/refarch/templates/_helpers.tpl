@@ -10,8 +10,8 @@ Get the truncated module name #backend
 Get the truncated module name with the release name #dev-backend
 */}}
 {{- define "getFullname" -}}
-{{- $moduleName := . }}
-{{- printf "%s-%s" ".Release.Name" $moduleName | trunc 63 | trimSuffix "-" -}}
+{{- $moduleName := .module.name }}
+{{- printf "%s-%s" .dot.Release.Name $moduleName | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "getFullname" $module.name }}-application-yml
+  name: {{ include "getFullname" $data }}-application-yml
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 data:

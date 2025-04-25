@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "getFullname" $module.name }}
+  name: {{ include "getFullname" $data }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:

@@ -5,7 +5,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "getFullname" $module.name }}
+  name: {{ include "getFullname" $data }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:

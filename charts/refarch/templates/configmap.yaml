@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "getFullname" $configmap.name }}
+  name: {{ include "getFullname" $data }}
   labels:
     {{- include "getLabels" $data | trim  | nindent 4 }}
 data:

@@ -6,7 +6,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "getFullname" $module.name }}
+  name: {{ include "getFullname" $data }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
   {{- with $module.ingress.annotations }}
