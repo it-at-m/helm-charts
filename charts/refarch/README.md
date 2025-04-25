@@ -34,7 +34,7 @@ Those configurations create Kubernetes resources which are not specifically boun
 
 #### Secrets
 
-Global secrets can be created using this Helm chart. Note that the keys for the secret can be created, but the values need to be filled in manually using GUI or CLI mechanisms.
+Global Secrets can be created using this Helm chart. Note that the keys for the Secret can be created, but the values need to be filled in manually using GUI or CLI mechanisms.
 
 Example:
 ```yaml
@@ -65,13 +65,13 @@ configMaps:
 
 #### ImagePull Secrets
 
-Image pull secrets might be necessary to bypass pull limits by certain container registries.
-The image pull secrets are reused for all modules you define.
+Image pull Secrets might be necessary to bypass pull limits by certain container registries.
+The image pull Secrets are reused for all modules you define.
 
 Example:
 ```yaml
 imagePullSecrets:
-  - name: testSecret
+  - name: my-pull-secret
 ```
 
 ### Module configurations
@@ -101,9 +101,7 @@ Example:
 
 #### Resources & Scaling
 
-You can configure the desired resources like CPU and RAM and set up auto-scaling.
-
-You can define your resources and desired replica as stated below. If you don't set those properties, those values will be used by default:
+You can define your resources like CPU and RAM and the desired replicas as stated below. If you don't set those properties, those values will be used by default:
 ```yaml
   resources:
     requests:
@@ -144,7 +142,7 @@ Example:
         active: "myprofile"
 ```
 
-Alternatively you can define single environment variables as follows, optionally referencing and entry inside a global secret or ConfigMap.
+Alternatively you can define single environment variables as follows, optionally referencing an entry inside a global Secret or ConfigMap.
 This can e.g. be used to set `JAVA_OPTS_APPEND`.
 
 Example:
@@ -153,13 +151,13 @@ Example:
     # static
     - name: MY_ENV_VARIABLE
       value: myvalue
-    # reference to secret
+    # reference to Secret
     - name: MY_ENV_FROM_SECRET
       valueFrom:
         secretKeyRef:
           name: my-global-secret
           key: my-key
-    # reference to configmap
+    # reference to ConfigMap
     - name: MY_ENV_FROM_CONFIGMAP
       valueFrom:
         configMapKeyRef:
@@ -167,8 +165,8 @@ Example:
           key: my-key
 ```
 
-If you need to set multiple environment variables at once, you can load the whole content of a global secret or configmap.
-In this case, the name of the keys in the secret or configmap define the name of the created environment variable.
+If you need to set multiple environment variables at once, you can load the whole content of a global Secret or ConfigMap.
+In this case, the name of the keys in the Secret or ConfigMap define the name of the created environment variable.
 
 Example:
 ```yaml
@@ -235,7 +233,7 @@ Example:
 
 #### Storage
 
-By default, no volumes are defined and no mounts are mounted connected to the containers. This can be useful to mount important files like certificates.
+By default, no volumes are defined and no mounts are mounted connected to the containers. This can be useful to attach files like certificates.
 Example:
 ```yaml
   volumes:
