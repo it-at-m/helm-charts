@@ -9,6 +9,3 @@ imagePullSecrets: []
 
 # Configuration of Modules
 modules: []
-
-# Gateway configuration
-refarch-gateway: {}

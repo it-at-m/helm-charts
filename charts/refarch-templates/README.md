@@ -9,7 +9,9 @@ It consists of the following components:
 - [refarch-eai](https://github.com/it-at-m/refarch-templates/tree/main/refarch-eai)
 - [refarch-frontend](https://github.com/it-at-m/refarch-templates/tree/main/refarch-frontend)
 - [refarch-webcomponent](https://github.com/it-at-m/refarch-templates/tree/main/refarch-webcomponent)
-- [API Gateway](https://refarch.oss.muenchen.de/gateway.html), as a chart dependency via [refarch-gateway](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway) chart
+
+**Note:** This chart does not ship with an [API Gateway](https://refarch.oss.muenchen.de/gateway.html).
+If you need an API Gateway define it as an additional chart dependency.
 
 ## Installing the Chart
 
@@ -23,8 +25,27 @@ The file `values-example.yaml` contains a minimal example. The [Configuration](#
 
 ## Configuration
 
-The configuration in split into global configuration options (which are to be reused by all defined modules), and module specific options that only apply to one RefArch component.
-`module` is a concept introduced in this chart to be able to define all required deployments as a list and keep the Helm charts using the RefArch as a dependency as lean as possible.
+This chart was built to be reused by applications using the reference architecture of it@M.
+When defining your own `values.yaml` files, all configuration options explained below need to be done under the `refarch-templats` key.
+Example:
+```yaml
+refarch-templates:
+  # global configuration
+  # ....
+  # module-specific configuration
+  # ....
+```
+
+If you also need an API Gateway, add its Helm chart to your Chart dependencies.
+Configuration of the Gateway must then be placed under the `refarch-gateway` key.
+Example:
+```yaml
+refarch-gateway:
+  # gateway configuration options
+```
+
+The configuration for the templates in split into global configuration options (which are to be reused by all defined modules), and module specific options that only apply to one RefArch component.
+`module` is a concept introduced in this chart to be able to define all required deployments as a list and keep the downstream charts as a dependency as lean as possible.
 
 **Note:** All code snippets included in this `README` are intended as required. This allows to easily copy and paste configuration snippets into your own `values.yml`.
 
@@ -38,12 +59,12 @@ Global Secrets can be created using this Helm chart. Note that the keys for the 
 
 Example:
 ```yaml
-secrets:
-  - name: my-secret
-    keys:
-      - mykey1
-      - mykey2
-      - mykey3
+  secrets:
+    - name: my-secret
+      keys:
+        - mykey1
+        - mykey2
+        - mykey3
 ```
 
 #### ConfigMaps
@@ -52,15 +73,15 @@ Global ConfigMaps can be configured to reuse them across multiple modules. You c
 
 Example:
 ```yaml
-configMaps:
-  - name: my-configmap
-    data:
-      # property-like keys; each key maps to a simple value
-      player_initial_lives: "3"
-      # file-like keys
-      myfile.txt: |
-        enemy.types=aliens,monsters
-        player.maximum-lives=5
+  configMaps:
+    - name: my-configmap
+      data:
+        # property-like keys; each key maps to a simple value
+        player_initial_lives: "3"
+        # file-like keys
+        myfile.txt: |
+          enemy.types=aliens,monsters
+          player.maximum-lives=5
 ```
 
 #### ImagePull Secrets
@@ -70,8 +91,8 @@ The image pull Secrets are reused for all modules you define.
 
 Example:
 ```yaml
-imagePullSecrets:
-  - name: my-pull-secret
+  imagePullSecrets:
+    - name: my-pull-secret
 ```
 
 ### Module configurations
@@ -81,8 +102,8 @@ All configuration has to be done under the `modules` key.
 
 Example:
 ```yaml
-modules:
-  # add your modules configuration here (as a list)
+  modules:
+    # add your modules configuration here (as a list)
 ```
 
 #### Base information
@@ -92,25 +113,25 @@ Additionally, you can override the `pullPolicy`, which is set to `IfNotPresent` 
 
 Example:
 ```yaml
-  - name: frontend
-    image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
-      pullPolicy: Always # Defaults to IfNotPresent
-      tag: "latest"
+    - name: frontend
+      image:
+        repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
+        pullPolicy: Always # Defaults to IfNotPresent
+        tag: "latest"
 ```
 
 #### Resources & Scaling
 
 You can define your resources like CPU and RAM and the desired replicas as stated below. If you don't set those properties, those values will be used by default:
 ```yaml
-  resources:
-    requests:
-      cpu: 100m
-      memory: 512Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-  replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    replicas: 1
 ```
 
 **Note:** You can also just override the `requests` or `limits`, but always need to set `cpu` and `memory` if you do so.
@@ -118,11 +139,11 @@ You can define your resources like CPU and RAM and the desired replicas as state
 Configuring auto-scaling is optional and disabled by default.
 Example:
 ```yaml
-  autoscaling:
-    minReplicas: 1 # defaults to 1
-    maxReplicas: 10 
-    targetCPUUtilizationPercentage: 80 # optional
-    targetMemoryUtilizationPercentage: 80 # optional
+    autoscaling:
+      minReplicas: 1 # defaults to 1
+      maxReplicas: 10 
+      targetCPUUtilizationPercentage: 80 # optional
+      targetMemoryUtilizationPercentage: 80 # optional
 ```
 
 #### Configuration management
@@ -135,11 +156,11 @@ You can define environment variables in it as well.
 
 Example:
 ```yaml
-  applicationYML:
-    MY_ENV_VARIABLE: someValue
-    spring:
-      profiles:
-        active: "myprofile"
+    applicationYML:
+      MY_ENV_VARIABLE: someValue
+      spring:
+        profiles:
+          active: "myprofile"
 ```
 
 Alternatively you can define single environment variables as follows, optionally referencing an entry inside a global Secret or ConfigMap.
@@ -147,22 +168,22 @@ This can e.g. be used to set `JAVA_OPTS_APPEND`.
 
 Example:
 ```yaml
-  env:
-    # static
-    - name: MY_ENV_VARIABLE
-      value: myvalue
-    # reference to Secret
-    - name: MY_ENV_FROM_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: my-global-secret
-          key: my-key
-    # reference to ConfigMap
-    - name: MY_ENV_FROM_CONFIGMAP
-      valueFrom:
-        configMapKeyRef:
-          name: my-global-configmap
-          key: my-key
+    env:
+      # static
+      - name: MY_ENV_VARIABLE
+        value: myvalue
+      # reference to Secret
+      - name: MY_ENV_FROM_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: my-global-secret
+            key: my-key
+      # reference to ConfigMap
+      - name: MY_ENV_FROM_CONFIGMAP
+        valueFrom:
+          configMapKeyRef:
+            name: my-global-configmap
+            key: my-key
 ```
 
 If you need to set multiple environment variables at once, you can load the whole content of a global Secret or ConfigMap.
@@ -170,12 +191,12 @@ In this case, the name of the keys in the Secret or ConfigMap define the name of
 
 Example:
 ```yaml
-  envFrom:
-    # whole files of envs
-    - configMapRef:
-        name: my-global-configmap
-    - secretRef:
-        name: my-global-secret
+    envFrom:
+      # whole files of envs
+      - configMapRef:
+          name: my-global-configmap
+      - secretRef:
+          name: my-global-secret
 ```
 
 #### Networking
@@ -185,41 +206,41 @@ To expose your deployments (either cluster-interally or externally) services and
 For services, you can either define all port mappings manually or use the custom defined properties, which configure mappings that are required by most services.
 Setting `http` to `true` maps to:
 ```yaml
-    - name: http
-      protocol: TCP
-      port: 8080
-      targetPort: http
+      - name: http
+        protocol: TCP
+        port: 8080
+        targetPort: http
 ```
 
 Example for configuring the service:
 ```yaml
-  service:
-    http: true
-    ports:
-      - name: custom-port
-        protocol: TCP
-        port: 1234
-        targetPort: 5678
+    service:
+      http: true
+      ports:
+        - name: custom-port
+          protocol: TCP
+          port: 1234
+          targetPort: 5678
 ```
 
 Ingress is required if you want to expose the deployment externally.
 Example:
 ```yaml
-  ingress:
-    port: 1234    # defaults to 8080
-    className: "" # optional 
-    annotations: # optional custom annotations
-      kubernetes.io/ingress.class: nginx
-      kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: my-example.local
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-    tls:
-      - secretName: my-tls-secret
-        hosts:
-          - my-example.local
+    ingress:
+      port: 1234    # defaults to 8080
+      className: "" # optional 
+      annotations: # optional custom annotations
+        kubernetes.io/ingress.class: nginx
+        kubernetes.io/tls-acme: "true"
+      hosts:
+        - host: my-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls:
+        - secretName: my-tls-secret
+          hosts:
+            - my-example.local
 ```
 
 #### Storage
@@ -227,18 +248,18 @@ Example:
 By default, no volumes are defined and no mounts are mounted connected to the containers. This can be useful to attach files like certificates.
 Example:
 ```yaml
-  volumes:
-    - name: cacerts-lhm
-      secret:
-        defaultMode: 420
-        secretName: cacerts-lhm
-        items:
-          - key: cacerts-lhm
-            path: cacerts
-  volumeMounts:
-    - mountPath: /etc/pki/ca-trust/extracted/java
-      name: cacerts-lhm
-      readOnly: true
+    volumes:
+      - name: cacerts-lhm
+        secret:
+          defaultMode: 420
+          secretName: cacerts-lhm
+          items:
+            - key: cacerts-lhm
+              path: cacerts
+    volumeMounts:
+      - mountPath: /etc/pki/ca-trust/extracted/java
+        name: cacerts-lhm
+        readOnly: true
 ```
 
 #### Monitoring
@@ -248,19 +269,19 @@ You can override `startupProbe`, `livenessProbe` and `readinessProbe` individual
 
 The following configuration is picked up by default:
 ```yaml
-  startupProbe:
-    httpGet:
-      path: /actuator/health
-      port: http
-      initialDelaySeconds: 60
-  livenessProbe:
-    httpGet:
-      path: /actuator/health/liveness
-      port: http
-  readinessProbe:
-    httpGet:
-      path: /actuator/health/readiness
-      port: http
+    startupProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+        initialDelaySeconds: 60
+    livenessProbe:
+      httpGet:
+        path: /actuator/health/liveness
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health/readiness
+        port: http
 ```
 
 **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
