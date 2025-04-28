@@ -49,19 +49,19 @@ refarch-templates:
         - prefix: SSO_
           secretRef:
             name: sso
-        - prefix: SPRING_JPA_DATASOURCE_
+        - prefix: SPRING_DATASOURCE_
           secretRef:
             name: db
       env:
         - name: SECURITY_LOGGINGMODE
           value: "all"
         # mappings, normally don't have to be changed
-        - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWTSETURI
-          value: "$SSO_URL/auth/realms/$SSO_REALM/protocol/openid-connect/certs"
+        - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWK_JWTSETURI
+          value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
         - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
-          value: "$SSO_CLIENTID"
+          value: "${SSO_CLIENTID}"
         - name: SECURITY_USERINFOURI
-          value: "$SSO_URL/auth/realms/$SSO_REALM/protocol/openid-connect/userinfo"
+          value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
       service:
         http: true
       volumes:
