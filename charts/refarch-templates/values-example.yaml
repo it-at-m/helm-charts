@@ -56,7 +56,7 @@ refarch-templates:
         - name: SECURITY_LOGGINGMODE
           value: "all"
         # mappings, normally don't have to be changed
-        - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWK_JWTSETURI
+        - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI
           value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
         - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
           value: "${SSO_CLIENTID}"
