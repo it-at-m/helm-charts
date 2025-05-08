@@ -93,7 +93,7 @@ backend:
       # Map
       DAVE_MAP_CENTER_LAT: "48.137227"
       DAVE_MAP_CENTER_LNG: "11.575517"
-      DAVE_MAP_CENTER_ZOOM: "8"
+      DAVE_MAP_CENTER_ZOOM: "12"
     # Dave Email Settings
     email:
       DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
