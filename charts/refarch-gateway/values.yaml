@@ -123,6 +123,7 @@ tolerations: []
 
 affinity: {}
 
+applicationYmlMountPath: /deployments/config
 applicationYML:
 
 hazelcast:

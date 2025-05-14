@@ -73,7 +73,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: config
-              mountPath: /deployments/config
+              mountPath: {{ .Values.applicationYmlMountPath }}
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
