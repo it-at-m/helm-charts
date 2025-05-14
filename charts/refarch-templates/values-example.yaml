@@ -132,6 +132,7 @@ refarch-gateway:
                 - "Path=/api/refarch-eai/**"
               filters:
                 - "RewritePath=/api/refarch-eai/(?<urlsegments>.*), /$\\{urlsegments}"
+            # The catch all route needs to be stand at the end.
             - id: "frontend"
               uri: "http://myrelease-frontend:8080/"
               predicates:
