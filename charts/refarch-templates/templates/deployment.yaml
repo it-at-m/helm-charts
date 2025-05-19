@@ -106,4 +106,6 @@ spec:
       volumes:
         {{- toYaml $module.volumes | nindent 8 }}
       {{- end }}
+  strategy:
+    type: {{ $module.deploymentStrategy | default RollingUpdate }}
 {{- end }}
