@@ -107,5 +107,5 @@ spec:
         {{- toYaml $module.volumes | nindent 8 }}
       {{- end }}
   strategy:
-    type: {{ $module.deploymentStrategy | default RollingUpdate }}
+    type: {{ quote ($module.deploymentStrategy | default "RollingUpdate") }}
 {{- end }}
