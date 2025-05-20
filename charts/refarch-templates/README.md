@@ -298,10 +298,10 @@ Web components like `refarch-frontend` or `refarch-webcomponent` are compatible 
 
 Details here https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
 
-```yml
+```yaml
 module:
- backend:
-  deploymentStrategy: RollingUpdate # or Recreate
-```
+  backend:
+    deploymentStrategy: RollingUpdate # or Recreate
+```  
 
 
