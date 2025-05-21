@@ -258,7 +258,7 @@ Example for configuring a service:
 
 Ingress is required if you want to expose the deployment externally.
 
-More information about Services can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+More information about Ingresses can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
 Example:
 ```yaml
