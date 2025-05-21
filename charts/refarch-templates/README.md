@@ -59,6 +59,8 @@ Those configurations create Kubernetes resources which are not specifically boun
 
 Global Secrets can be created using this Helm chart. Note that the keys for the Secret can be created, but the values need to be filled in manually using GUI or CLI mechanisms.
 
+More information about Secrets can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/).
+
 > **Note:** The secret will only be created once and will not be overridden. It is not possible to change the structure after creating a secret with this helm-chart, except the corresponding secret was deleted. Furthermore, this resource will not be deleted by uninstalling the chart.
 
 Example:
@@ -74,6 +76,8 @@ Example:
 #### ConfigMaps
 
 Global ConfigMaps can be configured to reuse them across multiple modules. You can store property-like keys and file-like keys in it.
+
+More information about ConfigMaps can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/configmap/).
 
 > **Note:** In contrast to the secret, the configmap is intended to be ful´ly managed by this helm-chart. Any changes will be reflected in the created ressource.
 
@@ -94,6 +98,8 @@ Example:
 
 Image pull Secrets might be necessary to bypass pull limits by certain container registries or access private registries.
 The image pull Secrets are reused for all modules you define.
+
+More information about ImagePull Secrets can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
 
 Example:
 ```yaml
@@ -129,7 +135,11 @@ Example:
 
 #### Resources & Scaling
 
-You can define your resources like CPU and RAM and the desired replicas as stated below. If you don't set those properties, those values will be used by default:
+You can define your resources like CPU and RAM and the desired replicas.
+
+More information about Resources can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+
+If you don't set those properties, those values will be used by default:
 ```yaml
     resources:
       requests:
@@ -144,6 +154,9 @@ You can define your resources like CPU and RAM and the desired replicas as state
 > **Note:** You can also just override the `requests` or `limits`, but always need to set `cpu` and `memory` if you do so.
 
 Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscalling` block).
+
+More information about Autoscaling can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/autoscaling/).
+
 Example:
 ```yaml
     autoscaling:
@@ -210,6 +223,8 @@ Example:
 
 To expose your deployments (either cluster-interally or externally) services and ingresses can be used.
 
+More information about Services can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/service/).
+
 For services, you can either define all port mappings manually or use the custom defined properties, which configure mappings that are required by most services.
 Setting `http` to `true`, will result in the following port-mapping to be added:
 ```yaml
@@ -231,6 +246,9 @@ Example for configuring a service:
 ```
 
 Ingress is required if you want to expose the deployment externally.
+
+More information about Services can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+
 Example:
 ```yaml
     ingress:
@@ -253,6 +271,9 @@ Example:
 #### Storage
 
 By default, no volumes are defined and no mounts are mounted connected to the containers. This can be useful to attach files like certificates.
+
+More information about Volumes can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/).
+
 Example:
 ```yaml
     volumes:
@@ -273,6 +294,8 @@ Example:
 
 Health checks are required to validate the functionality of the running deployments.
 You can override `startupProbe`, `livenessProbe` and `readinessProbe` individually.
+
+More information about Health Checks can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/).
 
 The following configuration is picked up by default:
 ```yaml
@@ -296,11 +319,12 @@ Web components like `refarch-frontend` or `refarch-webcomponent` are compatible 
 
 ### Deployment Strategy
 
-Details here https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+The deployment strategy controls how old Pods are being replaced when new Pods are rolled out.
+By default, it will use the `RollingUpdate` strategy.
+
+More information about Deployment Strategies can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy).
 
 ```yaml
-module:
-  backend:
     deploymentStrategy: RollingUpdate # or Recreate
 ```  
 
