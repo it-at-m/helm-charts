@@ -133,6 +133,17 @@ Example:
         tag: "latest"
 ```
 
+#### Deployment Strategy
+
+The deployment strategy controls how old Pods are being replaced when new Pods are rolled out.
+By default, it will use the `RollingUpdate` strategy.
+
+More information about Deployment Strategies can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy).
+
+```yaml
+    deploymentStrategy: RollingUpdate # or Recreate
+```  
+
 #### Resources & Scaling
 
 You can define your resources like CPU and RAM and the desired replicas.
@@ -316,16 +327,5 @@ The following configuration is picked up by default:
 
 > **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
 Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API.
-
-### Deployment Strategy
-
-The deployment strategy controls how old Pods are being replaced when new Pods are rolled out.
-By default, it will use the `RollingUpdate` strategy.
-
-More information about Deployment Strategies can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy).
-
-```yaml
-    deploymentStrategy: RollingUpdate # or Recreate
-```  
 
 
