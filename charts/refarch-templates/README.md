@@ -327,5 +327,3 @@ The following configuration is picked up by default:
 
 > **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
 Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API.
-
-
