@@ -44,3 +44,12 @@ app.kubernetes.io/name: {{ include "getName" $moduleName }}
 {{- end }}
 app.kubernetes.io/instance: {{ .dot.Release.Name }}
 {{- end }}
+
+{{/*
+Get the trigger annotation
+*/}}
+{{- define "triggerAnnotation" -}}
+  {{- $moduleName := (index . 0) }}
+  {{- $imagestream := index . 1 }}
+image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"{{$imagestream}}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ $moduleName  }}\")].image"}]'
+{{- end }}
