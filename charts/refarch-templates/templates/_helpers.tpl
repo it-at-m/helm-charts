@@ -15,6 +15,14 @@ Get the truncated module name with the release name #dev-backend
 {{- end -}}
 
 {{/*
+Get the truncated module name for the image stream
+*/}}
+{{- define "getFullnameImageStream" -}}
+{{- $moduleName := $.Values.imagestream }}
+{{- printf "%s-%s" $.Release.Name $moduleName | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Get the truncated chart name
 */}}
 {{- define "getChartName" -}}
