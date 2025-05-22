@@ -15,6 +15,14 @@ Get the truncated module name with the release name #dev-backend
 {{- end -}}
 
 {{/*
+Get the truncated module name for the image stream
+*/}}
+{{- define "getFullnameImageStream" -}}
+{{- $moduleName := $.Values.imagestream }}
+{{- printf "%s-%s" $.Release.Name $moduleName | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Get the truncated chart name
 */}}
 {{- define "getChartName" -}}
@@ -43,4 +51,13 @@ Get the Selector labels for connection between service and pods
 app.kubernetes.io/name: {{ include "getName" $moduleName }}
 {{- end }}
 app.kubernetes.io/instance: {{ .dot.Release.Name }}
+{{- end }}
+
+{{/*
+Get the trigger annotation
+*/}}
+{{- define "triggerAnnotation" -}}
+  {{- $moduleName := (index . 0) }}
+  {{- $imagestream := index . 1 }}
+image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"{{$imagestream}}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ $moduleName  }}\")].image"}]'
 {{- end }}

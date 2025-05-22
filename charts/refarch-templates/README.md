@@ -325,5 +325,15 @@ The following configuration is picked up by default:
         port: http
 ```
 
+#### Autorollout  (works only on openshift)
+
+This feature is ideal for development. So you don't need to update each time the chart during development. The imagetag is linked for example to `latest`. Each time the tag gets overriden a new rollout is started.
+
+[details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes)
+
+```yaml
+imagestream: sample
+```
+
 > **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
 Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API.
