@@ -157,12 +157,11 @@ If you don't set those properties, those values will be used by default:
         cpu: 100m
         memory: 512Mi
       limits:
-        cpu: 500m
         memory: 512Mi
     replicas: 1
 ```
 
-> **Note:** You can also just override the `requests` or `limits`, but always need to set `cpu` and `memory` if you do so.
+> **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
 
 Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscalling` block).
 

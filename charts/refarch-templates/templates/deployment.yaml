@@ -87,7 +87,6 @@ spec:
             {{- toYaml $module.resources | nindent 12 }}
             {{- else }}
             limits:
-              cpu: 500m
               memory: 512Mi
             {{- end }}
           {{- if $module.env }}
