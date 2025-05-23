@@ -18,3 +18,15 @@ jobs:
 
     - name: Label PR
       uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5
+      with:        
+        pr-number: |
+          129
+          124
+          122
+          119
+          111
+          100
+          99
+          95
+          50
+          39
