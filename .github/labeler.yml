@@ -1,58 +1,59 @@
 
 orga:
 - changed-files:
-  - any-glob-to-any-file: /.github/**
-  - any-glob-to-any-file: /images/**
-  - any-glob-to-any-file: '*'
+  - any-glob-to-any-file: 
+    - '.github/**'
+    - 'images/**'
+    -  '*'
 
 ad2image:
 - changed-files:
-  - any-glob-to-any-file: /charts/ad2image/**
+  - any-glob-to-any-file: charts/ad2image/**
 
 appswitcher-server:
 - changed-files:
-  - any-glob-to-any-file: /charts/appswitcher-server/**
+  - any-glob-to-any-file: charts/appswitcher-server/**
 
 java-spring-boot:
 - changed-files:
-  - any-glob-to-any-file: /charts/java-spring-boot/**
+  - any-glob-to-any-file: charts/java-spring-boot/**
 
   
 dave:
 - changed-files:
-  - any-glob-to-any-file: /charts/dave/**
+  - any-glob-to-any-file: charts/dave/**
 
 ezldap:
 - changed-files:
-  - any-glob-to-any-file: /charts/ezldap/**
+  - any-glob-to-any-file: charts/ezldap/**
 
 kf-app-eai:
 - changed-files:
-  - any-glob-to-any-file: /charts/kf-app-eai/**
+  - any-glob-to-any-file: charts/kf-app-eai/**
 
 pentaho-carte:
 - changed-files:
-  - any-glob-to-any-file: /charts/pentaho-carte/**
+  - any-glob-to-any-file: charts/pentaho-carte/**
 
 wjh-rechner:
 - changed-files:
-  - any-glob-to-any-file: /charts/wjh-rechner/**
+  - any-glob-to-any-file: charts/wjh-rechner/**
 
 zammad-ldap-sync:
 - changed-files:
-  - any-glob-to-any-file: /charts/zammad-ldap-sync/**
+  - any-glob-to-any-file: charts/zammad-ldap-sync/**
 
 refarch-gateway:
 - changed-files:
-  - any-glob-to-any-file: /charts/refarch-gateway/**
+  - any-glob-to-any-file: charts/refarch-gateway/**
 
 refarch-templates:
 - changed-files:
-  - any-glob-to-any-file: /charts/refarch-templates/**
+  - any-glob-to-any-file: charts/refarch-templates/**
 
   
 sps-sample:
 - changed-files:
-  - any-glob-to-any-file: /charts/sps-sample/**
+  - any-glob-to-any-file: charts/sps-sample/**
 
   
