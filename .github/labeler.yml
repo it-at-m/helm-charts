@@ -46,6 +46,10 @@ refarch-gateway:
 - changed-files:
   - any-glob-to-any-file: /charts/refarch-gateway/**
 
+refarch-templates:
+- changed-files:
+  - any-glob-to-any-file: /charts/refarch-templates/**
+
   
 sps-sample:
 - changed-files:
