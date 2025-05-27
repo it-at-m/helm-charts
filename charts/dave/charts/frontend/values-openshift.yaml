@@ -1,11 +1,11 @@
-# Default values for dave admin-portal.
+# Default values for dave-frontend.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: ghcr.io/it-at-m/dave-admin-portal
+  repository: ghcr.io/it-at-m/dave-frontend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "stable"
@@ -32,12 +32,13 @@ podSecurityContext:
   # fsGroup: 2000
 
 securityContext:
-  capabilities:
-    drop:
-    - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -145,7 +146,7 @@ serviceMonitor:
   enabled: false
 
 applicationYML:
-  daveAdminPortal:
+  daveFrontend:
     #ldap:
     #  url: ldap://ldap.example.org:389
     #  user-search-base: ou=users,dc=example,dc=org
