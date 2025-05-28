@@ -7,7 +7,7 @@ home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
 icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 dependencies:
   - name: refarch-gateway
-    condition: refarch-gateway.enabled
+    condition: refarch-gateway.enable
     version: ^1.0.0
     repository: "@it-at-m"
 sources:
