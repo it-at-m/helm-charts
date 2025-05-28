@@ -72,7 +72,7 @@ modules:
     volumes: *cacertsVolume
     volumeMounts: *cacertsVolumeMount
 
-# Sample Gateway configuration, requires additional chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+# Sample Gateway configuration, which is enabled by default. For further configuration option view the chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
 refarch-gateway:
   envFrom:
     - prefix: SSO_
