@@ -107,6 +107,17 @@ Example:
     - name: my-pull-secret
 ```
 
+#### Refarch API Gateway
+
+The API-Gateway is included as an optional dependency inside this helm-chart. If it is not needed you can disable it by using the following example.
+> **Note:** The API-Gateway is enabled by default, due to Helm, with the standard configuration. Therefore, it is not necessary to enable it!
+
+```yaml
+refarch-gateway:
+  enable: false
+```
+Further configuration option can be seen in the documentation of the [API-Gateway](https://refarch.oss.muenchen.de/gateway.html).
+
 ### Module configurations
 
 Modules consist of individual components in an array.
