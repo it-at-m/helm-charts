@@ -7,7 +7,7 @@ dependencies:
   version: 14.3.3
 - name: keycloak
   repository: https://charts.bitnami.com/bitnami
-  version: 24.4.13
+  version: 24.7.3
 - name: backend
   repository: ""
   version: '*'
@@ -23,5 +23,5 @@ dependencies:
 - name: eai
   repository: ""
   version: '*'
-digest: sha256:04fa1828de8ba6c5e62a70c1fe9306eb4d651a8fd79beddc49c415b06cd1857e
-generated: "2025-03-20T10:49:05.232444674+01:00"
+digest: sha256:1ceba6526f832d79fbc669ba749e2ebd80715d8b441955b68d51969fe757ea16
+generated: "2025-05-28T20:51:44.427190073Z"
