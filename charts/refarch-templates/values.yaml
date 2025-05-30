@@ -9,3 +9,7 @@ imagePullSecrets: []
 
 # Configuration of Modules
 modules: []
+
+global:
+  subchart1:
+    enabled: true
