@@ -29,36 +29,6 @@ modules:
     service:
       http: true
 
-# Sample Gateway configuration, which is enabled by default. For further configuration option view the chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+# Sample Gateway configuration - disabled
 refarch-gateway:
-  envAppend:
-    - name: SPRING_PROFILES_ACTIVE
-      value: "hazelcast-k8s"
-  applicationYML:
-    spring:
-      cloud:
-        gateway:
-          routes:
-            # The catch all route needs to be stand at the end.
-            - id: "frontend"
-              uri: "http://myrelease-frontend:8080/"
-              predicates:
-                - "Path=/**"
-    # OpenShift-specific configuration, if you have plain Kubernetes, you will need to change the annotations, className.
-    # annotations:
-    #   route.openshift.io/termination: "edge"
-    # className: openshift-default
-  volumes:
-    cacertsVolume:
-      - name: cacerts-volume
-        secret:
-          defaultMode: 420
-          secretName: cacerts-lhm
-          items:
-            - key: cacerts-lhm
-              path: cacerts
-  volumeMounts:
-    cacertsVolumeMount:
-      - mountPath: /etc/pki/ca-trust/extracted/java
-        name: cacerts-volume
-        readOnly: true
+  enable: false
