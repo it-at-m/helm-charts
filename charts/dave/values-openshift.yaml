@@ -1,0 +1,23 @@
+# Additional values for dave for OpenShift environments.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Dave Backend
+backend:
+  securityContext: null
+
+# Dave Admin-Portal
+admin-portal:
+  securityContext: null
+
+# Dave EAI
+eai:
+  securityContext: null
+
+# Dave Frontend
+frontend:
+  securityContext: null
+
+# Dave Selfservice-Portal
+selfservice-portal:
+  securityContext: null
