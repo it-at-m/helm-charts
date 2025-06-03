@@ -28,3 +28,7 @@ modules:
       tag: "latest"
     service:
       http: true
+
+# Sample Gateway configuration - disabled
+refarch-gateway:
+  enable: false

@@ -39,6 +39,7 @@ spec:
             allowPrivilegeEscalation: false
           image: "{{ $module.image.repository }}:{{ $module.image.tag }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
+          {{- if $module.service }}
           ports:
             {{- if $module.service.http }}
             - name: http
@@ -50,6 +51,7 @@ spec:
               containerPort: {{ $port.port }}
               protocol: {{ $port.protocol }}
             {{- end }}
+          {{- end }}
           startupProbe:
             {{- if $module.startupProbe }}
             {{- toYaml $module.startupProbe | nindent 12 }}
