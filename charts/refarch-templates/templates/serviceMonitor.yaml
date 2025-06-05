@@ -1,0 +1,25 @@
+{{- $dot := . }}
+{{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
+{{- if $module.serviceMonitor }}
+---
+apiVersion: monitoring.rhobs/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "getLabels" $data | trim | nindent 4 }}
+  name: {{ include "getFullname" $data }}
+spec:
+  endpoints:
+    - interval: 30s
+      path: /actuator/metrics
+      port: http
+      scheme: http
+  namespaceSelector:
+    matchNames:
+      - {{$.Release.namespace}}
+  selector:
+    matchLabels:
+      {{- include "getLabels" $data | trim | nindent 4 }}
+{{- end }}
+{{- end }}
