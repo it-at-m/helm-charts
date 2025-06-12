@@ -4,7 +4,7 @@ dependencies:
   version: 19.17.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 14.3.3
+  version: 16.7.11
 - name: keycloak
   repository: https://charts.bitnami.com/bitnami
   version: 24.4.13
@@ -23,5 +23,5 @@ dependencies:
 - name: eai
   repository: ""
   version: '*'
-digest: sha256:04fa1828de8ba6c5e62a70c1fe9306eb4d651a8fd79beddc49c415b06cd1857e
-generated: "2025-03-20T10:49:05.232444674+01:00"
+digest: sha256:bdcb10727fc84decdfcd6d529ba7311267da15c043c3f88e681f40c1ff2899e0
+generated: "2025-06-12T00:51:12.270333188Z"
