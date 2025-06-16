@@ -107,6 +107,17 @@ Example:
     - name: my-pull-secret
 ```
 
+#### Refarch API Gateway
+
+The API-Gateway is included as an optional dependency inside this helm-chart. If it is not needed you can disable it by using the following example.
+> **Note:** The API-Gateway is enabled by default, due to Helm, with the standard configuration. Therefore, it is not necessary to enable it!
+
+```yaml
+refarch-gateway:
+  enable: false
+```
+Further configuration option can be seen in the documentation of the [API-Gateway](https://refarch.oss.muenchen.de/gateway.html).
+
 ### Module configurations
 
 Modules consist of individual components in an array.
@@ -157,12 +168,11 @@ If you don't set those properties, those values will be used by default:
         cpu: 100m
         memory: 512Mi
       limits:
-        cpu: 500m
         memory: 512Mi
     replicas: 1
 ```
 
-> **Note:** You can also just override the `requests` or `limits`, but always need to set `cpu` and `memory` if you do so.
+> **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
 
 Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscalling` block).
 
