@@ -9,7 +9,7 @@ spec:
   tags:
 {{- range .Values.modules }}
     - name: {{.name}}
-      annotations: null
+      annotations: {}
       from:
         kind: DockerImage
         name: {{.image.repository}}:{{.image.tag}}
