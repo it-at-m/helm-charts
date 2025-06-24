@@ -7,7 +7,7 @@ spec:
   lookupPolicy:
     local: false
   tags:
-{{- range .Values.modules }}
+  {{- range .Values.modules }}
     - name: {{.name}}
       annotations: {}
       from:
