@@ -335,9 +335,9 @@ The following configuration is picked up by default:
         port: http
 ```
 
-#### Autorollout  (works only on openshift)
+#### Autorollout (works only on OpenShift)
 
-This feature is ideal for development. So you don't need to update each time the chart during development. The imagetag is linked for example to `latest`. Each time the tag gets overriden a new rollout is started.
+This feature is ideal for development, so you don't need to update the chart each time. The image tag is linked, for example, to `latest`. Each time the tag gets overridden, a new rollout is triggered.
 
 [details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes)
 
