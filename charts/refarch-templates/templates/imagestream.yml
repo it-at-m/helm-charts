@@ -1,0 +1,21 @@
+{{- if $.Values.imagestream }}
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: {{ include "getFullnameImageStream" $ }}
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  {{- range .Values.modules }}
+    - name: {{.name}}
+      annotations: {}
+      from:
+        kind: DockerImage
+        name: {{.image.repository}}:{{.image.tag}}
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Source
+{{- end }}
+{{- end }}
