@@ -130,4 +130,5 @@ hazelcast:
   assignRoleToServiceAccount: true
 
 serviceMonitor:
-  enabled: false
+  enabled: true
+  interval: 30s
