@@ -131,4 +131,5 @@ hazelcast:
 
 serviceMonitor:
   enabled: true
+  path: /actuator/metrics
   interval: 30s

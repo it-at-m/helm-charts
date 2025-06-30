@@ -10,7 +10,7 @@ spec:
     - interval: {{ .Values.serviceMonitor.interval }}
       port: http
       scheme: http
-      path: /actuator/metrics
+      path: {{ .Values.serviceMonitor.path }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
