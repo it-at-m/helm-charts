@@ -130,6 +130,6 @@ hazelcast:
   assignRoleToServiceAccount: true
 
 serviceMonitor:
-  enabled: true
+  enabled: false
   path: /actuator/metrics
   interval: 30s
