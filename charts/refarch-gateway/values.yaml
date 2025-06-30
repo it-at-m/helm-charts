@@ -130,3 +130,6 @@ applicationYML:
 hazelcast:
   enabled: true
   assignRoleToServiceAccount: true
+
+serviceMonitor:
+  enabled: false
