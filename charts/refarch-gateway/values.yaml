@@ -107,8 +107,6 @@ volumeMounts: []
 
 # Additional env on the output Deployment definition.
 env:
-  - name: GC_MAX_METASPACE_SIZE
-    value: "200"
   - name: TZ
     value: Europe/Berlin
 
@@ -130,3 +128,8 @@ applicationYML:
 hazelcast:
   enabled: true
   assignRoleToServiceAccount: true
+
+serviceMonitor:
+  enabled: false
+  path: /actuator/metrics
+  interval: 30s

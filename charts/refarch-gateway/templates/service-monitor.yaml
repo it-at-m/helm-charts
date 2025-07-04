@@ -1,0 +1,20 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "refarch-gateway.fullname" . }}-monitor
+  labels:
+    {{- include "refarch-gateway.labels" . | nindent 4 }}
+spec:
+  endpoints:
+    - interval: {{ .Values.serviceMonitor.interval }}
+      port: http
+      scheme: http
+      path: {{ .Values.serviceMonitor.path }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "refarch-gateway.selectorLabels" . | nindent 6 }}
+{{- end }}

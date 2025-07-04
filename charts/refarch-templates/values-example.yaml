@@ -112,36 +112,38 @@ refarch-gateway:
     spring:
       cloud:
         gateway:
-          routes:
-            - id: "sso"
-              uri: $SSO_URL
-              predicates:
-                - "Path=/api/sso/userinfo"
-              filters:
-                - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
-            - id: "webcomponent"
-              uri: "http://myrelease-webcomponent:8080/"
-              predicates:
-                - "Path=/public/webcomponent"
-              filters:
-                - "RewritePath=/public/webcomponent/(?<urlsegments>.*), /$\\{urlsegments}"
-            - id: "backend"
-              uri: "http://myrelease-backend:8080/"
-              predicates:
-                - "Path=/api/refarch-backend/**"
-              filters:
-                - "RewritePath=/api/refarch-backend/(?<urlsegments>.*), /$\\{urlsegments}"
-            - id: "eai"
-              uri: "http://myrelease-eai:8080/"
-              predicates:
-                - "Path=/api/refarch-eai/**"
-              filters:
-                - "RewritePath=/api/refarch-eai/(?<urlsegments>.*), /$\\{urlsegments}"
-            # The catch all route needs to be stand at the end.
-            - id: "frontend"
-              uri: "http://myrelease-frontend:8080/"
-              predicates:
-                - "Path=/**"
+          server:
+            webflux:
+              routes:
+                - id: "sso"
+                  uri: $SSO_URL
+                  predicates:
+                    - "Path=/api/sso/userinfo"
+                  filters:
+                    - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+                - id: "webcomponent"
+                  uri: "http://myrelease-webcomponent:8080/"
+                  predicates:
+                    - "Path=/public/webcomponent"
+                  filters:
+                    - "RewritePath=/public/webcomponent/(?<urlsegments>.*), /$\\{urlsegments}"
+                - id: "backend"
+                  uri: "http://myrelease-backend:8080/"
+                  predicates:
+                    - "Path=/api/refarch-backend/**"
+                  filters:
+                    - "RewritePath=/api/refarch-backend/(?<urlsegments>.*), /$\\{urlsegments}"
+                - id: "eai"
+                  uri: "http://myrelease-eai:8080/"
+                  predicates:
+                    - "Path=/api/refarch-eai/**"
+                  filters:
+                    - "RewritePath=/api/refarch-eai/(?<urlsegments>.*), /$\\{urlsegments}"
+                # The catch all route needs to be stand at the end.
+                - id: "frontend"
+                  uri: "http://myrelease-frontend:8080/"
+                  predicates:
+                    - "Path=/**"
   ingress:
     enabled: true
     hosts:
