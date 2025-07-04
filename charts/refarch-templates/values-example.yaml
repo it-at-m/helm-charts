@@ -35,11 +35,6 @@ modules:
       tag: "latest"
     service:
       http: true
-    serviceMonitor:
-      enable: true
-
-      interval: 40s
-    serviceMonitorenable: true
   - name: webcomponent
     image:
       repository: ghcr.io/it-at-m/refarch-templates/refarch-webcomponent
