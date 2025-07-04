@@ -335,6 +335,9 @@ The following configuration is picked up by default:
         port: http
 ```
 
+> **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
+Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API
+
 #### Autorollout (works only on OpenShift)
 
 This feature is ideal for development, so you don't need to update the chart each time. The image tag is linked, for example, to `latest`. Each time the tag gets overridden, a new rollout is triggered.
@@ -345,5 +348,13 @@ This feature is ideal for development, so you don't need to update the chart eac
 imagestream: sample
 ```
 
-> **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
-Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API.
+#### Service-Monitor (works only on OpenShift)
+
+You can monitor metrics for a service by configuring monitoring stacks managed by the Cluster Observability Operator (COO)
+
+```yaml
+    serviceMonitor:
+      enable: true
+```
+
+[details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/cluster_observability_operator/configuring-the-cluster-observability-operator-to-monitor-a-service#specifying-how-a-service-is-monitored-by-cluster-observability-operator_configuring_the_cluster_observability_operator_to_monitor_a_service)
