@@ -2,7 +2,7 @@ apiVersion: v2
 name: sps-sample
 description: Helm Chart for deploying a it@M Reference Architecture based sample application.
 type: application
-version: 1.0.4
+version: 1.0.5
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/sps-sample
 icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
 sources:
@@ -15,9 +15,24 @@ dependencies:
   - name: refarch-gateway
     version: ^1.0.0
     repository: "@it-at-m"
+  - name: postgresql
+    version: 16.4.14
+    repository: https://charts.bitnami.com/bitnami
+    condition: database.enabled
+    alias: database
+  - name: keycloak
+    version: 24.4.10
+    repository: https://charts.bitnami.com/bitnami
+    condition: keycloak.enabled
+  - name: appswitcher-server
+    version: 1.2.2
+    repository: "@it-at-m"
+    condition: appswitcher-server.enabled
 maintainers:
-  - name: banzuu
-    url: https://github.com/banzuu
+  - name: ffmuc
+    url: https://github.com/ffmuc
+  - name: tobiasholler
+    url: https://github.com/tobiasholler
   - name: hupling
     url: https://github.com/hupling
   - name: ejcsid
