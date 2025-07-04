@@ -1,7 +1,7 @@
 {{- $dot := . }}
 {{- range $module := .Values.modules -}}
 {{ $data := dict "dot" $dot "module" $module }}
-{{- if $module.serviceMonitor }}
+{{- if and  $module.serviceMonitor $module.serviceMonitor.enable }}
 ---
 apiVersion: monitoring.rhobs/v1
 kind: ServiceMonitor
@@ -11,10 +11,10 @@ metadata:
   name: {{ include "getFullname" $data }}
 spec:
   endpoints:
-    - interval: 30s
-      path: /actuator/metrics
-      port: http
-      scheme: http
+    - interval: {{ $module.serviceMonitor.interval | default "30s" }}
+      path: {{ $module.serviceMonitor.path | default "/actuator/metrics" }}
+      port: {{ $module.serviceMonitor.port | default "http" }}
+      scheme: {{ $module.serviceMonitor.scheme | default "http" }}
   namespaceSelector:
     matchNames:
       - {{$.Release.namespace}}
