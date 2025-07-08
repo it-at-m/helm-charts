@@ -9,7 +9,7 @@ dependencies:
   - name: refarch-gateway
     condition: refarch-gateway.enable
     version: 1.6.0
-    repository: "@it-at-m"
+    repository: "it-at-m"
 sources:
   - "https://github.com/it-at-m/helm-charts"
 maintainers:
