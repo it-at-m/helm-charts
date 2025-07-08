@@ -354,7 +354,7 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 
 ```yaml
     serviceMonitor:
-      enable: true
+      enabled: true
 ```
 
 [details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/cluster_observability_operator/configuring-the-cluster-observability-operator-to-monitor-a-service#specifying-how-a-service-is-monitored-by-cluster-observability-operator_configuring_the_cluster_observability_operator_to_monitor_a_service)
