@@ -1,7 +1,7 @@
 {{- $dot := . }}
 {{- range $module := .Values.modules -}}
 {{ $data := dict "dot" $dot "module" $module }}
-{{- if and  $module.serviceMonitor $module.serviceMonitor.enable }}
+{{- if and  $module.serviceMonitor $module.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.rhobs/v1
 kind: ServiceMonitor
