@@ -64,8 +64,10 @@ modules:
       # mappings, normally don't have to be changed
       - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI
         value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
-      - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
-        value: "${SSO_CLIENTID}"
+      # validates, that the client is contained in the aud claim
+      # requires setup of an according mapper
+      #- name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
+      #  value: "${SSO_CLIENTID}"
       - name: SECURITY_USERINFOURI
         value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
     service:
