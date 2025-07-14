@@ -962,6 +962,23 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2025-07-14T10:46:56.741498591Z"
+    description: ezLDAP - easy read access for LDAP
+    digest: 38006bcd38b9a2bf2b6b7a0e03615f7e5566916b48a30aab7c15b3f7b19517b1
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.5/ezldap-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2025-01-03T11:06:21.002439521Z"
     description: ezLDAP - easy read access for LDAP
     digest: f9a8d67ded89925d47dcec99aeaad36d1303133f9cf8bc94154ac1f57fa39945
@@ -1029,6 +1046,22 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
   java-spring-boot:
+  - apiVersion: v2
+    created: "2025-07-14T10:46:56.951245397Z"
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: 030f0ac2be5e2dd762534e300b6cb32c08914d42e3d79020c848dbd7e0efe3ad
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-0.3.1/java-spring-boot-0.3.1.tgz
+    version: 0.3.1
   - apiVersion: v2
     created: "2025-04-15T09:47:52.921968726Z"
     description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
@@ -2258,4 +2291,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-14T07:19:20.441225321Z"
+generated: "2025-07-14T10:46:56.951412058Z"
