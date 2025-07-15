@@ -4,9 +4,5 @@
   "registryAliases": {
     "it-at-m": "https://it-at-m.github.io/helm-charts"
   },
-  "helm-values":  {
-    "managerFilePatterns": [
-      "/(^|/)values[-|\\w]*\\.ya?ml$/"
-    ]
   }
 }
