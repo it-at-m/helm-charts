@@ -7,12 +7,14 @@
   "packageRules": [
     {
       "matchFileNames": ["charts/**"],
-      "bumpVersions": {
-        "name": "Bump Helm chart version",
-        "filePatterns": "{{packageFileDir}}/Chart.{yaml,yml}",
-        "matchStrings": ["version:\\s(?<version>[^\\s]+)"],
-        "bumpType": "patch"
-      }
+      "bumpVersions": [
+        {
+          "name": "Bump Helm chart version",
+          "filePatterns": "{{packageFileDir}}/Chart.{yaml,yml}",
+          "matchStrings": ["version:\\s(?<version>[^\\s]+)"],
+          "bumpType": "patch"
+        }
+      ]
     }
   ]
 }
