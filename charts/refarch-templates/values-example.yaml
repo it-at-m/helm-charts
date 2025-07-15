@@ -28,29 +28,32 @@ secrets:
 modules:
   - name: frontend
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
-      tag: "latest"
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-frontend
+      tag: "0.0.1"
     service:
       http: true
   - name: webcomponent
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-webcomponent
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-webcomponent
       tag: "latest"
     service:
       http: true
   - name: backend
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-backend
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
-      tag: "latest"
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-backend
+      tag: "0.1.0"
     envFrom:
       - prefix: SSO_
         secretRef:
@@ -74,10 +77,11 @@ modules:
     volumeMounts: *cacertsVolumeMount
   - name: eai
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-eai
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-eai
       tag: "latest"
     service:
       http: true
