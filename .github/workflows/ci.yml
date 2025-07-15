@@ -1,3 +1,5 @@
+permissions:
+  contents: read
 name: Lint and Test Charts
 on: pull_request
 jobs:
