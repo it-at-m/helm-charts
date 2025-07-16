@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "customManagers:helmChartYamlAppVersions", "github>it-at-m/refarch//refarch-tools/refarch-renovate/refarch-renovate-config.json5"],
+  "extends": ["config:recommended", "customManagers:helmChartYamlAppVersions", "github>it-at-m/.github//renovate-configs/renovate-config.json5"],
   "registryAliases": {
     "it-at-m": "https://it-at-m.github.io/helm-charts"
   },
