@@ -1,20 +1,23 @@
 modules:
   - name: frontend
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-frontend
       tag: "latest"
     service:
       http: true
   - name: webcomponent
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-webcomponent
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-webcomponent
       tag: "latest"
     service:
       http: true
 # Commented out because backend currently cannot be tested publicly without DB connection
 #  - name: backend
 #    image:
-#      repository: ghcr.io/it-at-m/refarch-templates/refarch-backend
+#      registry: ghcr.io
+#      repository: it-at-m/refarch-templates/refarch-backend
 #      tag: "latest"
 #    applicationYML:
 #      spring:
@@ -24,7 +27,8 @@ modules:
 #      http: true
   - name: eai
     image:
-      repository: ghcr.io/it-at-m/refarch-templates/refarch-eai
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-eai
       tag: "latest"
     service:
       http: true
