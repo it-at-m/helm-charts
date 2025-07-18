@@ -19,6 +19,6 @@
   ],
   "helm-values": {
     // Target **all** `*values*.yaml*  Files
-    "managerFilePatterns": ["/(^|/)[-|\\w]*values[-|\\w]*\\.ya?ml$/"]
+    "managerFilePatterns": ["**/*values*.{yaml,yml}"]
   }
 }
