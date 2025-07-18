@@ -16,5 +16,9 @@
         }
       ]
     }
-  ]
+  ],
+  "helm-values": {
+    // Target **all** `*values*.yaml*  Files
+    "managerFilePatterns": ["**/*values*.{yaml,yml}"]
+  }
 }
