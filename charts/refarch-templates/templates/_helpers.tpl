@@ -18,8 +18,9 @@ Get the truncated module name with the release name #dev-backend
 Get the truncated module name for the image stream
 */}}
 {{- define "getFullnameImageStream" -}}
-{{- $moduleName := $.Values.imagestream }}
-{{- printf "%s-%s" $.Release.Name $moduleName | trunc 63 | trimSuffix "-" -}}
+{{- $releaseName := index . 0 }}
+{{- $imagestreamName := index . 1 }}
+{{- printf "%s-%s" $releaseName $imagestreamName | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -59,5 +60,6 @@ Get the trigger annotation
 {{- define "triggerAnnotation" -}}
   {{- $moduleName := (index . 0) }}
   {{- $imagestream := index . 1 }}
-image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"{{$imagestream}}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ $moduleName  }}\")].image"}]'
+  {{- $releaseName := index . 2}}
+image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"{{include "getFullnameImageStream" (list $releaseName $imagestream)}}:{{ $moduleName  }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ $moduleName  }}\")].image"}]'
 {{- end }}
