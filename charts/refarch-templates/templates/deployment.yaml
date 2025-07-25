@@ -8,7 +8,7 @@ metadata:
   name: {{ include "getFullname" $data }}
   {{- if $.Values.imagestream }}
   annotations:
-    {{-  include  "triggerAnnotation" (list .name $.Values.imagestream)  | trim | nindent 4 }}
+    {{-  include  "triggerAnnotation" (list .name $.Values.imagestream $.Release.Name )  | trim | nindent 4 }}
   {{- end }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
