@@ -12,7 +12,7 @@ spec:
       annotations: {}
       from:
         kind: DockerImage
-        name: {{.image.repository}}:{{.image.tag}}
+        name: {{.image.registry}}/{{.image.repository}}:{{.image.tag}}
       importPolicy:
         scheduled: true
       referencePolicy:
