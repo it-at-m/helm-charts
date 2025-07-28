@@ -7,9 +7,9 @@ version: 0.1.3
 # Pentaho Dataintegration version
 appVersion: "0.0.2"
 maintainers:
-  - name: ejcsid
-    email: ejcsid@gmail.com
+- name: ejcsid
+  email: ejcsid@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/pentaho-carte
-icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+icon: https://assets.muenchen.de/logos/itm/itM_Basislogo_gelb_schwarz-256.png
 sources:
-  - "https://github.com/it-at-m/helm-charts"
+- "https://github.com/it-at-m/helm-charts"
