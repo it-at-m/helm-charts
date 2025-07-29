@@ -1,0 +1,165 @@
+# YAML anchors to allow reuse in this file
+cacertsVolume: &cacertsVolume
+  - name: cacerts-volume
+    secret:
+      defaultMode: 420
+      secretName: cacerts-lhm
+      items:
+        - key: cacerts-lhm
+          path: cacerts
+cacertsVolumeMount: &cacertsVolumeMount
+  - mountPath: /etc/pki/ca-trust/extracted/java
+    name: cacerts-volume
+    readOnly: true
+# Global configuration
+secrets:
+  - name: sso
+    keys:
+      - URL # e.g. https://sso.example.com
+      - REALM
+      - CLIENTID
+      - CLIENTSECRET
+  - name: db
+    keys:
+      - URL # e.g. jdbc:postgresql://db.example.com:5432/mydb
+      - USERNAME
+      - PASSWORD
+# Module-specific configuration
+modules:
+  - name: frontend
+    image:
+      # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
+      # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
+      # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-frontend
+      tag: "0.0.1"
+    service:
+      http: true
+  - name: webcomponent
+    image:
+      # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
+      # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
+      # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-webcomponent
+      tag: "latest"
+    service:
+      http: true
+  - name: backend
+    image:
+      # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
+      # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
+      # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-backend
+      tag: "0.1.0"
+    envFrom:
+      - prefix: SSO_
+        secretRef:
+          name: sso
+      - prefix: SPRING_DATASOURCE_
+        secretRef:
+          name: db
+    env:
+      - name: SECURITY_LOGGINGMODE
+        value: "all"
+      # mappings, normally don't have to be changed
+      - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI
+        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
+      # validates, that the client is contained in the aud claim
+      # requires setup of an according mapper
+      #- name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
+      #  value: "${SSO_CLIENTID}"
+      - name: SECURITY_USERINFOURI
+        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+    service:
+      http: true
+    volumes: *cacertsVolume
+    volumeMounts: *cacertsVolumeMount
+  - name: eai
+    image:
+      # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
+      # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
+      # You can use direct the version number of an inmutable image. for example: 1.0.0
+      registry: ghcr.io
+      repository: it-at-m/refarch-templates/refarch-eai
+      tag: "latest"
+    service:
+      http: true
+    volumes: *cacertsVolume
+    volumeMounts: *cacertsVolumeMount
+
+# Sample Gateway configuration, which is enabled by default. For further configuration option view the chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+refarch-gateway:
+  envFrom:
+    - prefix: SSO_
+      secretRef:
+        name: sso
+  envAppend:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "hazelcast-k8s"
+    - name: ALLOWED_ORIGINS_PUBLIC
+      value: "https://*.domain.example"
+    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
+      value: "profile, openid"
+    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
+      value: "sso"
+    # mappings, normally don't have to be changed
+    - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+      value: "$SSO_URL/auth/realms/$SSO_REALM"
+    - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI
+      value: "$SSO_URL/auth/realms/$SSO_REALM"
+    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
+      value: "$SSO_CLIENTID"
+    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
+      value: "$SSO_CLIENTSECRET"
+  applicationYML:
+    spring:
+      cloud:
+        gateway:
+          server:
+            webflux:
+              routes:
+                - id: "sso"
+                  uri: $SSO_URL
+                  predicates:
+                    - "Path=/api/sso/userinfo"
+                  filters:
+                    - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+                - id: "webcomponent"
+                  uri: "http://myrelease-webcomponent:8080/"
+                  predicates:
+                    - "Path=/public/webcomponent"
+                  filters:
+                    - "RewritePath=/public/webcomponent/(?<urlsegments>.*), /$\\{urlsegments}"
+                - id: "backend"
+                  uri: "http://myrelease-backend:8080/"
+                  predicates:
+                    - "Path=/api/refarch-backend/**"
+                  filters:
+                    - "RewritePath=/api/refarch-backend/(?<urlsegments>.*), /$\\{urlsegments}"
+                - id: "eai"
+                  uri: "http://myrelease-eai:8080/"
+                  predicates:
+                    - "Path=/api/refarch-eai/**"
+                  filters:
+                    - "RewritePath=/api/refarch-eai/(?<urlsegments>.*), /$\\{urlsegments}"
+                # The catch all route needs to be stand at the end.
+                - id: "frontend"
+                  uri: "http://myrelease-frontend:8080/"
+                  predicates:
+                    - "Path=/**"
+  ingress:
+    enabled: true
+    hosts:
+      - host: mygateway.example.com
+        paths:
+          - path: /
+            pathType: "ImplementationSpecific"
+    # OpenShift-specific configuration, if you have plain Kubernetes, you will need to change the annotations, className.
+    # annotations:
+    #   route.openshift.io/termination: "edge"
+    # className: openshift-default
+  volumes: *cacertsVolume
+  volumeMounts: *cacertsVolumeMount

@@ -1,0 +1,27 @@
+{{- $dot := . }}
+{{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
+{{- if $module.service }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "getFullname" $data }}
+  labels:
+    {{- include "getLabels" $data | trim | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    {{- if $module.service.http }}
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+    {{- end }}
+    {{- if $module.service.ports }}
+    {{- $module.service.ports | toYaml | nindent 4 }}
+    {{- end }}
+  selector:
+    {{- include "getSelectorLabels" $data | trim | nindent 4 }}
+{{- end }}
+{{- end }}
