@@ -1,0 +1,116 @@
+{{- $dot := . }}
+{{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "getFullname" $data }}
+  {{- if $.Values.imagestream }}
+  annotations:
+    {{-  include  "triggerAnnotation" (list .name $.Values.imagestream $.Release.Name )  | trim | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "getLabels" $data | trim | nindent 4 }}
+spec:
+  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
+  replicas: {{ $module.replicas | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "getSelectorLabels" $data | trim | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "getLabels" $data | trim | nindent 8 }}
+    spec:
+      {{- if $module.initContainers }}
+      initContainers:
+        {{ toYaml $module.initContainers | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ $module.name }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          image: "{{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}"
+          imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
+          {{- if $module.service }}
+          ports:
+            {{- if $module.service.http }}
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+            {{- end }}
+            {{- range $port := $module.service.ports }}
+            - name: {{ $port.name }}
+              containerPort: {{ $port.port }}
+              protocol: {{ $port.protocol }}
+            {{- end }}
+          {{- end }}
+          startupProbe:
+            {{- if $module.startupProbe }}
+            {{- toYaml $module.startupProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 60
+            {{- end }}
+          livenessProbe:
+            {{- if $module.livenessProbe }}
+            {{- toYaml $module.livenessProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            {{- end }}
+          readinessProbe:
+            {{- if $module.readinessProbe }}
+            {{- toYaml $module.readinessProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            {{- end }}
+          resources:
+            {{- if and $module.resources $module.resources.request  }}
+            {{- toYaml $module.resources | nindent 12 }}
+            {{- else }}
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            {{- end }}
+            {{- if and $module.resources $module.resources.limits }}
+            {{- toYaml $module.resources | nindent 12 }}
+            {{- else }}
+            limits:
+              memory: 512Mi
+            {{- end }}
+          {{- if $module.env }}
+          env:
+            {{- toYaml $module.env | nindent 12 }}
+          {{- end }}
+          {{- if $module.envFrom }}
+          envFrom:
+            {{- toYaml $module.envFrom | nindent 12 }}
+          {{- end }}
+          {{- if $module.volumeMounts }}
+          volumeMounts:
+            {{- toYaml $module.volumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if $module.volumes }}
+      volumes:
+        {{- toYaml $module.volumes | nindent 8 }}
+      {{- end }}
+  strategy:
+    type: {{ quote ($module.deploymentStrategy | default "RollingUpdate") }}
+{{- end }}
