@@ -3,7 +3,7 @@ name: pentaho-carte
 description: Pentaho Data Integration installation and starts the Pentaho Carte Server
 type: application
 # Chart version.
-version: 0.1.3
+version: 0.1.4
 # Pentaho Dataintegration version
 appVersion: "0.0.2"
 maintainers:

@@ -2,7 +2,7 @@ apiVersion: v2
 name: selfservice-portal
 description: DAVe traffic counting plattform, selfservice-portal
 type: application
-version: 0.0.2
+version: 0.0.3
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg

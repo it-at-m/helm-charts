@@ -2,7 +2,7 @@ apiVersion: v2
 name: eai
 description: DAVe traffic counting plattform, eai
 type: application
-version: 0.0.2
+version: 0.0.3
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg
