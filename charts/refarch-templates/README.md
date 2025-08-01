@@ -139,7 +139,8 @@ Example:
 ```yaml
     - name: frontend
       image:
-        repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
+        registry: ghcr.io
+        repository: it-at-m/refarch-templates/refarch-frontend
         pullPolicy: Always # Defaults to IfNotPresent
         tag: "latest"
 ```
