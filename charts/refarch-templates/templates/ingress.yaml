@@ -32,10 +32,10 @@ spec:
     - host: {{ $host.host | quote }}
       http:
         paths:
-          {{- range $host.paths }}
-          - path: {{ $host.path }}
-            {{- if $host.pathType }}
-            pathType: {{ $host.pathType }}
+          {{- range $path := $host.paths }}
+          - path: {{ $path.path }}
+            {{- if $path.pathType }}
+            pathType: {{ $path.pathType }}
             {{- end }}
             backend:
               service:
