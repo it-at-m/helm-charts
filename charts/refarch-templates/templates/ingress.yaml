@@ -34,9 +34,7 @@ spec:
         paths:
           {{- range $path := $host.paths }}
           - path: {{ $path.path }}
-            {{- if $path.pathType }}
-            pathType: {{ $path.pathType }}
-            {{- end }}
+            pathType: {{ $path.pathType | default "ImplementationSpecific" }}
             backend:
               service:
                 name: {{ include "getFullname" $data }}
