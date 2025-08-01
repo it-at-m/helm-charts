@@ -39,7 +39,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ $module.name }}
+                name: {{ include "getFullname" $data }}
                 port:
                   number: {{ $module.ingress.port | default 8080 }}
           {{- end }}
