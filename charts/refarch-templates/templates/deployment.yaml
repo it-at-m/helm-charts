@@ -110,7 +110,7 @@ spec:
             {{- toYaml $module.volumeMounts | nindent 12 }}
             {{- end }}
             {{- if $module.applicationYML }}
-            - name: config
+            - name: application-yml
               readOnly: true
               mountPath: {{ $module.applicationYMLMountPath | default "/deployments/config" }}
             {{- end }}
@@ -119,7 +119,7 @@ spec:
         {{- toYaml $module.volumes | nindent 8 }}
         {{- end }}
         {{- if $module.applicationYML }}
-        - name: config
+        - name: application-yml
           configMap:
             name: {{ include "getFullname" $data }}-application-yml
             defaultMode: 420
