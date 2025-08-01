@@ -114,7 +114,7 @@ The API-Gateway is included as an optional dependency inside this helm-chart. If
 
 ```yaml
 refarch-gateway:
-  enable: false
+  enabled: false
 ```
 Further configuration option can be seen in the documentation of the [API-Gateway](https://refarch.oss.muenchen.de/gateway.html).
 
@@ -346,7 +346,9 @@ This feature is ideal for development, so you don't need to update the chart eac
 [details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes)
 
 ```yaml
-imagestream: sample
+imageStream:
+  enabled: true
+  name: stream
 ```
 
 #### Service-Monitor (works only on OpenShift)
