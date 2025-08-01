@@ -2,7 +2,7 @@
 kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
-  name: {{ include "getFullnameImageStream" (list $.Release.Name ($.Values.imageStream.name | default "stream")) }}
+  name: {{ include "getFullnameImageStream" (list $.Release.Name $.Values.imageStream.name) }}
 spec:
   lookupPolicy:
     local: false

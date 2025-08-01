@@ -11,4 +11,6 @@ imagePullSecrets: []
 modules: []
 
 # Configuration of ImageStream
-imageStream: {}
+imageStream:
+  enabled: false
+  name: stream
