@@ -14,7 +14,7 @@ metadata:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
   {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
-  replicas: {{ $module.replicas | default 1 }}
+  replicas: {{ ternary $module.replicas 1 (not (eq $module.replicas nil)) }}
   {{- end }}
   selector:
     matchLabels:
