@@ -103,14 +103,25 @@ spec:
           envFrom:
             {{- toYaml $module.envFrom | nindent 12 }}
           {{- end }}
-          {{- if $module.volumeMounts }}
           volumeMounts:
+            {{- if $module.volumeMounts }}
             {{- toYaml $module.volumeMounts | nindent 12 }}
-          {{- end }}
-      {{- if $module.volumes }}
+            {{- end }}
+            {{- if $module.applicationYML }}
+            - name: config
+              readOnly: true
+              mountPath: {{ $module.applicationYMLMountPath | default "/deployments/config" }}
+            {{- end }}
       volumes:
+        {{- if $module.volumes }}
         {{- toYaml $module.volumes | nindent 8 }}
-      {{- end }}
+        {{- end }}
+        {{- if $module.applicationYML }}
+        - name: config
+          configMap:
+            name: {{ include "getFullname" $data }}-application-yml
+            defaultMode: 420
+        {{- end }}
   strategy:
     type: {{ quote ($module.deploymentStrategy | default "RollingUpdate") }}
 {{- end }}
