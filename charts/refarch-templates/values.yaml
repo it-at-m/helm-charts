@@ -9,3 +9,6 @@ imagePullSecrets: []
 
 # Configuration of Modules
 modules: []
+
+# Configuration of ImageStream
+imageStream: {}
