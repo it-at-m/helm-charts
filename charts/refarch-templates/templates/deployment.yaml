@@ -114,7 +114,8 @@ spec:
             {{- if $module.applicationYML }}
             - name: application-yml
               readOnly: true
-              mountPath: {{ $module.applicationYMLMountPath | default "/deployments/config" }}
+              mountPath: {{ $module.applicationYMLMountPath | default "/deployments/config/application.yml" }}
+              subPath: application.yml
             {{- end }}
       volumes:
         {{- if $module.volumes }}
