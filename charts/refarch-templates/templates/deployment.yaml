@@ -23,6 +23,8 @@ spec:
     metadata:
       labels:
         {{- include "getLabels" $data | trim | nindent 8 }}
+      annotations:
+        checksum/application-yml: {{ $module.applicationYML | toYaml | sha256sum | trunc 64 }}
     spec:
       {{- if $module.initContainers }}
       initContainers:
