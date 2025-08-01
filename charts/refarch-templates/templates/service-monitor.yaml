@@ -3,7 +3,7 @@
 {{ $data := dict "dot" $dot "module" $module }}
 {{- if and  $module.serviceMonitor $module.serviceMonitor.enabled }}
 ---
-apiVersion: monitoring.rhobs/v1
+apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
@@ -17,9 +17,9 @@ spec:
       scheme: {{ $module.serviceMonitor.scheme | default "http" }}
   namespaceSelector:
     matchNames:
-      - {{ .Release.Namespace }}
+      - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "getLabels" $data | trim | nindent 4 }}
+      {{- include "getLabels" $data | trim | nindent 6 }}
 {{- end }}
 {{- end }}
