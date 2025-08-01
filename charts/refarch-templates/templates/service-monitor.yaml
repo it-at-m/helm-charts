@@ -17,7 +17,7 @@ spec:
       scheme: {{ $module.serviceMonitor.scheme | default "http" }}
   namespaceSelector:
     matchNames:
-      - {{$.Release.namespace}}
+      - {{ .Release.Namespace }}
   selector:
     matchLabels:
       {{- include "getLabels" $data | trim | nindent 4 }}
