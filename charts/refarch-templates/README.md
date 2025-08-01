@@ -18,7 +18,7 @@ If you need an API Gateway define it as an additional chart dependency. The resp
 Install this chart using:
 
 ```bash
-helm install my-refarch-release it-at-m/refarch --values my-values.yaml
+helm install my-refarch-release it-at-m/refarch-templates --values my-values.yaml
 ```
 
 The file `values-example.yaml` contains a minimal example (includes no running component). The [Configuration](#configuration) section lists all the parameters that can be configured via `values.yaml`.
