@@ -7,6 +7,6 @@ maintainers:
   - name: eidottermihi
     email: eidottermihi@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
-icon: https://assets.muenchen.de/logos/itm/itM_Basislogo_gelb_schwarz-256.png
+icon: ../../images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"

@@ -5,6 +5,6 @@ maintainers:
   - name: klml
     email: klml@muenchen.de
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
-icon: https://assets.muenchen.de/logos/itm/itM_Basislogo_gelb_schwarz-256.png
+icon: ../../images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
