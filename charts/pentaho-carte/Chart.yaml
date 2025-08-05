@@ -10,6 +10,6 @@ maintainers:
   - name: ejcsid
     email: ejcsid@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/pentaho-carte
-icon: ../../images/logo.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"

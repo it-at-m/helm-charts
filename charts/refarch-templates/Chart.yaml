@@ -4,7 +4,7 @@ description: Helm Chart for deploying a it@M Reference Architecture application.
 type: application
 version: 1.0.15
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
-icon: ../../images/logo.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 dependencies:
   - name: refarch-gateway
     condition: refarch-gateway.enable
