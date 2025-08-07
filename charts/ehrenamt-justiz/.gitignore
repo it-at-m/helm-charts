@@ -1,5 +1,5 @@
 ### Helm template
 # Chart dependencies
-charts
-Chart.lock
+#charts
+#Chart.lock
 

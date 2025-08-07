@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ehrenamt-justiz
-description: Helm Chart for deploying a it@M Ehrenamt-Justiz application.
+description: Helm Chart for deploying an it@M Ehrenamt-Justiz application.
 type: application
 version: 0.0.1
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/ehrenamt-justiz
