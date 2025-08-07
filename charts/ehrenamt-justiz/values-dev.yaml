@@ -132,8 +132,8 @@ configMaps:
                 format_sql: true
           datasource:
             url: ${SPRING_DATASOURCE_URL}
-            password: ${SPRING_DATASOURCE_USERNAME}
-            username: ${SPRING_DATASOURCE_PASSWORD}
+            password: ${SPRING_DATASOURCE_PASSWORD}
+            username: ${SPRING_DATASOURCE_USERNAME}
           flyway:
             locations:
               - classpath:db/migration/schema
@@ -209,7 +209,7 @@ configMaps:
           password: ${EAI_PRODUCER_PASSWORD}
         ewo:
           eai:
-            url: EAI_PRODUCER_URL
+            url: ${EAI_PRODUCER_URL}
   - name: application-aenderungsservice-dev
     data:
       application-dev.yml:
@@ -243,5 +243,5 @@ configMaps:
 
         aenderungsservice:
           backend:
-            server: AENDERUNGSSERVICE_BACKEND_URL
+            server: ${AENDERUNGSSERVICE_BACKEND_URL}
           group-Id: ${AENDERUNGSSERVICE_GROUPID}
