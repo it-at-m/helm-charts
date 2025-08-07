@@ -1,0 +1,17 @@
+apiVersion: v2
+name: ehrenamt-justiz
+description: Helm Chart for deploying a it@M Ehrenamt-Jusitz application.
+type: application
+version: 1.0.14
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/ehrenamt-justiz
+icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+dependencies:
+ - name: refarch-gateway
+   condition: refarch-gateway.enable
+   version: 1.6.1
+   repository: "@it-at-m"
+sources:
+  - "https://github.com/it-at-m/helm-charts"
+maintainers:
+  - name: udobrmuc
+    url: https://github.com/udobrmuc

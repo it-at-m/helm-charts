@@ -1,0 +1,38 @@
+modules:
+  - name: frontend
+    image:
+      registry: ghcr.io
+      repository: it-at-m/ehrenamt-justiz/ehrenamt-justiz-frontend
+      tag: "latest"
+    service:
+      http: true
+  - name: webcomponent
+    image:
+      registry: ghcr.io
+      repository: it-at-m/ehrenamt-justiz/ehrenamt-justiz-online
+      tag: "latest"
+    service:
+      http: true
+# Commented out because backend currently cannot be tested publicly without DB connection
+#  - name: backend
+#    image:
+#      registry: ghcr.io
+#      repository: it-at-m/ehrenamt-justiz/ehrenamt-justiz-backend
+#      tag: "latest"
+#    applicationYML:
+#      spring:
+#        profiles:
+#          active: "no-security"
+#    service:
+#      http: true
+  - name: eai
+    image:
+      registry: ghcr.io
+      repository: it-at-m/ehrenamt-justiz/ehrenamt-justiz-eai
+      tag: "latest"
+    service:
+      http: true
+
+# Sample Gateway configuration - disabled
+refarch-gateway:
+  enable: false

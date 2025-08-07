@@ -1,0 +1,247 @@
+modules:
+  frontend:
+    name: frontend-dev
+  online:
+    name: online-dev
+  backend:
+    name: backend-dev
+    env:
+      - name: JAVA_OPTS_APPEND
+        value: "-Dspring.profiles.active=dev -Dspring.config.additional-location=/config-application-env/ -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit"
+    envFrom:
+      - prefix: SSO_
+        secretRef:
+          name: sso-dev
+      - prefix: SPRING_DATASOURCE_
+        secretRef:
+          name: db-dev
+      - prefix: BACKEND_
+        secretRef:
+          name: backend-dev
+    volumes:
+      - configMap:
+          defaultMode: 420
+          name: 'application-backend-dev'
+        name: config-application-env
+      - name: cacerts-lhm
+        secret:
+          defaultMode: 420
+          secretName: cacerts-lhm
+  eai:
+    name: eai-dev
+    env:
+      - name: JAVA_OPTS_APPEND
+        value: "-Dspring.profiles.active=dev -Dspring.config.additional-location=/config-application-env/ -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit"
+    envFrom:
+      - prefix: EAI_
+        secretRef:
+          name: eai-dev
+    volumes:
+      - configMap:
+          defaultMode: 420
+          name: 'application-eai-dev'
+        name: config-application-env
+      - name: cacerts-lhm
+        secret:
+          defaultMode: 420
+          secretName: cacerts-lhm
+
+  aenderungsservice:
+    name: aenderungsservice-dev
+    env:
+      - name: JAVA_OPTS_APPEND
+        value: "-Dspring.profiles.active=dev -Dspring.config.additional-location=/config-application-env/ -Djavax.net.ssl.trustStore=/mnt/cacerts-lhm -Djavax.net.ssl.trustStorePassword=changeit"
+    envFrom:
+      - prefix: AENDERUNGSSERVICE_
+        secretRef:
+          name: aenderungsservice-dev
+    volumes:
+      - configMap:
+          defaultMode: 420
+          name: 'application-aenderungsservice-dev'
+        name: config-application-env
+      - name: cacerts-lhm
+        secret:
+          defaultMode: 420
+          secretName: cacerts-lhm
+      - name: aenderungsservice-dev-kafka-keystore
+        secret:
+          secretName: aenderungsservice-dev-kafka-keystore
+      - name: aenderungsservice-dev-kafka-truststore
+        secret:
+          secretName: aenderungsservice-dev-kafka-truststore
+    volumeMounts:
+      - mountPath: /config-application-env
+        name: config-application-env
+      - name: aenderungsservice-dev-kafka-keystore
+        mountPath: /etc/ssl/keystore
+        readOnly: true
+      - name: aenderungsservice-dev-kafka-truststore
+        mountPath: /etc/ssl/truststore
+        readOnly: true
+refarch-gateway:
+  fullnameOverride: refarch-gateway-dev
+  replicaCount: 2
+  envFrom:
+    - prefix: SSO_
+      secretRef:
+        name: sso-dev
+secrets:
+  - name: sso-dev
+    keys:
+      - URL # e.g. https://sso.example.com
+      - REALM
+      - CLIENTID
+      - CLIENTSECRET
+  - name: db-dev
+    keys:
+      - URL # e.g. jdbc:postgresql://db.example.com:5432/mydb
+      - USERNAME
+      - PASSWORD
+  - name: backend-dev
+    keys:
+      - EAI_URL
+      - EAI_USERNAME
+      - EAI_PASSWORD
+  - name: eai-dev
+    keys:
+      - PRODUCER_URL
+      - PRODUCER_USER
+      - PRODUCER_PASSWORD
+      - USER
+      - PASSWORD_ENCRYPT
+  - name: aenderungsservice-dev
+    keys:
+      - BACKEND_URL
+      - GROUPID
+      - KEY_STORE_PASSWORD
+      - TRUST_STORE_PASSWORD
+configMaps:
+  - name: application-backend-dev
+    data:
+      application-dev.yml:
+        server:
+          port: 39146
+        spring:
+          # Spring JPA
+          jpa:
+            # Logging for database operation
+            show-sql: true
+            properties:
+              hibernate:
+                format_sql: true
+          datasource:
+            url: ${SPRING_DATASOURCE_URL}
+            password: ${SPRING_DATASOURCE_USERNAME}
+            username: ${SPRING_DATASOURCE_PASSWORD}
+          flyway:
+            locations:
+              - classpath:db/migration/schema
+              # - classpath:db/migration/testdata
+          security:
+            oauth2:
+              resourceserver:
+                jwt:
+                  jwk-set-uri: ${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs
+                  # adds audience verification - https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences
+                  # requires client to be in audience claim, see https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve
+                  audiences:
+                    - ${SSO_CLIENTID}
+
+        refarch:
+          security:
+            client-id: ${SSO_CLIENTID}
+            user-info-uri: ${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo
+            logging-mode: all
+
+        logging:
+          include-application-group: false # disabled because application group is only relevant when deployed
+          structured:
+            format:
+              console: # set to empty to disable structured logging locally
+          level:
+            root: INFO
+            de.muenchen.ehrenamtjustiz.backend: DEBUG
+            org.springframework.cache: TRACE
+            org.springframework.web: DEBUG
+            org.springframework.security: DEBUG
+
+        # Define eai
+        ewo:
+          eai:
+            server: ${BACKEND_EAI_URL}
+            user: ${BACKEND_EAI_USER}
+            password: ${BACKEND_EAI_PASSWORD}
+  - name: application-eai-dev
+    data:
+      application-dev.yml:
+        server:
+          port: 8080
+        api:
+          auth:
+            users:
+              - username: ${EAI_USER}
+                password: ${EAI_PASSWORD_ENCRYPT}
+                roles:
+                  - "BASIC"
+          basicroutebuilder:
+            doTracing: true
+            doProcesstimeLogging: true
+            doInterceptFrom: true
+
+        logging:
+          include-application-group: false # disabled because application group is only relevant when deployed
+          structured:
+            format:
+              console: # set to empty to disable structured logging locally
+          level:
+            root: INFO
+            de.muenchen.ehrenamtjustiz.eai.personeninfo.processor.CountingProcessor: TRACE
+            de.muenchen.ehrenamtjustiz.eai.personeninfo.filter.RequestResponseLoggingFilter: DEBUG
+            org.apache.camel.Tracing: TRACE
+            org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer: INFO
+            de.muenchen.ehrenamtjustiz.eai.personeninfo: DEBUG
+            route.interceptedFrom: WARN
+            org.apache.cxf.services: INFO
+
+        producer:
+          user: ${EAI_PRODUCER_USER}
+          password: ${EAI_PRODUCER_PASSWORD}
+        ewo:
+          eai:
+            url: EAI_PRODUCER_URL
+  - name: application-aenderungsservice-dev
+    data:
+      application-dev.yml:
+        server:
+          port: 8080
+        spring:
+          kafka:
+            bootstrap-servers: lhm-cluster-kafka-tls-bootstrap-lhmeventbus-k.apps.capk.muenchen.de:443
+            security.protocol: SSL
+            ssl:
+              key-store-password: ${AENDERUNGSSERVICE_KEY_STORE_PASSWORD}
+              trust-store-password: ${AENDERUNGSSERVICE_TRUST_STORE_PASSWORD}
+              key-store-location: file:/etc/ssl/keystore/kafka-auth-keystore.jks
+              trust-store-location: file:/etc/ssl/truststore/truststore.jks
+            client-id: lhm-ewo-eai-schoeffen
+            consumer: # Only insert everything below here if you wish to receive unread messages with the listener when it was inactive. Otherwise, only the messages that were sent during the active time of the listener will be received.
+              auto-offset-reset: earliest
+              enable-auto-commit: true
+
+        logging:
+          include-application-group: false # disabled because application group is only relevant when deployed
+          structured:
+            format:
+              console: # set to empty to disable structured logging locally
+          level:
+            root: INFO
+            de.muenchen.ehrenamtjustiz.aenderungsservice: DEBUG
+            org.springframework.cache: TRACE
+            org.springframework.web: DEBUG
+            org.springframework.security: DEBUG
+
+        aenderungsservice:
+          backend:
+            server: AENDERUNGSSERVICE_BACKEND_URL
+          group-Id: ${AENDERUNGSSERVICE_GROUPID}

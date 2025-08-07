@@ -1,0 +1,20 @@
+{{- $dot := . }}
+{{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "getFullname" $data }}-test-connection"
+  labels:
+    {{- include "getLabels" $data | trim | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "getFullname" $data }}:8080/actuator/health']
+  restartPolicy: Never
+{{- end }}
