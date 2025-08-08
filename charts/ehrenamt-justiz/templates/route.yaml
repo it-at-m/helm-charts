@@ -1,0 +1,28 @@
+{{- $values := . -}}
+{{- range $route := .Values.routes -}}
+{{- if $route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: ehrenamt-justiz
+    template: build-deploy
+  name: {{ $route.name }}
+spec:
+  path: {{ $route.path }}
+  host: {{ $route.hosturl }}
+  port:
+    targetPort: 8080-tcp
+  {{- if $route.tls.enabled }}
+  tls:
+    termination: {{ $route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ $route.tls.insecureEdgeTerminationPolicy }}
+  {{- end }}
+  to:
+    kind: Service
+    name: {{ $route.service }}
+    weight: 100
+  wildcardPolicy: None
+{{- end }}
+{{- end }}

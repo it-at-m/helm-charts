@@ -82,6 +82,7 @@ modules:
 refarch-gateway:
   fullnameOverride: refarch-gateway-dev
   replicaCount: 2
+
   envFrom:
     - prefix: SSO_
       secretRef:
@@ -245,3 +246,52 @@ configMaps:
           backend:
             server: ${AENDERUNGSSERVICE_BACKEND_URL}
           group-Id: ${AENDERUNGSSERVICE_GROUPID}
+routes:
+  - name: "ehrenamt-justiz-backend-dev"
+    service: ehrenamt-justiz-backend-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-backend-dev-ehrju.apps.capk.muenchen.de"
+    tls:
+      enabled: false
+  - name: "ehrenamt-justiz-backend-dev-vanity"
+    service: ehrenamt-justiz-backend-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-backend-dev-vanity.apps.capk.muenchen.de"
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - name: "ehrenamt-justiz-eai-dev"
+    service: ehrenamt-justiz-eai-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-eai-dev-ehrju.apps.capk.muenchen.de"
+    tls:
+      enabled: false
+  - name: "ehrenamt-justiz-eai-dev-vanity"
+    service: ehrenamt-justiz-eai-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-eai-dev-vanity.apps.capk.muenchen.de"
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - name: "ehrenamt-justiz-frontend-dev"
+    service: refarch-gateway-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-frontend-dev-ehrju.apps.capk.muenchen.de"
+    tls:
+      enabled: false
+  - name: "ehrenamt-justiz-frontend-dev-vanity"
+    service: refarch-gateway-dev
+    enabled: true
+    path: /
+    hosturl: "ehrenamt-justiz-frontend-dev-vanity.apps.capk.muenchen.de"
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
