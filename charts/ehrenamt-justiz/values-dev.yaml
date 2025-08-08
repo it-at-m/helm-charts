@@ -251,14 +251,14 @@ routes:
     service: ehrenamt-justiz-backend-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-backend-dev-ehrju.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-backend-dev-ehrju.apps.test.capk.muenchen.de"
     tls:
       enabled: false
   - name: "ehrenamt-justiz-backend-dev-vanity"
     service: ehrenamt-justiz-backend-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-backend-dev-vanity.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-backend-dev-vanity.apps.test.capk.muenchen.de"
     tls:
       enabled: true
       termination: edge
@@ -267,14 +267,14 @@ routes:
     service: ehrenamt-justiz-eai-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-eai-dev-ehrju.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-eai-dev-ehrju.apps.test.capk.muenchen.de"
     tls:
       enabled: false
   - name: "ehrenamt-justiz-eai-dev-vanity"
     service: ehrenamt-justiz-eai-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-eai-dev-vanity.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-eai-dev-vanity.apps.test.capk.muenchen.de"
     tls:
       enabled: true
       termination: edge
@@ -283,14 +283,14 @@ routes:
     service: refarch-gateway-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-frontend-dev-ehrju.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-frontend-dev-ehrju.apps.test.capk.muenchen.de"
     tls:
       enabled: false
   - name: "ehrenamt-justiz-frontend-dev-vanity"
     service: refarch-gateway-dev
     enabled: true
     path: /
-    hosturl: "ehrenamt-justiz-frontend-dev-vanity.apps.capk.muenchen.de"
+    hosturl: "ehrenamt-justiz-frontend-dev-vanity.apps.test.capk.muenchen.de"
     tls:
       enabled: true
       termination: edge
