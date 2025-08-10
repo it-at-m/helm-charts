@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.0.12
+version: 0.0.13
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg
@@ -24,7 +24,7 @@ dependencies:
     condition: externalCharts.postgresql.enabled
   - name: keycloak
     repository: https://charts.bitnami.com/bitnami
-    version: 24.4.13
+    version: 24.9.0
     condition: externalCharts.keycloak.enabled
   - name: backend
     version: "*"
