@@ -47,17 +47,17 @@ spec:
             allowPrivilegeEscalation: false
           image: "{{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}"
           imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
+          {{- if $module.service }}
           ports:
             - name: http
               protocol: TCP
               containerPort: 8080
-            {{- if $module.service }}
             {{- range $port := $module.service.ports }}
             - name: {{ $port.name }}
               containerPort: {{ $port.port }}
               protocol: {{ $port.protocol }}
             {{- end }}
-            {{- end }}
+          {{- end }}
           startupProbe:
             {{- if $module.startupProbe }}
             {{- toYaml $module.startupProbe | nindent 12 }}
