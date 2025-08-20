@@ -32,14 +32,12 @@ spec:
     - host: {{ $host.host | quote }}
       http:
         paths:
-          {{- range $host.paths }}
-          - path: {{ $host.path }}
-            {{- if $host.pathType }}
-            pathType: {{ $host.pathType }}
-            {{- end }}
+          {{- range $path := $host.paths }}
+          - path: {{ $path.path }}
+            pathType: {{ $path.pathType | default "ImplementationSpecific" }}
             backend:
               service:
-                name: {{ $module.name }}
+                name: {{ include "getFullname" $data }}
                 port:
                   number: {{ $module.ingress.port | default 8080 }}
           {{- end }}

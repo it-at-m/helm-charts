@@ -18,7 +18,7 @@ If you need an API Gateway define it as an additional chart dependency. The resp
 Install this chart using:
 
 ```bash
-helm install my-refarch-release it-at-m/refarch --values my-values.yaml
+helm install my-refarch-release it-at-m/refarch-templates --values my-values.yaml
 ```
 
 The file `values-example.yaml` contains a minimal example (includes no running component). The [Configuration](#configuration) section lists all the parameters that can be configured via `values.yaml`.
@@ -114,7 +114,7 @@ The API-Gateway is included as an optional dependency inside this helm-chart. If
 
 ```yaml
 refarch-gateway:
-  enable: false
+  enabled: false
 ```
 Further configuration option can be seen in the documentation of the [API-Gateway](https://refarch.oss.muenchen.de/gateway.html).
 
@@ -139,7 +139,8 @@ Example:
 ```yaml
     - name: frontend
       image:
-        repository: ghcr.io/it-at-m/refarch-templates/refarch-frontend
+        registry: ghcr.io
+        repository: it-at-m/refarch-templates/refarch-frontend
         pullPolicy: Always # Defaults to IfNotPresent
         tag: "latest"
 ```
@@ -345,7 +346,9 @@ This feature is ideal for development, so you don't need to update the chart eac
 [details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes)
 
 ```yaml
-imagestream: sample
+imageStream:
+  enabled: true
+  name: stream
 ```
 
 #### Service-Monitor (works only on OpenShift)

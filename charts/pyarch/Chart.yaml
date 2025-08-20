@@ -7,7 +7,7 @@ home: https://github.com/it-at-m/helm-charts/tree/main/charts/pyarch
 icon: https://assets.muenchen.de/logos/itm/itM_Basislogo_gelb_schwarz-256.png
 dependencies:
   - name: refarch-gateway
-    condition: refarch-gateway.enable
+    condition: refarch-gateway.enabled
     version: 1.6.1
     repository: "@it-at-m"
 sources:
@@ -17,3 +17,5 @@ maintainers:
     url: https://github.com/freinold
   - name: shteenft
     url: https://github.com/shteenft
+  - name: Meteord
+    url: https://github.com/Meteord
