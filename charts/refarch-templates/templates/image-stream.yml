@@ -1,8 +1,8 @@
-{{- if $.Values.imagestream }}
+{{- if $.Values.imageStream.enabled }}
 kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
-  name: {{ include "getFullnameImageStream" (list $.Release.Name $.Values.imagestream) }}
+  name: {{ include "getFullnameImageStream" (list $.Release.Name $.Values.imageStream.name) }}
 spec:
   lookupPolicy:
     local: false

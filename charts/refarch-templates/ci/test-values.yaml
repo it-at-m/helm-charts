@@ -35,4 +35,4 @@ modules:
 
 # Sample Gateway configuration - disabled
 refarch-gateway:
-  enable: false
+  enabled: false
