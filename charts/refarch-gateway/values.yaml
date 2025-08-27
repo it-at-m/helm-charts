@@ -52,7 +52,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   labels:
-    type: web2tier # or eai
+    type: web2tier  # or eai
   hosts:
     - host: chart-example.local
       paths:
