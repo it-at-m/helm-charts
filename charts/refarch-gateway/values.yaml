@@ -51,6 +51,7 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+# if your ingress creates a route, then you can set it only at the first rollout. Otherwise you need to delete manual the route.
   labels:
     type: web2tier  # or eai
   hosts:
