@@ -53,8 +53,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   # If your ingress controller auto-creates a Route, set these labels only on the first rollout.
   # Otherwise, delete the Route manually before reapplying.
-  labels:
-    type: web2tier  # or eai
+  labels:  {}
+    # type: web2tier  # or eai
   hosts:
     - host: chart-example.local
       paths:
