@@ -73,6 +73,8 @@ modules:
       #  value: "${SSO_CLIENTID}"
       - name: SECURITY_USERINFOURI
         value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+      - name: TZ
+        value: "Europe/Berlin"
     service:
       http: true
     volumes: *cacertsVolume
@@ -107,13 +109,13 @@ refarch-gateway:
       value: "sso"
     # mappings, normally don't have to be changed
     - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-      value: "$SSO_URL/auth/realms/$SSO_REALM"
+      value: "${SSO_URL}/auth/realms/${SSO_REALM}"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI
-      value: "$SSO_URL/auth/realms/$SSO_REALM"
+      value: "${SSO_URL}/auth/realms/${SSO_REALM}"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
-      value: "$SSO_CLIENTID"
+      value: "${SSO_CLIENTID}"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
-      value: "$SSO_CLIENTSECRET"
+      value: "${SSO_CLIENTSECRET}"
   applicationYML:
     spring:
       cloud:
@@ -122,7 +124,7 @@ refarch-gateway:
             webflux:
               routes:
                 - id: "sso"
-                  uri: $SSO_URL
+                  uri: ${SSO_URL}
                   predicates:
                     - "Path=/api/sso/userinfo"
                   filters:
@@ -160,6 +162,8 @@ refarch-gateway:
     # OpenShift-specific configuration, if you have plain Kubernetes, you will need to change the annotations, className.
     # annotations:
     #   route.openshift.io/termination: "edge"
+    # labels: 
+    #   type: web2tier # or eai
     # className: openshift-default
   volumes: *cacertsVolume
   volumeMounts: *cacertsVolumeMount

@@ -2,13 +2,13 @@ apiVersion: v2
 name: refarch-templates
 description: Helm Chart for deploying a it@M Reference Architecture application.
 type: application
-version: 1.0.15
+version: 1.1.2
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
 icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 dependencies:
   - name: refarch-gateway
-    condition: refarch-gateway.enable
-    version: 1.6.1
+    condition: refarch-gateway.enabled
+    version: 1.6.2
     repository: "@it-at-m"
 sources:
   - "https://github.com/it-at-m/helm-charts"

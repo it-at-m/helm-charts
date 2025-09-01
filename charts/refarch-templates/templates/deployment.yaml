@@ -6,15 +6,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "getFullname" $data }}
-  {{- if $.Values.imagestream }}
+  {{- if $.Values.imageStream.enabled }}
   annotations:
-    {{-  include  "triggerAnnotation" (list .name $.Values.imagestream $.Release.Name )  | trim | nindent 4 }}
+    {{- include "triggerAnnotation" (list .name $.Values.imageStream.name $.Release.Name ) | trim | nindent 4 }}
   {{- end }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
   {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
-  replicas: {{ $module.replicas | default 1 }}
+  replicas: {{ ternary $module.replicas 1 (not (eq $module.replicas nil)) }}
   {{- end }}
   selector:
     matchLabels:
@@ -23,6 +23,10 @@ spec:
     metadata:
       labels:
         {{- include "getLabels" $data | trim | nindent 8 }}
+      {{- if $module.applicationYML }}
+      annotations:
+        checksum/application-yml: {{ $module.applicationYML | toYaml | sha256sum | trunc 64 }}
+      {{- end }}
     spec:
       {{- if $module.initContainers }}
       initContainers:
@@ -103,13 +107,29 @@ spec:
           envFrom:
             {{- toYaml $module.envFrom | nindent 12 }}
           {{- end }}
-          {{- if $module.volumeMounts }}
+          {{- if (or $module.volumeMounts $module.applicationYML) }}
           volumeMounts:
+            {{- if $module.volumeMounts }}
             {{- toYaml $module.volumeMounts | nindent 12 }}
+            {{- end }}
+            {{- if $module.applicationYML }}
+            - name: application-yml
+              readOnly: true
+              mountPath: {{ $module.applicationYMLMountPath | default "/deployments/config/application.yml" }}
+              subPath: application.yml
+            {{- end }}
           {{- end }}
-      {{- if $module.volumes }}
+      {{- if (or $module.volumes $module.applicationYML) }}
       volumes:
+        {{- if $module.volumes }}
         {{- toYaml $module.volumes | nindent 8 }}
+        {{- end }}
+        {{- if $module.applicationYML }}
+        - name: application-yml
+          configMap:
+            name: {{ include "getFullname" $data }}-application-yml
+            defaultMode: 420
+        {{- end }}
       {{- end }}
   strategy:
     type: {{ quote ($module.deploymentStrategy | default "RollingUpdate") }}
