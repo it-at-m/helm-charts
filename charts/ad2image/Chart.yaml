@@ -11,3 +11,7 @@ home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
 icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: "file://../common"
