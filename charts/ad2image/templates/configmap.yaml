@@ -8,6 +8,9 @@ data:
   {{- with .Values }}
   application.yml: |
     de.muenchen.oss.ad2image:
+      {{- if .defaultMode }}
+      default-mode: {{ .defaultMode | quote }}
+      {{- end }}
       ad:
         url: {{ required "AD url must be provided" .ad.url | quote }}
         user-search-base: {{ required "AD user-search-base must be provided" .ad.userSearchBase | quote }}
