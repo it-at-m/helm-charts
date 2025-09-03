@@ -99,6 +99,8 @@ tolerations: []
 
 affinity: {}
 
+# defaultMode: "M_FALLBACK_IDENTICON" # to overwrite the default mode, uncomment this line and set the desired mode
+
 ad:
   # Connection URL for AD server, for example 'ldaps://ad.mydomain.com:636'.
   url: ""
