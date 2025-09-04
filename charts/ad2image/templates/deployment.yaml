@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ad2image-helm-chart.fullname" . }}
+  name: {{ include "common.fullname" . }}
   labels:
-    {{- include "ad2image-helm-chart.labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "ad2image-helm-chart.selectorLabels" . | nindent 6 }}
+      {{- include "common.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -22,19 +22,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "ad2image-helm-chart.selectorLabels" . | nindent 8 }}
+        {{- include "common.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ad2image-helm-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: config
           configMap:
-            name: {{ include "ad2image-helm-chart.fullname" . }}
+            name: {{ include "common.fullname" . }}
             defaultMode: 420
       {{- if .Values.cache.existingConfigMap }}
         - name: ehcache-config
@@ -71,7 +71,7 @@ spec:
                 {{- if .Values.credentials.existingSecret }}
                 name: {{ .Values.credentials.existingSecret }}
                 {{- else }}
-                name: {{ include "ad2image-helm-chart.fullname" . }}
+                name: {{ include "common.fullname" . }}
                 {{- end }}
           ports:
             - name: http

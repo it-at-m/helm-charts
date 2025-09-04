@@ -2,7 +2,7 @@ apiVersion: v2
 name: ad2image
 description: "easy avatars powered by AD / Exchange & Identicons"
 type: application
-version: 1.2.6
+version: 1.2.7
 appVersion: "1.2.0"
 maintainers:
   - name: eidottermihi
@@ -13,5 +13,5 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: common
-    version: 0.1.0
+    version: 0.0.1
     repository: "file://../common"
