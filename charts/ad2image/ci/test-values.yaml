@@ -16,4 +16,3 @@ route:
   host: "ad2image-mycompany-test.apps.mydomain.test"
   extraLabels:
     type: "web2tier"
-
