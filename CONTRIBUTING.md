@@ -12,6 +12,12 @@ To contribute a Chart please create a Pull Request. Make sure to also add the ma
 
 Charts without maintainers **can not be accepted**.
 
+### Use common library
+
+Please use the helpers and definitions of the `it-at-m/common` Helm chart library where applicable to keep our charts DRY.
+
+For more information on how to use the library please see the [documentation](charts/common/README.md).
+
 ## Bumping chart version
 
 Every Pull Request that changes a Chart **must include a chart version bump**, because we can not have different versions of the Charts with the same version name.
