@@ -1,3 +1,6 @@
+{{/*
+Creates a OpenShift Route resource if enabled in values.
+*/}}
 {{- define "common.route" -}}
 {{- if .Values.route.enabled -}}
 apiVersion: route.openshift.io/v1
