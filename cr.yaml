@@ -1,1 +1,3 @@
+# additional configuration for chart releaser (cr): https://github.com/helm/chart-releaser?tab=readme-ov-file#configuration
 generate-release-notes: true
+make-release-latest: false
