@@ -10,9 +10,3 @@ credentials:
   adPassword: "testTest"
   ewsUsername: "test.user"
   ewsPassword: "testTest"
-
-route:
-  enabled: true
-  host: "ad2image-mycompany-test.apps.mydomain.test"
-  extraLabels:
-    type: "web2tier"
