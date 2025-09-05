@@ -1,45 +1,9 @@
+{{- if .Values.routes -}}
 {{- $routes := .Values.routes }}
+{{- $service := .Values.service }}
+{{- $context := . -}}
 {{- range $name, $route := $routes }}
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: {{ include "java-spring-boot.fullname" $ }}-{{ $name }}
-  labels:
-    {{- include "java-spring-boot.labels" $ | nindent 4 }}
-  annotations:
-    {{- range $key, $value := $route.annotations }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-spec:
-  host: {{ $route.host | quote }}
-  {{- if $route.path }}
-  path: {{ $route.path | quote }}
-  {{- end }}
-  wildcardPolicy: {{ $route.wildcardPolicy | quote }}
-  to:
-    kind: Service
-    name: {{ include "java-spring-boot.fullname" $ }}
-  port:
-    targetPort: "http"
-  {{- with $route.tls }}
-  tls:
-    termination: {{ .termination | quote }}
-    insecureEdgeTerminationPolicy: {{ .insecureEdgeTerminationPolicy | quote }}
-    {{- with .key }}
-    key:
-      {{- with .certificate }}
-      certificate: |
-{{ . | indent 8 }}
-      {{- end }}
-      {{- with .caCertificate }}
-      caCertificate: |
-{{ . | indent 8 }}
-      {{- end }}
-      {{- with .destinationCACertificate }}
-      destinationCACertificate: |
-{{ . | indent 8 }}
-      {{- end }}
-    {{- end }}
-  {{- end }}
+{{ include "common.route" (dict "route" $route "service" $service "context" $context "suffix" $name) }}
 ---
-{{- end }}
+{{- end -}}
+{{- end -}}

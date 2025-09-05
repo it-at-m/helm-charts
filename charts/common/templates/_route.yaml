@@ -1,32 +1,52 @@
 {{/*
-Creates a OpenShift Route resource if enabled in values.
+Creates a OpenShift Route resource.
+
+Usage:
+{{ include "common.route" (dict "route" .Values.route "service" .Values.service "context" .) }}
+
+Params:
+  - route - Dict - Required. The route configuration.
+  - service - Dict - Required. The service configuration, to which the route should point.
+  - context - Dict - Required. The context for the template evaluation.
+  - suffix - String - Optional. A suffix to append to the route name.
 */}}
 {{- define "common.route" -}}
-{{- if .Values.route.enabled -}}
+{{- $fullName := include "common.fullname" .context -}}
+{{- $suffix := .suffix | default "" -}}
+{{- $name := $fullName -}}
+{{- if $suffix -}}
+{{- $name = printf "%s-%s" $fullName $suffix -}}
+{{- end -}}
+{{- if gt (len $name) 63 -}}
+{{- $name = substr $name 0 60 -}}  # Keep 60 characters for the suffix and a hyphen
+{{- if $suffix -}}
+{{- $name = printf "%s-%s" $name (substr $suffix 0 3) -}}  # Allow only 3 characters for suffix
+{{- end -}}
+{{- end -}}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ include "common.fullname" . }}
+  name: {{ $name | quote }}
   labels:
-    {{- include "common.labels" . | nindent 4 }}
-    {{- with .Values.route.extraLabels }}
+    {{- include "common.labels" .context | nindent 4 }}
+    {{- with .route.extraLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  {{- with .Values.route.annotations }}
+  {{- with .route.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  host: {{ .Values.route.host | quote }}
-  {{- if .Values.route.path }}
-  path: {{ .Values.route.path | quote }}
+  host: {{ .route.host | quote }}
+  {{- if .route.path }}
+  path: {{ .route.path | quote }}
   {{- end }}
-  wildcardPolicy: {{ .Values.route.wildcardPolicy | quote }}
+  wildcardPolicy: {{ .route.wildcardPolicy | quote }}
   port:
-    targetPort: {{ .Values.service.port }}
-{{- if .Values.route.tls }}
+    targetPort: {{ .service.port }}
+{{- if .route.tls }}
   tls:
-{{- with .Values.route.tls }}
+{{- with .route.tls }}
     termination: {{ .termination }}
     insecureEdgeTerminationPolicy: {{ .insecureEdgeTerminationPolicy }}
     {{- with .key }}
@@ -49,6 +69,5 @@ spec:
 {{- end }}
   to:
     kind: Service
-    name: {{ include "common.fullname" . }}
-{{- end }}
+    name: {{ include "common.fullname" .context }}
 {{- end -}}
