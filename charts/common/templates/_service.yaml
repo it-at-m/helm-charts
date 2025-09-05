@@ -1,0 +1,28 @@
+{{/* 
+Create a Service
+
+Usage:
+{{ include "common.service" . }}
+
+Params:
+  - .Values.service.type - String - Required. The type of service to create (ClusterIP, NodePort, LoadBalancer, etc.)
+  - .Values.service.port - Int - Required. The port the service should serve on.
+*/}}
+{{- define "common.service" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type | required "service.type is required" }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "common.selectorLabels" . | nindent 4 }}
+---
+{{- end -}}

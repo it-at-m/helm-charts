@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "appswitcher-server-helm-chart.fullname" . }}
+  name: {{ include "common.fullname" . }}
   labels:
-    {{- include "appswitcher-server-helm-chart.labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "appswitcher-server-helm-chart.selectorLabels" . | nindent 6 }}
+      {{- include "common.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "appswitcher-server-helm-chart.selectorLabels" . | nindent 8 }}
+        {{- include "common.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "appswitcher-server-helm-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
@@ -35,7 +35,7 @@ spec:
             {{- if .Values.existingConfigMap }}
             name: {{ .Values.existingConfigMap }}
             {{- else }}
-            name: {{ include "appswitcher-server-helm-chart.fullname" . }}
+            name: {{ include "common.fullname" . }}
             {{- end }}
             defaultMode: 420
       {{- with .Values.extraVolumes }}
@@ -49,7 +49,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: {{ include "common.image" (dict "image" .Values.image "chart" $.Chart) | quote}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           {{- if .Values.activeSpringProfiles }}
@@ -66,7 +66,7 @@ spec:
                 {{- if .Values.credentials.existingSecret }}
                 name: {{ .Values.credentials.existingSecret }}
                 {{- else }}
-                name: {{ include "appswitcher-server-helm-chart.fullname" . }}
+                name: {{ include "common.fullname" . }}
                 {{- end }}
           {{- end}}
           ports:

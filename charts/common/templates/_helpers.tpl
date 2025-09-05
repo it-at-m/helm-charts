@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "java-spring-boot.name" -}}
+{{- define "common.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "java-spring-boot.fullname" -}}
+{{- define "common.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "java-spring-boot.chart" -}}
+{{- define "common.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "java-spring-boot.labels" -}}
-helm.sh/chart: {{ include "java-spring-boot.chart" . }}
-{{ include "java-spring-boot.selectorLabels" . }}
+{{- define "common.labels" -}}
+helm.sh/chart: {{ include "common.chart" . }}
+{{ include "common.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,26 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "java-spring-boot.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "java-spring-boot.name" . }}
+{{- define "common.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "common.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
+
+Usage:
+{{ include "common.serviceAccountName" . }}
+
+Params:
+  - .Values.serviceAccount.create - Boolean - Required. Whether a service account should be created
+  - .Values.serviceAccount.name - String - Optional. The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+    If not set and create is false, "default" is used.
+
 */}}
-{{- define "java-spring-boot.serviceAccountName" -}}
+{{- define "common.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "java-spring-boot.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "common.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -65,7 +74,7 @@ Create the name of the service account to use
 Generate secret name.
 
 Usage:
-{{ include "java-spring-boot.secretName" (dict "existingSecret" .Values.path.to.the.existingSecret "defaultNameSuffix" "mySuffix" "context" $) }}
+{{ include "common.secretName" (dict "existingSecret" .Values.path.to.the.existingSecret "defaultNameSuffix" "mySuffix" "context" $) }}
 
 Params:
   - existingSecret - ExistingSecret/String - Optional. The path to the existing secrets in the values.yaml given by the user
@@ -73,8 +82,8 @@ Params:
   - defaultNameSuffix - String - Optional. It is used only if we have several secrets in the same deployment.
   - context - Dict - Required. The context for the template evaluation.
 */}}
-{{- define "java-spring-boot.secretName" -}}
-{{- $name := (include "java-spring-boot.fullname" .context) -}}
+{{- define "common.secretName" -}}
+{{- $name := (include "common.fullname" .context) -}}
 
 {{- if .defaultNameSuffix -}}
 {{- $name = printf "%s-%s" $name .defaultNameSuffix | trunc 63 | trimSuffix "-" -}}

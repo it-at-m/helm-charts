@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "java-spring-boot.fullname" . }}
+  name: {{ include "common.fullname" . }}
   labels:
-    {{- include "java-spring-boot.labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "java-spring-boot.fullname" . }}
+    name: {{ include "common.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
