@@ -1,0 +1,17 @@
+{{/*
+Creates a Docker image string.
+
+Usage:
+{{ include "common.image" (dict "image" .Values.image "chart" .Chart) }}
+
+Params:
+  - image - Dict - Required. The image configuration.
+    - repository - String - Required. The image repository.
+    - tag - String - Optional. The image tag. If not set, the chart appVersion is used.
+  - chart - Dict - Optional. The chart context, used to get the appVersion if tag is not set. Defaults to the current context.
+*/}}
+{{- define "common.image" -}}
+{{- $repository := .image.repository | required "image.repository must be specified" -}}
+{{- $tag := .image.tag | default .chart.AppVersion | required "image.tag must be specified" -}}
+{{- printf "%s:%s" $repository $tag }}
+{{- end -}}

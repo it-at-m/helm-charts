@@ -37,11 +37,15 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  host: {{ .route.host | quote }}
-  {{- if .route.path }}
-  path: {{ .route.path | quote }}
+  {{- with .route.host}}
+  host: {{ . | quote }}
   {{- end }}
-  wildcardPolicy: {{ .route.wildcardPolicy | quote }}
+  {{- with .route.path}}
+  path: {{ . | quote }}
+  {{- end }}
+  {{- with .route.wildcardPolicy}}
+  wildcardPolicy: {{ . | quote }}
+  {{- end }}
   port:
     targetPort: {{ .service.port }}
 {{- if .route.tls }}

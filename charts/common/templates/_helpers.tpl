@@ -52,6 +52,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{/*
 Create the name of the service account to use
+
+Usage:
+{{ include "common.serviceAccountName" . }}
+
+Params:
+  - .Values.serviceAccount.create - Boolean - Required. Whether a service account should be created
+  - .Values.serviceAccount.name - String - Optional. The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+    If not set and create is false, "default" is used.
+
 */}}
 {{- define "common.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
@@ -60,3 +69,35 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate secret name.
+
+Usage:
+{{ include "common.secretName" (dict "existingSecret" .Values.path.to.the.existingSecret "defaultNameSuffix" "mySuffix" "context" $) }}
+
+Params:
+  - existingSecret - ExistingSecret/String - Optional. The path to the existing secrets in the values.yaml given by the user
+    to be used instead of the default one. Allows for it to be of type String (just the secret name) for backwards compatibility.
+  - defaultNameSuffix - String - Optional. It is used only if we have several secrets in the same deployment.
+  - context - Dict - Required. The context for the template evaluation.
+*/}}
+{{- define "common.secretName" -}}
+{{- $name := (include "common.fullname" .context) -}}
+
+{{- if .defaultNameSuffix -}}
+{{- $name = printf "%s-%s" $name .defaultNameSuffix | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- with .existingSecret -}}
+{{- if not (typeIs "string" .) -}}
+{{- with .name -}}
+{{- $name = . -}}
+{{- end -}}
+{{- else -}}
+{{- $name = . -}}
+{{- end -}}
+{{- end -}}
+
+{{- printf "%s" $name -}}
+{{- end -}}
