@@ -123,14 +123,38 @@ credentials:
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
   existingSecret: ""
 
-eaiRoute:
-  enabled: false
-  # host: "ezldap-eai-route.example.org"
-  # wildcardPolicy: "None"
-  # tls:
-  #   termination: "Edge"
-  #   insecureEdgeTerminationPolicy: "Redirect"
-  # whitelist: "10.0.0.1 10.0.0.2"
+# routes configures OpenShift Route(s) pointing to the output Service definition
+# use name to differ type of route (e.g. 'vanity', 'eai', ...)
+routes:
+  {}
+  # vanity:
+  #   host: "ezldap.example.com"
+  #   path: "/vanity"
+  #   wildcardPolicy: "None"
+  #   annotations:
+  #     haproxy.router.openshift.io/timeout: "30s"
+  #   extraLabels:
+  #     type: "eai"
+  #   tls:
+  #     termination: "Edge"
+  #     insecureEdgeTerminationPolicy: "Redirect"
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
+  # eai:
+  #   host: "ezldap-eai.example.com"
+  #   wildcardPolicy: "None"
+  #   annotations:
+  #     haproxy.router.openshift.io/timeout: "30s"
+  #     haproxy.router.openshift.io/ip_whitelist: "X.X.X.X Y.Y.Y.Y"
+  #   tls:
+  #     termination: "Edge"
+  #     insecureEdgeTerminationPolicy: "Redirect"
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
 
 serviceMonitor:
   enabled: false
