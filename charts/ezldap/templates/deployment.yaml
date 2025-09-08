@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ezldap.fullname" . }}
+  name: {{ include "common.fullname" . }}
   labels:
-    {{- include "ezldap.labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
   {{- with .Values.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -14,7 +14,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "ezldap.selectorLabels" . | nindent 6 }}
+      {{- include "common.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -23,13 +23,13 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "ezldap.selectorLabels" . | nindent 8 }}
+        {{- include "common.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ezldap.serviceAccountName" . }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
@@ -38,7 +38,7 @@ spec:
             {{- if .Values.existingConfigMap }}
             name: {{ .Values.existingConfigMap }}
             {{- else }}
-            name: {{ include "ezldap.fullname" . }}
+            name: {{ include "common.fullname" . }}
             {{- end }}
             defaultMode: 420
       {{- with .Values.extraVolumes }}
@@ -66,7 +66,7 @@ spec:
                 {{- if .Values.credentials.existingSecret }}
                 name: {{ .Values.credentials.existingSecret }}
                 {{- else }}
-                name: {{ include "ezldap.fullname" . }}
+                name: {{ include "common.fullname" . }}
                 {{- end }}
           ports:
             - name: http
