@@ -53,3 +53,20 @@ The command deploys ad2image on the Kubernetes cluster with some default configu
 | extraVolumeMounts          | list   | `[]`                                                  | Extra volumeMounts for the pods                                                                                                        |
 | initContainers             | list   | `[]`                                                  | Extra initContainers for the pods                                                                                                      |
 | routes                     | object | `{}`                                                  | OpenShift Route definitions (see default `values.yaml` for examples)                                                                   |
+
+## Changelog
+
+### 2.0.0
+
+#### Route definition
+
+**Breaking change**: `route` was replaced by `routes` (object). Example:
+
+```yaml
+routes:
+  main:
+    host: example.com
+    to:
+      kind: Service
+      name: my-svc
+```

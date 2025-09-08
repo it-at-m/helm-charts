@@ -74,10 +74,10 @@ routes:
   #   tls:
   #     termination: "Edge"
   #     insecureEdgeTerminationPolicy: "Redirect"
-  #     key:
-  #       certificate: ""
-  #       caCertificate: ""
-  #       destinationCACertificate: ""
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
   # eai:
   #   host: "ad2image-eai.example.com"
   #   wildcardPolicy: "None"
@@ -87,10 +87,10 @@ routes:
   #   tls:
   #     termination: "Edge"
   #     insecureEdgeTerminationPolicy: "Redirect"
-  #     key:
-  #       certificate: ""
-  #       caCertificate: ""
-  #       destinationCACertificate: ""
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
 
 resources:
   {}

@@ -43,9 +43,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
+            pathType: {{ default "ImplementationSpecific" .pathType }}
             backend:
               service:
                 name: {{ include "common.fullname" $.context }}

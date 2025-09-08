@@ -8,7 +8,7 @@ Params:
   - image - Dict - Required. The image configuration.
     - repository - String - Required. The image repository.
     - tag - String - Optional. The image tag. If not set, the chart appVersion is used.
-  - chart - Dict - Optional. The chart context, used to get the appVersion if tag is not set. Defaults to the current context.
+  - chart - Dict - Required. The chart context, used to get the appVersion if tag is not set.
 */}}
 {{- define "common.image" -}}
 {{- $repository := .image.repository | required "image.repository must be specified" -}}

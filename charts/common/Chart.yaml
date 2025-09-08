@@ -1,6 +1,6 @@
 apiVersion: v2
 name: common
-description: A Library Helm Chart for grouping common logic between charts. This Library Chart ist not deployable by itself.
+description: A Library Helm Chart for grouping common logic between charts. This Library Chart is not deployable by itself.
 type: library
 version: 0.0.1
 maintainers:

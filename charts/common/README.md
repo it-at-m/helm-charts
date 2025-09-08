@@ -19,14 +19,14 @@ helm dependency update
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: { { include "common.fullname" . } }
+  name: {{ include "common.fullname" . }}
 data:
   myvalue: "Hello World"
 ```
 
 ## Introduction
 
-This chart provides a common template helpers which can be used to develop new charts using [Helm](https://helm.sh) package manager.
+This chart provides common template helpers for developing new charts using the [Helm](https://helm.sh) package manager.
 
 ## Parameters
 
@@ -54,8 +54,8 @@ The following table lists the helpers available in the library which are scoped 
 
 | Helper identifier | Description                         | Expected Input                                                         |
 | ----------------- | ----------------------------------- | ---------------------------------------------------------------------- |
-| `common.ingress`  | Creates a Ingress resource.         | `dict "ingress" .Values.ingress "service" .Values.service "context" $` |
-| `common.route`    | Creates a OpenShift Route resource. | `dict "route" .Values.route "service" .Values.service "context" $`     |
+| `common.ingress`  | Creates an Ingress resource.        | `dict "ingress" .Values.ingress "service" .Values.service "context" $` |
+| `common.route`    | Creates an OpenShift Route resource.| `dict "route" $route "service" .Values.service "context" $` (typically called while iterating `.Values.routes`) |
 
 ### Image
 
