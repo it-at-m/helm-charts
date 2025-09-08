@@ -5,8 +5,10 @@ Usage:
 {{ include "common.service" . }}
 
 Params:
-  - .Values.service.type - String - Required. The type of service to create (ClusterIP, NodePort, LoadBalancer, etc.)
+  - .Values.service.type - String - Optional. The type of service to create (ClusterIP, NodePort, LoadBalancer, etc.), defaults to ClusterIP.
   - .Values.service.port - Int - Required. The port the service should serve on.
+  - .Values.service.name - String - Optional. The name of the service, defaults to "http".
+  - .Values.service.targetPort - Int - Optional. The target port the service should point to, defaults to the value of .Values.service.port.
 */}}
 {{- define "common.service" -}}
 apiVersion: v1
@@ -16,12 +18,12 @@ metadata:
   labels:
     {{- include "common.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type | required "service.type is required" }}
+  type: {{ .Values.service.type | default "ClusterIP" }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.service.targetPort | default .Values.service.port }}
       protocol: TCP
-      name: http
+      name: {{ .Values.service.name | default "http" }}
   selector:
     {{- include "common.selectorLabels" . | nindent 4 }}
 ---
