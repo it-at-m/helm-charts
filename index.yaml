@@ -1137,6 +1137,27 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2025-09-08T10:34:56.749993881Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.0
+    description: ezLDAP - easy read access for LDAP
+    digest: 0bc73ee7d5a3ad9200bf295edad4696a8c7b4f623d52b98c8147688da2149be6
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-2.0.0/ezldap-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2025-09-01T13:08:04.109129447Z"
     description: ezLDAP - easy read access for LDAP
     digest: 00bf3dc32737b4294642721036b39ecb0cda388ea5faaa2345939d5c4ef1cd88
@@ -2971,4 +2992,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-08T09:42:48.463578124Z"
+generated: "2025-09-08T10:34:56.750170499Z"
