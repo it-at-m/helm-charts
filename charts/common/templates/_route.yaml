@@ -1,0 +1,77 @@
+{{/*
+Creates a OpenShift Route resource.
+
+Usage:
+{{ include "common.route" (dict "route" .Values.route "service" .Values.service "context" .) }}
+
+Params:
+  - route - Dict - Required. The route configuration.
+  - service - Dict - Required. The service configuration, to which the route should point.
+  - context - Dict - Required. The context for the template evaluation.
+  - suffix - String - Optional. A suffix to append to the route name.
+*/}}
+{{- define "common.route" -}}
+{{- $fullName := include "common.fullname" .context -}}
+{{- $suffix := .suffix | default "" -}}
+{{- $name := $fullName -}}
+{{- if $suffix -}}
+{{- $name = printf "%s-%s" $fullName $suffix -}}
+{{- end -}}
+{{- if gt (len $name) 63 -}}
+{{- $name = substr $name 0 60 -}}  # Keep 60 characters for the suffix and a hyphen
+{{- if $suffix -}}
+{{- $name = printf "%s-%s" $name (substr $suffix 0 3) -}}  # Allow only 3 characters for suffix
+{{- end -}}
+{{- end -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $name | quote }}
+  labels:
+    {{- include "common.labels" .context | nindent 4 }}
+    {{- with .route.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .route.host}}
+  host: {{ . | quote }}
+  {{- end }}
+  {{- with .route.path}}
+  path: {{ . | quote }}
+  {{- end }}
+  {{- with .route.wildcardPolicy}}
+  wildcardPolicy: {{ . | quote }}
+  {{- end }}
+  port:
+    targetPort: {{ .service.port }}
+{{- if .route.tls }}
+  tls:
+{{- with .route.tls }}
+    termination: {{ .termination }}
+    insecureEdgeTerminationPolicy: {{ .insecureEdgeTerminationPolicy }}
+    {{- with .key }}
+    key: |
+{{ . | indent 6 }}
+    {{- end }}
+    {{- with .certificate }}
+    certificate: |
+{{ . | indent 6 }}
+    {{- end }}
+    {{- with .caCertificate }}
+    caCertificate: |
+{{ . | nindent 6 }}
+    {{- end }}
+    {{- with .destinationCACertificate }}
+    destinationCACertificate: |
+{{ . | nindent 6 }}
+    {{- end }}
+{{- end }}
+{{- end }}
+  to:
+    kind: Service
+    name: {{ include "common.fullname" .context }}
+{{- end -}}

@@ -2,8 +2,8 @@
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: {{ include "java-spring-boot.fullname" . }}
-  labels: {{- include "java-spring-boot.labels" . | nindent 4 }}
+  name: {{ include "common.fullname" . }}
+  labels: {{- include "common.labels" . | nindent 4 }}
 spec:
   output:
     to:
