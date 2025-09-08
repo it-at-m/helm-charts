@@ -13,5 +13,5 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: common
-    version: 0.0.1
+    version: "^1.0.0"
     repository: "file://../common"

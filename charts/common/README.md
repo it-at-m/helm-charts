@@ -7,7 +7,7 @@ A [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm) for gro
 ```yaml
 dependencies:
   - name: common
-    version: 1.x.x
+    version: "^1.0.0"
     repository: https://it-at-m.github.io/helm-charts
 ```
 
