@@ -77,9 +77,6 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# Must be changed when resources.limits.memory is changed
-javaHeapMaxMemRatio: 30
-
 startupProbe:
   httpGet:
     path: /actuator/health
