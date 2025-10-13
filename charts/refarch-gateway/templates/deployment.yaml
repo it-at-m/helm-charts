@@ -59,12 +59,6 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            {{- if gt (len .Values.env) 0 }}
-            {{- tpl (toYaml .Values.env) . | nindent 12 }}
-            {{- end}}
-            {{- if gt (len .Values.envAppend) 0 }}
-            {{- tpl (toYaml .Values.envAppend) . | nindent 12 }}
-            {{- end}}
             - name: JAVA_MAX_MEM_RATIO
               value: {{ .Values.javaHeapMaxMemRatio | quote }}
             {{- if .Values.hazelcast.enabled }}
@@ -73,6 +67,12 @@ spec:
             - name: REFARCH_HAZELCAST_SERVICENAME
               value: {{ include "refarch-gateway.fullname" . }}
             {{- end }}
+            {{- if gt (len .Values.env) 0 }}
+            {{- tpl (toYaml .Values.env) . | nindent 12 }}
+            {{- end}}
+            {{- if gt (len .Values.envAppend) 0 }}
+            {{- tpl (toYaml .Values.envAppend) . | nindent 12 }}
+            {{- end}}
           {{- if .Values.envFrom }}
           envFrom:
             {{- toYaml .Values.envFrom | nindent 12 }}
