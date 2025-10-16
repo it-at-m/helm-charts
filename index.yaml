@@ -1597,6 +1597,26 @@ entries:
     version: 0.1.0
   refarch-gateway:
   - apiVersion: v2
+    created: "2025-10-16T08:10:42.444141816Z"
+    description: Helm chart for deploying the it@M refarch-gateway
+    digest: cf67736056e3fa6cfe3d26bf26cdd09862e11efa6f6bc65b88aa27f9586d096f
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: DanielOber
+      url: https://github.com/DanielOber
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    name: refarch-gateway
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-gateway-1.7.1/refarch-gateway-1.7.1.tgz
+    version: 1.7.1
+  - apiVersion: v2
     created: "2025-09-19T14:14:08.046596062Z"
     description: Helm chart for deploying the it@M refarch-gateway
     digest: 5eecdbe88560c634dbc30ab789408487cdedbb93c04ac0d0f7f0165d7cf0e4a6
@@ -3067,4 +3087,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-19T14:29:55.753370827Z"
+generated: "2025-10-16T08:10:42.444521406Z"
