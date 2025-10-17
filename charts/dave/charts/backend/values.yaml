@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/it-at-m/dave-backend
+  repository: ghcr.io/it-at-m/dave-backend/dave-backend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "stable"
+  tag: "2.1.1"
 
 imagePullSecrets: []
 # nameOverride: ""

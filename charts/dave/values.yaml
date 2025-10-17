@@ -288,10 +288,14 @@ selfservice-portal:
   service:
     port: 8080
 
+# Subcharts
 # Elasticsearch
 # https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
 elasticsearch:
   clusterName: dave
+  # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+  image:
+    repository: bitnamilegacy/elasticsearch
   sysctlImage:
     enabled: false
   coordinating:
@@ -319,6 +323,9 @@ elasticsearch:
 # PostgreSQL
 # https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 postgresql:
+  # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+  image:
+    repository: bitnamilegacy/postgresql
   auth:
     username: dave
     password: dave_pwd
@@ -334,7 +341,9 @@ postgresql:
 keycloak:
   postgresql:
     nameOverride: keycloak-postgresql
-
+  # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+  image:
+    repository: bitnamilegacy/keycloak
   keycloakConfigCli:
     enabled: true
     initContainers: |
