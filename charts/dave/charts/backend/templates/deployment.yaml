@@ -54,7 +54,8 @@ spec:
       {{- end }}
       initContainers:
         - name: create-elasticsearch-http-ca-certificate
-          image:  dockerhub.muenchen.de/bitnamilegacy/elasticsearch:8.12.0-debian-11-r1
+          ## TODO image conifgurable
+          image:  alpine/openssl
           command: ['sh', '-c', 'openssl x509 -fingerprint -sha256 -nocert -in /tmp/es-certs/elasticsearch-tls.crt | cut -d= -f2 > /tmp/es-fingerprint/es-fp.txt']
           volumeMounts:
             - name: elasticsearch-tls-cert
