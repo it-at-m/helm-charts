@@ -41,10 +41,27 @@ spec:
             name: {{ include "daveBackend.fullname" . }}
             {{- end }}
             defaultMode: 420
+        - name: elasticsearch-tls-cert-fingerprint
+          emptyDir: {}
+        - name: elasticsearch-tls-cert
+          secret:
+            secretName: dave-elasticsearch-master-crt
+            items:
+            - key: tls.crt
+              path: "elasticsearch-tls.crt"
       {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
+        - name: create-elasticsearch-http-ca-certificate
+          image:  dockerhub.muenchen.de/bitnamilegacy/elasticsearch:8.12.0-debian-11-r1
+          command: ['sh', '-c', 'openssl x509 -fingerprint -sha256 -nocert -in /tmp/es-certs/elasticsearch-tls.crt | cut -d= -f2 > /tmp/es-fingerprint/es-fp.env']
+          volumeMounts:
+            - name: elasticsearch-tls-cert
+              mountPath: "/tmp/es-certs/"
+              readOnly: true
+            - name: elasticsearch-tls-cert-fingerprint
+              mountPath: /tmp/es-fingerprint/
         {{- with .Values.initContainers }}
         {{- toYaml . | nindent 8}}
         {{- end }}
@@ -79,6 +96,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /deployments/config
+            - name: elasticsearch-tls-cert-fingerprint
+              mountPath: /tmp/es-fingerprint/
           {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
