@@ -2,12 +2,16 @@ apiVersion: v2
 name: ad2image
 description: "easy avatars powered by AD / Exchange & Identicons"
 type: application
-version: 1.2.3
-appVersion: "1.1.0"
+version: 2.0.0
+appVersion: "1.2.0"
 maintainers:
   - name: eidottermihi
     email: eidottermihi@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
-icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
+dependencies:
+  - name: common
+    version: "^1.0.0"
+    repository: "file://../common"

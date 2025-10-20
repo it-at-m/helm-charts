@@ -7,7 +7,7 @@ dependencies:
   version: 14.3.3
 - name: keycloak
   repository: https://charts.bitnami.com/bitnami
-  version: 24.4.13
+  version: 24.9.0
 - name: backend
   repository: ""
   version: '*'

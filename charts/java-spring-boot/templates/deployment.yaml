@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "java-spring-boot.fullname" . }}
+  name: {{ include "common.fullname" . }}
   labels:
-    {{- include "java-spring-boot.labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -14,7 +14,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "java-spring-boot.selectorLabels" . | nindent 6 }}
+      {{- include "common.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -24,7 +24,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "java-spring-boot.labels" . | nindent 8 }}
+        {{- include "common.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -33,7 +33,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "java-spring-boot.serviceAccountName" . }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -48,7 +48,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ required "image.repository must be specified" .Values.image.repository }}:{{ required "image.tag must be specified" .Values.image.tag }}"
+          image: {{ include "common.image" (dict "image" .Values.image "chart" $.Chart) | quote}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_CONFIG_IMPORT
@@ -100,7 +100,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ include "java-spring-boot.fullname" . }}
+            name: {{ include "common.fullname" . }}
             defaultMode: 420
       {{- if .Values.javaTruststore.enabled }}
         - name: java-truststore
@@ -115,7 +115,7 @@ spec:
       {{- range $name, $credential := $credentials }}
         - name: secret-{{ $name }}
           secret:
-            secretName: {{ include "java-spring-boot.secretName" (dict "existingSecret" $credential.existingSecret "defaultNameSuffix" $name "context" $) }}
+            secretName: {{ include "common.secretName" (dict "existingSecret" $credential.existingSecret "defaultNameSuffix" $name "context" $) }}
             defaultMode: 420
       {{- end }}
       {{- with .Values.volumes }}

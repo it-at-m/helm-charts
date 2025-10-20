@@ -1,0 +1,9 @@
+{{- if .Values.routes -}}
+{{- $routes := .Values.routes }}
+{{- $service := .Values.service }}
+{{- $context := . -}}
+{{- range $name, $route := $routes }}
+{{ include "common.route" (dict "route" $route "service" $service "context" $context "suffix" $name) }}
+---
+{{- end -}}
+{{- end -}}

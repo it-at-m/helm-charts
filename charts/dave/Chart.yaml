@@ -10,7 +10,7 @@ maintainers:
   - name: klml
     email: klml@muenchen.de
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
-icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
@@ -24,7 +24,7 @@ dependencies:
     condition: externalCharts.postgresql.enabled
   - name: keycloak
     repository: https://charts.bitnami.com/bitnami
-    version: 24.4.13
+    version: 24.9.0
     condition: externalCharts.keycloak.enabled
   - name: backend
     version: "*"

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: common
+description: A Library Helm Chart for grouping common logic between charts. This Library Chart is not deployable by itself.
+type: library
+version: 1.0.0
+maintainers:
+  - name: eidottermihi
+    email: eidottermihi@gmail.com
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/common
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+sources:
+  - "https://github.com/it-at-m/helm-charts"

@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: it-at-m/refarch/refarch-gateway
-  tag: 1.6.0
+  tag: 1.7.0
 
   pullPolicy: IfNotPresent
 
@@ -51,6 +51,10 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # If your ingress controller auto-creates a Route, set these labels only on the first rollout.
+  # Otherwise, delete the Route manually before reapplying.
+  labels: {}
+    # type: web2tier  # or eai
   hosts:
     - host: chart-example.local
       paths:
@@ -72,6 +76,9 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+# Must be changed when resources.limits.memory is changed
+javaHeapMaxMemRatio: 30
 
 startupProbe:
   httpGet:

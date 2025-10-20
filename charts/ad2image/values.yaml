@@ -59,19 +59,38 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-route:
-  enabled: false
-  annotations: {}
-  host: ""
-  path: ""
-  wildcardPolicy: "None"
-  tls:
-    termination: "Edge"
-    insecureEdgeTerminationPolicy: "Redirect"
-    key: ""
-    certificate: ""
-    caCertificate: ""
-    destinationCACertificate: ""
+# routes configures OpenShift Route(s) pointing to the output Service definition
+# use name to differ type of route (e.g. 'vanity', 'eai', ...)
+routes:
+  {}
+  # vanity:
+  #   host: "ad2image.example.com"
+  #   path: "/vanity"
+  #   wildcardPolicy: "None"
+  #   annotations:
+  #     haproxy.router.openshift.io/timeout: "30s"
+  #   extraLabels:
+  #     type: "eai"
+  #   tls:
+  #     termination: "Edge"
+  #     insecureEdgeTerminationPolicy: "Redirect"
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
+  # eai:
+  #   host: "ad2image-eai.example.com"
+  #   wildcardPolicy: "None"
+  #   annotations:
+  #     haproxy.router.openshift.io/timeout: "30s"
+  #     haproxy.router.openshift.io/ip_whitelist: "X.X.X.X Y.Y.Y.Y"
+  #   tls:
+  #     termination: "Edge"
+  #     insecureEdgeTerminationPolicy: "Redirect"
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
 
 resources:
   {}
@@ -98,6 +117,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# defaultMode: "M_FALLBACK_IDENTICON" # to overwrite the default mode, uncomment this line and set the desired mode
 
 ad:
   # Connection URL for AD server, for example 'ldaps://ad.mydomain.com:636'.
