@@ -2,7 +2,7 @@ apiVersion: v2
 name: admin-portal
 description: DAVe traffic counting plattform, admin-portal
 type: application
-version: 0.0.3
+version: 0.0.14
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg
