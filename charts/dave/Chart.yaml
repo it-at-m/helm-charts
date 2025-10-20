@@ -24,7 +24,7 @@ dependencies:
     condition: externalCharts.postgresql.enabled
   - name: keycloak
     repository: https://charts.bitnami.com/bitnami
-    version: 24.4.13
+    version: 24.9.0
     condition: externalCharts.keycloak.enabled
   - name: backend
     version: "*"
