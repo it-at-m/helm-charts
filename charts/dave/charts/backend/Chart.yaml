@@ -2,7 +2,7 @@ apiVersion: v2
 name: backend
 description: DAVe traffic counting plattform, backend
 type: application
-version: 0.0.4
+version: 0.0.14
 appVersion: "v2.1.1"
 maintainers:
   - name: gislab-augsburg
