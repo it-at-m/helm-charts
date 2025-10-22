@@ -18,6 +18,9 @@ metadata:
   name: {{ include "common.fullname" .context }}
   labels:
     {{- include "common.labels" .context | nindent 4 }}
+    {{- with .ingress.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   {{- with .ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

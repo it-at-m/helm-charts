@@ -45,6 +45,8 @@ service:
 ingress:
   enabled: false
   className: ""
+  # extraLabels:
+  #   type: "eai"
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
