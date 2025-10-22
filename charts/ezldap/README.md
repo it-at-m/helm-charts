@@ -22,6 +22,7 @@ The command deploys ezLDAP on the Kubernetes cluster with some default configura
 | image.pullPolicy           | string | `"IfNotPresent"` | Image pull policy                                                                                    |
 | image.repository           | string | `"itatm/ezldap"` | Image to use for deploying                                                                           |
 | image.tag                  | string | `""`             | Image tag                                                                                            |
+| ingress.extraLabels        | object | `{}`             | Extra labels for the ingress                                                                         |
 | ingress.annotations        | object | `{}`             |                                                                                                      |
 | ingress.className          | string | `""`             |                                                                                                      |
 | ingress.enabled            | bool   | `false`          | Enable ingress                                                                                       |
