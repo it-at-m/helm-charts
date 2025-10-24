@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "customManagers:helmChartYamlAppVersions"],
+  "registryAliases": {
+    "it-at-m": "https://it-at-m.github.io/helm-charts"
+  },
+  "packageRules": [
+    {
+      "matchFileNames": ["charts/**"],
+      "bumpVersions": [
+        {
+          "name": "Bump Helm chart version",
+          "filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
+          "matchStrings": ["version:\\s(?<version>[^\\s]+)"],
+          "bumpType": "patch"
+        }
+      ]
+    }
+  ],
+  "helm-values": {
+    // Target **all** `*values*.yaml*  Files
+    "managerFilePatterns": ["**/*values*.{yaml,yml}"]
+  }
+}

@@ -1,0 +1,16 @@
+# Configuration of ConfigMaps
+configMaps: []
+
+# Configuration of Secrets
+secrets: []
+
+# Configuration of ImagePullSecrets
+imagePullSecrets: []
+
+# Configuration of Modules
+modules: []
+
+# Configuration of ImageStream
+imageStream:
+  enabled: false
+  name: stream

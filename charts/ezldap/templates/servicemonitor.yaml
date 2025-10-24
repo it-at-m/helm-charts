@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "ezldap.fullname" . }}
+  name: {{ include "common.fullname" . }}
 spec:
   endpoints:
     - interval: 15s
@@ -11,5 +11,5 @@ spec:
       path: "/actuator/prometheus"
   selector:
     matchLabels:
-      {{- include "ezldap.selectorLabels" . | nindent 6 }}
+      {{- include "common.selectorLabels" . | nindent 6 }}
 {{- end }}

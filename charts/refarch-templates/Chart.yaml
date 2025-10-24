@@ -1,0 +1,31 @@
+apiVersion: v2
+name: refarch-templates
+description: Helm Chart for deploying a it@M Reference Architecture application.
+type: application
+version: 1.1.5
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+dependencies:
+  - name: refarch-gateway
+    condition: refarch-gateway.enabled
+    version: 1.7.1
+    repository: "@it-at-m"
+sources:
+  - "https://github.com/it-at-m/helm-charts"
+maintainers:
+  - name: devtobi
+    url: https://github.com/devtobi
+  - name: simonhir
+    url: https://github.com/simonhir
+  - name: DanielOber
+    url: https://github.com/DanielOber
+  - name: langehm
+    url: https://github.com/langehm
+  - name: ejcsid
+    url: https://github.com/ejcsid
+  - name: hupling
+    url: https://github.com/hupling
+  - name: tobiasholler
+    url: https://github.com/tobiasholler
+  - name: ffmuc
+    url: https://github.com/ffmuc

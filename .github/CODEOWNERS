@@ -16,4 +16,6 @@
 /charts/wjh-rechner/ @it-at-m/wjh_admin
 /charts/zammad-ldap-sync/ @klml @sfi2022
 /charts/refarch-gateway/ @it-at-m/refarch-maintainer
+/charts/refarch-templates/ @it-at-m/refarch-maintainer @it-at-m/sps
 /charts/sps-sample/ @it-at-m/sps
+/charts/common/ @eidottermihi

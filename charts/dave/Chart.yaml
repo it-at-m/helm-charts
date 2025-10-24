@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.0.11
+version: 0.0.16
 appVersion: "v1.0.0"
 maintainers:
   - name: gislab-augsburg
@@ -10,21 +10,21 @@ maintainers:
   - name: klml
     email: klml@muenchen.de
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
-icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: elasticsearch
     repository: https://charts.bitnami.com/bitnami
-    version: 19.17.0
+    version: 22.1.6
     condition: externalCharts.elasticsearch.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 14.3.3
+    version: 18.1.1
     condition: externalCharts.postgresql.enabled
   - name: keycloak
     repository: https://charts.bitnami.com/bitnami
-    version: 24.4.13
+    version: 25.2.0
     condition: externalCharts.keycloak.enabled
   - name: backend
     version: "*"

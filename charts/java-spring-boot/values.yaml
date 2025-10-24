@@ -73,6 +73,8 @@ service:
 ingress:
   enabled: false
   className: ""
+  # extraLabels:
+  #   type: "eai"
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
@@ -225,6 +227,8 @@ routes:
   #   annotations:
   #     haproxy.router.openshift.io/timeout: "30s"
   #     haproxy.router.openshift.io/ip_whitelist: "X.X.X.X Y.Y.Y.Y"
+  #   extraLabels:
+  #     type: "eai"
   #   tls:
   #     termination: "Edge"
   #     insecureEdgeTerminationPolicy: "Redirect"

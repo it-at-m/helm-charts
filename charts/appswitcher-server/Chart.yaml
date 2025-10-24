@@ -2,12 +2,16 @@ apiVersion: v2
 name: appswitcher-server
 description: Server component for a Google-like app switching experience.
 type: application
-version: 1.2.3
-appVersion: "1.2.1"
+version: 2.0.1
+appVersion: "1.3.0"
 maintainers:
   - name: eidottermihi
     email: eidottermihi@gmail.com
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
-icon: https://assets.muenchen.de/logos/itm/itm-logo-256.png
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"
+dependencies:
+  - name: common
+    version: "^1.0.0"
+    repository: "file://../common"

@@ -21,6 +21,10 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages. You can then run `helm search repo
 it-at-m` to see the charts.
 
+If you prefer using the [charts via OCI](https://helm.sh/docs/topics/registries/#using-an-oci-based-registry) and GitHub Container Registry (`ghcr.io`), you can do that too:
+
+    helm install my-release oci://ghcr.io/it-at-m/helm-charts/<chart-name>
+
 ## Available Charts
 
 Please see [ArtifactHub][artifacthub-url]

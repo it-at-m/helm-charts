@@ -1,0 +1,60 @@
+{{/*
+Creates an Ingress resource.
+
+Usage:
+{{ include "common.ingress" (dict "ingress" .Values.ingress "service" .Values.service "context" .) }}
+
+Params:
+  - ingress - Dict - Required. The ingress configuration.
+  - service - Dict - Required. The service configuration, to which the ingress should point.
+  - context - Dict - Required. The context for the template evaluation.
+
+*/}}
+{{- define "common.ingress" -}}
+{{- if .ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "common.fullname" .context }}
+  labels:
+    {{- include "common.labels" .context | nindent 4 }}
+    {{- with .ingress.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .ingress.tls }}
+  tls:
+    {{- range .ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ default "ImplementationSpecific" .pathType }}
+            backend:
+              service:
+                name: {{ include "common.fullname" $.context }}
+                port:
+                  number: {{ $.service.port }}
+          {{- end }}
+    {{- end }}
+---
+{{- end }}
+{{- end -}}
+
