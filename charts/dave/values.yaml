@@ -96,8 +96,8 @@ backend:
       # old to remove
       DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
       # Map
-      DAVE_MAP_CENTER_LAT: "48.137227"
-      DAVE_MAP_CENTER_LNG: "11.575517"
+      DAVE_MAP_CENTER_LAT: "51.3"
+      DAVE_MAP_CENTER_LNG: "9.5"
       DAVE_MAP_CENTER_ZOOM: "12"
     # Dave Email Settings
     email:
