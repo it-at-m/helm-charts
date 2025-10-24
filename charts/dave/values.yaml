@@ -109,6 +109,9 @@ backend:
       # old to remove
       DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
+    reports:
+      DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
+      DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
   # Credentials
   credentials:
     SPRING_DATASOURCE_PASSWORD: dave_pwd
