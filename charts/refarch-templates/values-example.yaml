@@ -1,16 +1,16 @@
 # YAML anchors to allow reuse in this file
 cacertsVolume: &cacertsVolume
-  - name: cacerts-volume
-    secret:
-      defaultMode: 420
-      secretName: cacerts-lhm
-      items:
-        - key: cacerts-lhm
-          path: cacerts
+  name: cacerts-volume
+  secret:
+    defaultMode: 420
+    secretName: cacerts-lhm
+    items:
+      - key: cacerts-lhm
+        path: cacerts
 cacertsVolumeMount: &cacertsVolumeMount
-  - mountPath: /etc/pki/ca-trust/extracted/java
-    name: cacerts-volume
-    readOnly: true
+  mountPath: /etc/pki/ca-trust/extracted/java
+  name: cacerts-volume
+  readOnly: true
 # Global configuration
 secrets:
   - name: sso
@@ -77,8 +77,10 @@ modules:
         value: "Europe/Berlin"
     service:
       http: true
-    volumes: *cacertsVolume
-    volumeMounts: *cacertsVolumeMount
+    volumes: 
+     - *cacertsVolume
+    volumeMounts: 
+     - *cacertsVolumeMount
   - name: eai
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
@@ -165,5 +167,7 @@ refarch-gateway:
     # labels: 
     #   type: web2tier # or eai
     # className: openshift-default
-  volumes: *cacertsVolume
-  volumeMounts: *cacertsVolumeMount
+  volumes: 
+   - *cacertsVolume
+  volumeMounts: 
+   - *cacertsVolumeMount
