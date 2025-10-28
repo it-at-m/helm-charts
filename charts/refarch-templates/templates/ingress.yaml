@@ -9,7 +9,7 @@ metadata:
   name: {{ include "getFullname" $data }}
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
-    {{- with .Values.ingress.labels }}
+    {{- with $module.ingress.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- with $module.ingress.annotations }}
