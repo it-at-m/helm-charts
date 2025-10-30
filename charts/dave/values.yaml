@@ -347,7 +347,9 @@ postgresql:
 keycloak:
   postgresql:
     nameOverride: keycloak-postgresql
-  # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+    # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+    image:
+      repository: bitnamilegacy/postgresql
   image:
     repository: bitnamilegacy/keycloak
   global:
