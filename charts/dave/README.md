@@ -24,6 +24,6 @@ kubectl/oc rsh dave-elasticsearch-master-0
 $ openssl x509 -fingerprint -sha256 -nocert -in /opt/bitnami/elasticsearch/config/certs/tls.crt | cut -d= -f2
 ```
 
-Add this fingerprint as env `ELASTICSEARCH_HTTP_CA_CERTIFICATE` to your locale `backend.extraEnvVars.env`.
+Add this fingerprint as [Environment Variable](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.typesafe-configuration-properties.relaxed-binding.environment-variables) `ELASTICSEARCH_HTTPCACERTIFICATE` to your locale `backend.extraEnvVars.env`.
 
 We are looking for an automatic solution https://github.com/it-at-m/helm-charts/issues/106.
