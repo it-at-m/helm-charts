@@ -15,7 +15,7 @@ Create your local configuration from [ci/test-values.yaml](ci/test-values.yaml) 
 
 ### Adding CA certificate fingerprint
 
-Elasticsearch must communicate with TLS, including Kubernet internally.
+Elasticsearch must communicate with TLS, including Kubernetes internally.
 Therefore, the SSL fingerprint of a new Elasticsearch instance must be set to the backend as env ELASTICSEARCH_HTTP_CA_CERTIFICATE.
 This must only be done when a new Elasticsearch instance is created, not with every deploy.
 
