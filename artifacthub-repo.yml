@@ -17,4 +17,4 @@ owners:
     email: klml@muenchen.de
 ignore: # (optional, packages that should not be indexed by Artifact Hub)
   - name: dave
-    version: 0.0.[0-9]
+    version: '0\.0\.(\d+)'
