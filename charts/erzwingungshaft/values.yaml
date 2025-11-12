@@ -9,7 +9,6 @@ modules:
   ehaft:
     cronjob:
       schedule: "0 * * * *"
-#      secret: changeme
     image:
       registry: ghcr.io
       repository: it-at-m/erzwingungshaft
