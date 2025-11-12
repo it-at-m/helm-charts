@@ -16,7 +16,7 @@ modules:
       # default tag is 'dev'
       tag: dev
 
-configMaps:    
+configMaps:
   ehaft:
     name: ehaft
     fileName: application.yaml
