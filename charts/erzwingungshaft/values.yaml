@@ -1,0 +1,152 @@
+secrets:
+  - name: ehaft
+    keys:
+      - SPRING_DATASOURCE_PASSWORD
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_URL
+
+modules:
+  ehaft:
+    cronjob:
+      schedule: "0 * * * *"
+#      secret: changeme
+    image:
+      registry: ghcr.io
+      repository: it-at-m/erzwingungshaft
+      pullPolicy: Always
+      # default tag is 'dev'
+      tag: dev
+
+configMaps:    
+  ehaft:
+    name: ehaft
+    fileName: application.yaml
+    data:
+      batch:
+        enabled: false
+      spring:
+        profiles:
+          active: "default"
+        jpa:
+          hibernate:
+            ddl-auto: validate
+          show-sql: true
+          properties:
+            hibernate:
+              dialect: org.hibernate.dialect.PostgreSQLDialect
+      logging:
+        level:
+          de.muenchen.eh: INFO
+      camel:
+        component:
+          aws2-s3:
+            override-endpoint: [override_with_profile_url:port]
+            region: local
+      xjustiz:
+        version: 3.5.1
+        interface:
+          document:
+            processor: direct:xjustiz-document-processor
+          file:
+            line-break: \n
+          bebpo: direct:xjustizMessage_mock_ersatz
+        xjustiz0500straf:
+          nachrichtenkopf:
+            auswahl-absender-sonstige: Stadt München
+            auswahl-herstellerinformation-produkt: LHM-itM-KM15
+            auswahl-herstellerinformation-produkt-name: KVUweb
+            auswahl-herstellerinformation-produkt-version: 1.0
+          grunddaten:
+            verfahrensdaten:
+              beteiligung:
+                organisation:
+                  bezeichnung-aktuell: Landeshauptstadt München Stadtkämmerei
+                  bezeichnung-anschrift-strasse: Landsbergerstraße
+                  bezeichnung-anschrift-hausnummer: 36
+                  bezeichnung-anschrift-plz: 80339
+                  bezeichnung-anschrift-ort: München
+                  bezeichnung-bankverbindung: DE86 7015 0000 0000 2030 00
+        codelisten:
+          gds-rollenbezeichnung:
+            current-version: 3.5
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.rollenbezeichnung
+            codelist-versions:
+              gds-rollenbezeichnung-3-5:
+                betroffener: '040'
+                antragsteller: '016'
+                bussgeldempfaenger: '046'
+          gds-gerichte:
+            current-version: 3.6
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.gerichte
+            codelist-versions:
+              gds-gericht-3-6:
+                amtsgericht-muenchen: D2601
+          gds-ereignis:
+            current-version: 1.11
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.ereignis
+            codelist-versions:
+              gds-ereignis-1-11:
+                neueingang-e-haft: 117
+              gds-ereignis-1-10:
+                neueingang-e-haft: 117
+          gds-sachgebiet:
+            current-version: 2.3
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.sachgebiet
+            codelist-versions:
+              gds-sachgebiet-2-3:
+                owi-sachen: '026'
+          gds-anschriftstyp:
+            current-version: 3.0
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.anschriftstyp
+            codelist-versions:
+              gds-anschriftstyp-3-0:
+                tatortanschrift: '006'
+                dienst-geschaeftsanschrift: '003'
+          bjf-staat:
+            current-version: 7.0
+            kennung: urn:xoev-de:bund:bfj:codeliste:bfj.staat
+            codelist-versions:
+              bjf-staat-7-0:
+                deutschland: '000'
+          gds-geschlecht:
+            current-version: 2.1
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.geschlecht
+            codelist-versions:
+              gds-geschlecht-2-1:
+                unbekannt: 0
+                maennlich: 1
+                weiblich: 2
+                divers: 3
+                saechlich: 4
+          gds-dokumentklasse:
+            current-version: 1.4
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.dokumentklasse
+            codelist-versions:
+              gds-dokumentklasse-1-4:
+                antrag-behoerde: '016'
+                bescheid: '017'
+          gds-bestandteiltyp:
+            current-version: 2.4
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.bestandteiltyp
+            codelist-versions:
+              gds-bestandteiltyp-2-4:
+                original: '001'
+                repraesentant: '002'
+          gds-aktentyp:
+            current-version: 2.2
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.aktentyp
+            codelist-versions:
+              gds-aktentyp-2-2:
+                bussgeldakte: '010'
+          gds-aktenzeichenart:
+            current-version: 2.0
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.aktenzeichenart
+            codelist-versions:
+              gds-aktenzeichenart-2-0:
+                aktuell: '001'
+          gds-registerzeichen:
+            current-version: 3.4
+            kennung: urn:xoev-de:xjustiz:codeliste:gds.registerzeichen
+            codelist-versions:
+              gds-registerzeichen-3-4:
+                bussgeldverfahren: OWi

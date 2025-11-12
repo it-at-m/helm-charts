@@ -1,0 +1,47 @@
+{{- $dot := . }}
+{{- range $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name:  {{ $module.name }}
+  labels: {{- include "getLabels" $data | trim | nindent 4 }}
+spec:
+  schedule: {{ $module.cronjob.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: erzwingungshaft
+            image: "{{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}"
+            imagePullPolicy: {{ $module.image.pullPolicy }}
+            envFrom:
+            - secretRef:
+                name: {{ $module.name }}
+            volumeMounts:
+              ## truststore
+              - mountPath: /etc/pki/ca-trust/extracted/java
+                name: cacerts-lhm
+                readOnly: true
+              - name: properties-volume
+                subPath: application.yaml
+                mountPath: /deployments/application.yaml
+          volumes:
+            ## truststore
+            - name: cacerts-lhm
+              secret:
+                defaultMode: 420
+                secretName: cacerts-lhm
+                items:
+                  - key: cacerts-lhm
+                    path: cacerts
+            - name: properties-volume
+              configMap:
+                name: {{ $module.name }}
+                items:
+                  - key: application.yaml
+                    path: application.yaml
+          restartPolicy: OnFailure
+{{- end }}
