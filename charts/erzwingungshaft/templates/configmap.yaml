@@ -12,7 +12,7 @@ metadata:
   annotations:
     checksum/config: {{ $checksum }}
 data: 
-  {{/* Leerzeile erzwingen */}}
+  {{/* Force blank line */}}
   {{- $configmap.fileName}}: |
     {{- $configmap.data | toYaml | nindent 4 }}
 {{- end }}

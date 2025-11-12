@@ -37,7 +37,7 @@ Get the Common labels
 {{- $moduleName := .module.name }}
 helm.sh/chart: {{ include "getChartName" .dot }}
 {{- include "getSelectorLabels" . }}
-{{- if ".Chart.Version" }}
+{{- if ".dot.Chart.Version" }}
 app.kubernetes.io/version: {{ .dot.Chart.Version | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .dot.Release.Service }}

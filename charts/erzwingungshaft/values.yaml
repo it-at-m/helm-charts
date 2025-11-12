@@ -39,7 +39,9 @@ configMaps:
       camel:
         component:
           aws2-s3:
-            override-endpoint: [override_with_profile_url:port]
+          # For MinIO testing or url of your organization's s3 instance 
+            override-endpoint: http://localhost:9000
+          # If s3 instance of your organization is to be used   
             region: local
       xjustiz:
         version: 3.5.1

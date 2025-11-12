@@ -2,9 +2,13 @@ apiVersion: v2
 name: erzwingungshaft
 version: 0.0.1
 maintainers:
+  - name: M-Leibold
+    url: https://github.com/M-Leibold
   - name: sfi2022
     url: https://github.com/sfi2022
-home: https://github.com/it-at-m/helm-charts/tree/main/charts/erzwingunghaft
+  - name: langehm
+    url: https://github.com/langehm
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/erzwingungshaft
 icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:
   - "https://github.com/it-at-m/helm-charts"

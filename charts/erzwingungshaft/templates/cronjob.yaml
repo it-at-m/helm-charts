@@ -1,6 +1,6 @@
 {{- $dot := . }}
-{{- range $module := .Values.modules -}}
-{{ $data := dict "dot" $dot "module" $module }}
+{{- range $name, $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" (merge (dict "name" $name) $module) }}
 ---
 apiVersion: batch/v1
 kind: CronJob

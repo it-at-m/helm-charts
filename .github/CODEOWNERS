@@ -18,5 +18,5 @@
 /charts/refarch-gateway/ @it-at-m/refarch-maintainer
 /charts/refarch-templates/ @it-at-m/refarch-maintainer @it-at-m/sps
 /charts/sps-sample/ @it-at-m/sps
-/charts/erzwingungshaft @sfi2022 @langehm
+/charts/erzwingungshaft @M-Leibold @sfi2022 @langehm
 /charts/common/ @eidottermihi
