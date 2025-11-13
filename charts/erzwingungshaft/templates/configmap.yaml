@@ -11,7 +11,7 @@ metadata:
     {{- include "getLabels" $data | trim  | nindent 4 }}
   annotations:
     checksum/config: {{ $checksum }}
-data: 
+data:
   {{/* Force blank line */}}
   {{- $configmap.fileName}}: |
     {{- $configmap.data | toYaml | nindent 4 }}

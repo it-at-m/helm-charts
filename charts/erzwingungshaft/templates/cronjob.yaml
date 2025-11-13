@@ -19,7 +19,7 @@ spec:
             imagePullPolicy: {{ $module.image.pullPolicy }}
             envFrom:
             - secretRef:
-                name: {{ $module.name }}
+                name: {{ $name }}
             volumeMounts:
               ## truststore
               - mountPath: /etc/pki/ca-trust/extracted/java
@@ -39,7 +39,7 @@ spec:
                     path: cacerts
             - name: properties-volume
               configMap:
-                name: {{ $module.name }}
+                name: {{ $name }}
                 items:
                   - key: application.yaml
                     path: application.yaml
