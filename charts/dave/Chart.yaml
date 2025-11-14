@@ -2,8 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.0.20
-appVersion: "v1.0.0"
+version: 0.1.0
 maintainers:
   - name: klml
     email: klml@muenchen.de

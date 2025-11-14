@@ -2,11 +2,9 @@ apiVersion: v2
 name: frontend
 description: DAVe traffic counting plattform, frontend
 type: application
-version: 0.0.14
-appVersion: "v1.0.0"
+version: 0.1.0
+appVersion: "2.1.1"
 maintainers:
-  - name: gislab-augsburg
-    email: martymcfly333@gmail.com
   - name: klml
     email: klml@muenchen.de
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave/charts/frontend
