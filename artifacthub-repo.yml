@@ -15,7 +15,3 @@ owners:
     email: eidottermihi@gmail.com
   - name: klml
     email: klml@muenchen.de
-ignore: # (optional, packages that should not be indexed by Artifact Hub)
-  - name: common # not installable by itself
-  - name: dave # dont publish 0.0.x versions of dave
-    version: '0\.0\.(\d+)'
