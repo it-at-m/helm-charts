@@ -109,6 +109,7 @@ backend:
       # old to remove
       DAVE_EMAIL_RECEIVER_UPDATE-INTERVAL: "5000"
       DAVE_EMAIL_RECEIVER_UPDATE_INTERVAL: "30000"
+    # Dave Reports Settings
     reports:
       DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
       DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
