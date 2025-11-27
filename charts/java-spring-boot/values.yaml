@@ -217,10 +217,10 @@ routes:
   #   tls:
   #     termination: "Edge"
   #     insecureEdgeTerminationPolicy: "Redirect"
-  #     key:
-  #       certificate: ""
-  #       caCertificate: ""
-  #       destinationCACertificate: ""
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
   # eai:
   #   host: "ezldap-eai.muenchen.de"
   #   wildcardPolicy: "None"
@@ -232,10 +232,10 @@ routes:
   #   tls:
   #     termination: "Edge"
   #     insecureEdgeTerminationPolicy: "Redirect"
-  #     key:
-  #       certificate: ""
-  #       caCertificate: ""
-  #       destinationCACertificate: ""
+  #     key: ""
+  #     certificate: ""
+  #     caCertificate: ""
+  #     destinationCACertificate: ""
 
 # credentials configures secrets mounted as volumes that will be picked up by Spring Boot
 # use name to differ type of credential (e.g. 'database', 'sso', ...)

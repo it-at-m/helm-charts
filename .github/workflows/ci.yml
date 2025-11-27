@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up Helm
@@ -17,11 +17,7 @@ jobs:
           python-version: "3.14"
           check-latest: true
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.7.0
-        with:
-          # Workaround as default 4.0.4 doesn't work with python 3.14
-          # See https://github.com/helm/chart-testing-action/issues/177
-          yamale_version: "6.0.0"
+        uses: helm/chart-testing-action@v2.8.0
       - name: Add dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
