@@ -133,7 +133,7 @@ Example:
 #### Base information
 
 Base information involves setting the module name and the docker image (and tag) to use.
-Additionally, you can override the `pullPolicy`, which is set to `IfNotPresent` by default.
+Additionally, you can override the `pullPolicy`, which is set to `Always` by default.
 
 Example:
 ```yaml
@@ -141,7 +141,7 @@ Example:
       image:
         registry: ghcr.io
         repository: it-at-m/refarch-templates/refarch-frontend
-        pullPolicy: Always # Defaults to IfNotPresent
+        pullPolicy: IfNotPresent # Defaults to Always
         tag: "latest"
 ```
 

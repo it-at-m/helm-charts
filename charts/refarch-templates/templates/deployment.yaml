@@ -46,7 +46,7 @@ spec:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           image: "{{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}"
-          imagePullPolicy: {{ $module.image.pullPolicy | default "IfNotPresent" }}
+          imagePullPolicy: {{ $module.image.pullPolicy | default "Always" }}
           {{- if $module.service }}
           ports:
             {{- if $module.service.http }}
