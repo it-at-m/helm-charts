@@ -854,6 +854,26 @@ entries:
     version: 1.0.1
   java-spring-boot:
   - apiVersion: v2
+    created: "2025-12-02T15:22:06.35946097Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: 65bcf71da021b622b8ea79b9b83614feb7cc44cef807427bc8055e8d9888ad84
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-1.1.0/java-spring-boot-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     created: "2025-11-28T09:04:57.419071697Z"
     dependencies:
     - name: common
@@ -2866,4 +2886,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-28T09:04:57.419298834Z"
+generated: "2025-12-02T15:22:06.359765319Z"
