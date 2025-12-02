@@ -16,6 +16,8 @@ helm install my-app-release it-at-m/java-spring-boot --values values.yaml
 
 The command deploys your application on the Kubernetes cluster with minimal configuration. The [Configuration](#configuration) section lists the parameters that can be configured during installation.
 
+All noteworthy changes are documented in the [CHANGELOG](#changelog).
+
 ## Configuration
 
 | Key                                        | Type    | Default                                                                                                                                                           | Description                                                                                                                                                    |
@@ -45,10 +47,7 @@ The command deploys your application on the Kubernetes cluster with minimal conf
 | ingress.className                          | string  | `""`                                                                                                                                                              |                                                                                                                                                                |
 | ingress.hosts                              | list    | `[]`                                                                                                                                                              |                                                                                                                                                                |
 | ingress.tls                                | list    | `[]`                                                                                                                                                              |                                                                                                                                                                |
-| resources.requests.cpu                     | string  | `"50m"`                                                                                                                                                           | CPU resource request                                                                                                                                           |
-| resources.requests.memory                  | string  | `"750Mi"`                                                                                                                                                         | Memory resource request                                                                                                                                        |
-| resources.limits.cpu                       | string  | `"500m"`                                                                                                                                                          | CPU resource limit                                                                                                                                             |
-| resources.limits.memory                    | string  | `"750Mi"`                                                                                                                                                         | Memory resource limit                                                                                                                                          |
+| resources                                  | object  | `{}`                                                                                                                                                              | CPU / Memory resource requests and limits                                                                                                                      |
 | livenessProbe                              | object  | <code>httpGet:<br>&nbsp;&nbsp;path: /actuator/health/liveness<br>&nbsp;&nbsp;port: http<br>timeoutSeconds: 15<br>periodSeconds: 10<br>failureThreshold: 5</code>  | Liveness probe                                                                                                                                                 |
 | readinessProbe                             | object  | <code>httpGet:<br>&nbsp;&nbsp;path: /actuator/health/readiness<br>&nbsp;&nbsp;port: http<br>timeoutSeconds: 15<br>periodSeconds: 10<br>failureThreshold: 5</code> | Readiness probe                                                                                                                                                |
 | startupProbe                               | object  | <code>httpGet:<br>&nbsp;&nbsp;path: /actuator/health/liveness<br>&nbsp;&nbsp;port: http<br>timeoutSeconds: 5<br>periodSeconds: 10<br>failureThreshold: 30</code>  | Startup probe                                                                                                                                                  |
@@ -77,3 +76,16 @@ The command deploys your application on the Kubernetes cluster with minimal conf
 | build.builderImageStreamNamespace          | string  | `"openshift"`                                                                                                                                                     | S2I Builder image namespace                                                                                                                                    |
 | build.outputImageStreamName                | string  | `""`                                                                                                                                                              | name of the (output) imagestream, required                                                                                                                     |
 | build.outputImageStreamTag                 | string  | `"latest"`                                                                                                                                                        | tag of output image                                                                                                                                            |
+
+## Changelog
+
+All notable changes to this Helm chart will be documented here.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this Helm chart adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### 1.1.0
+
+#### Changed
+
+- [#222](https://github.com/it-at-m/helm-charts/issues/222): removed default `resources` (cpu/memory request/limits) - please specify custom resources (if needed).
