@@ -88,4 +88,4 @@ and this Helm chart adheres to [Semantic Versioning](https://semver.org/spec/v2.
 
 #### Changed
 
-- [#222](https://github.com/it-at-m/helm-charts/issues/222): removed default `resources` (cpu/memory request/limits) - please specify custom resources (if needed).
+- [#222](https://github.com/it-at-m/helm-charts/issues/222), [!223](https://github.com/it-at-m/helm-charts/pull/223): removed default `resources` (cpu/memory request/limits) - please specify custom resources (if needed).
