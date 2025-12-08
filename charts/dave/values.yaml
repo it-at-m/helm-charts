@@ -63,7 +63,7 @@ backend:
       SPRING_FLYWAY_DEFAULTSCHEMA: public
       SPRING_FLYWAY_LOCATIONS: classpath:db/migration/
       SPRING_FLYWAY_VALIDATEMIGRATIONNAMING: "true"
-
+      # hazelcast config
       HAZELCAST_GROUP_NAME: dave-backend-service-hazl_group
       HAZELCAST_INSTANCE: dave-backend-service-hazl_instance
       HAZELCAST_OPENSHIFTSERVICENAME: dave-backend-service  
@@ -90,20 +90,29 @@ backend:
       ELASTICSEARCH_SCHEME: https
       
       # Dave
+      # path to stadtbezirke.properties for custom stadtbezirke
       STADTBEZIRK_MAPPING_CONFIG_URL: classpath:/config/stadtbezirke.properties
-      DAVE_MESSSTELLE_CRON: "0 0/5 * 1/1 * ?"
+      # cronjob for Messstelle. Default is disabled, to enable e. g. "0 0/5 * 1/1 * ?" -> every 5 min
+      DAVE_MESSSTELLE_CRON: "-"
+      # prevents the cronjob from running twice if you have multiple backends running
       DAVE_MESSSTELLE_SHEDLOCK: "4M"
+      # cronjob for updating the zaehlung-status. "0 0/10 * 1/1 * ?" -> every 10 min
       DAVE_ZAEHLUNG_STATUSUPDATER_CRON: "0 0/10 * 1/1 * ?"
+      # prevents the cronjob from running twice if you have multiple backends running
       DAVE_ZAEHLUNG_STATUSUPDATER_SHEDLOCK: "9M"
+      # cronjob for updating unaufaelligetage-table. "0 0 4 1/1 * ?" -> Every day at 4:00 AM
       DAVE_UNAUFFAELLIGETAGE_CRON: "0 0 4 1/1 * ?"
+      # prevents the cronjob from running twice if you have multiple backends running
       DAVE_UNAUFFAELLIGETAGE_SHEDLOCK: "1380M"
+      # enables/disables automatic number generation for zaehlstellen. If disabled, you have to set the zaehlstellennummer manually for new zaehlstellen
       DAVE_ZAEHLSTELLE_AUTOMATICNUMBERASSIGNMENT: "true"
+      # Sets the coordinates of every zaehlung in a 25 meter radius to the coordinates of the zaehlstelle
       DAVE_RADIUS_DISTANCE_CHECK_METER: "25"
       #Geodaten-EAI
       GEODATEN_EAI_URL: "http://dave-geo-eai-service:8088"
       #Document-Storage
       DOCUMENT_STORAGE_URL: http://dave-document-storage-service:8080
-     
+      # path to KI-model
       DAVE_ONNX_MODEL_PATH: model/Rad_Modell_DAVE.onnx
       
       # Dave Email Settings
