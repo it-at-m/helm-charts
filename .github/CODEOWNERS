@@ -9,7 +9,7 @@
 /charts/ad2image/ @eidottermihi
 /charts/appswitcher-server/ @eidottermihi
 /charts/java-spring-boot/ @eidottermihi
-/charts/dave/ @gislab-augsburg @klml @it-at-m/dave_admin
+/charts/dave/ @klml @it-at-m/dave_admin
 /charts/ezldap/ @eidottermihi
 /charts/kf-app-eai/ @it-at-m/kf-app-eai_admin
 /charts/pentaho-carte/ @lenabMUC @ejcsid
