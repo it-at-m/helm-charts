@@ -664,6 +664,50 @@ entries:
     version: 1.0.0
   dave:
   - apiVersion: v2
+    created: "2025-12-09T14:59:57.046441542Z"
+    dependencies:
+    - condition: externalCharts.elasticsearch.enabled
+      name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.6
+    - condition: externalCharts.postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.1.4
+    - condition: externalCharts.keycloak.enabled
+      name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 25.2.0
+    - name: backend
+      repository: ""
+      version: '*'
+    - name: frontend
+      repository: ""
+      version: '*'
+    - name: admin-portal
+      repository: ""
+      version: '*'
+    - name: selfservice-portal
+      repository: ""
+      version: '*'
+    - name: eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: 2f1e2e7377ca767fc4fd33ba87341f9ab89b0ad43128caa1367ec5da022d202b
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.1.1/dave-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2025-11-14T09:21:30.092395959Z"
     dependencies:
     - condition: externalCharts.elasticsearch.enabled
@@ -2886,4 +2930,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-02T15:22:06.359765319Z"
+generated: "2025-12-09T14:59:57.046669286Z"
