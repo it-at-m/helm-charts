@@ -100,8 +100,8 @@ backend:
       DAVE_ZAEHLUNG_STATUSUPDATER_CRON: "0 0/10 * 1/1 * ?"
       # prevents the cronjob from running twice if you have multiple backends running
       DAVE_ZAEHLUNG_STATUSUPDATER_SHEDLOCK: "9M"
-      # cronjob for updating unaufaelligetage-table. "0 0 4 1/1 * ?" -> Every day at 4:00 AM
-      DAVE_UNAUFFAELLIGETAGE_CRON: "0 0 4 1/1 * ?"
+      # cronjob for updating unaufaelligetage-table. Default is disabled, to enable e. g. "0 0 4 1/1 * ?" -> Every day at 4:00 AM
+      DAVE_UNAUFFAELLIGETAGE_CRON: "-"
       # prevents the cronjob from running twice if you have multiple backends running
       DAVE_UNAUFFAELLIGETAGE_SHEDLOCK: "1380M"
       # enables/disables automatic number generation for zaehlstellen. If disabled, you have to set the zaehlstellennummer manually for new zaehlstellen
