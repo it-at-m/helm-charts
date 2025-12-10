@@ -2,8 +2,8 @@ apiVersion: v2
 name: admin-portal
 description: DAVe traffic counting plattform, admin-portal
 type: application
-version: 0.1.0
-appVersion: "2.1.1"
+version: 0.1.1
+appVersion: "3.0.0"
 maintainers:
   - name: klml
     email: klml@muenchen.de

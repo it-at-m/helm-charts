@@ -1,0 +1,17 @@
+# use appswitcher-server for testing
+image:
+  repository: "ghcr.io/it-at-m/appswitcher-server"
+  tag: "1.2.1"
+
+deploymentStrategy:
+  type: Recreate
+
+applicationYml: |-
+  applications:
+    google:
+      display-name: Google
+      url: https://google.com
+      image-url: https://www.google.com/favicon.ico
+      tags:
+        - global
+      sort-order: 20
