@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "daveDocumentStorage.fullname" . }}
+  labels:
+    {{- include "daveDocumentStorage.labels" . | nindent 4 }}
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "daveDocumentStorage.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "daveDocumentStorage.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dave.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: config
+          configMap:
+            {{- if .Values.existingConfigMap }}
+            name: {{ .Values.existingConfigMap }}
+            {{- else }}
+            name: {{ include "daveDocumentStorage.fullname" . }}
+            {{- end }}
+            defaultMode: 420
+      {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- with .Values.initContainers }}
+        {{- toYaml . | nindent 8}}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          #  - name: LC_ALL
+          #    value: C.utf8
+          {{- with .Values.global.extraEnvVars }}
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          {{- with .Values.extraEnvVarsSources }}
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          envFrom:
+            - configMapRef:
+                name: {{ include "daveDocumentStorage.fullname" . }}
+            - configMapRef:
+                name: {{ include "daveDocumentStorage.fullname" . }}-email
+            - secretRef:
+                name: {{ include "daveDocumentStorage.fullname" . }}-secret
+          ports:
+            {{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}  
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /deployments/config
+          {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health/liveness
+#              port: http
+#            initialDelaySeconds: 60
+#            timeoutSeconds: 15
+#            periodSeconds: 10
+#            successThreshold: 1
+#            failureThreshold: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health/readiness
+#              port: http
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 5
+#            periodSeconds: 5
+#            successThreshold: 1
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

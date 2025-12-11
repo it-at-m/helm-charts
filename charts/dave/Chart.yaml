@@ -33,3 +33,5 @@ dependencies:
     version: "*"
   - name: eai
     version: "*"
+  - name: document-storage
+    version: "*"
