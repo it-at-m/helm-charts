@@ -104,6 +104,14 @@ backend:
       DAVE_UNAUFFAELLIGETAGE_CRON: "-"
       # prevents the cronjob from running twice if you have multiple backends running
       DAVE_UNAUFFAELLIGETAGE_SHEDLOCK: "1380M"
+      # old to remove
+      DAVE_ZAEHLUNG_STATUS_UPDATER: "0 0/10 * 1/1 * ?"
+      # Map
+      DAVE_MAP_CENTER_LAT: "51.3"
+      DAVE_MAP_CENTER_LNG: "9.5"
+      DAVE_MAP_CENTER_ZOOM: "12"
+    # Dave Email Settings
+    email:
       # enables/disables automatic number generation for zaehlstellen. If disabled, you have to set the zaehlstellennummer manually for new zaehlstellen
       DAVE_ZAEHLSTELLE_AUTOMATICNUMBERASSIGNMENT: "true"
       # Sets the coordinates of every zaehlung in a 25 meter radius to the coordinates of the zaehlstelle
