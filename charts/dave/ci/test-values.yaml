@@ -148,6 +148,17 @@ selfservice-portal:
           - path: /
             pathType: ImplementationSpecific
 
+# Dave Document Storage
+document-storage:
+  # Environment variables
+  extraEnvVars:
+    JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
+    KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
+    REFARCH_S3_URL: s3.example.com
+    REFARCH_S3_BUCKETNAME: DAVE-BUCKET
+    REFARCH_S3_ACCESSKEY: EXAMPLE
+    REFARCH_S3_SECRETKEY: dummysecret
+
 keycloak:
   fullnameOverride: "dave-keycloak"
   keycloakConfigCli:
