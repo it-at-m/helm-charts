@@ -180,10 +180,10 @@ admin-portal:
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -240,10 +240,10 @@ frontend:
     SPRING_CLOUD_GATEWAY_ROUTES_2_METADATA_RESPONSETIMEOUT: "1800000"
     SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
     SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -278,10 +278,10 @@ selfservice-portal:
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
     SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_0: RemoveResponseHeader=Expires
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_1: RemoveRequestHeader=cookie
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_2: RemoveRequestHeader=x-xsrf-token
-    SPRING_CLOUD_GATEWAY_DEFAULT-FILTERS_3: TokenRelay=
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
