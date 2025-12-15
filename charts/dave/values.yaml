@@ -51,8 +51,8 @@ backend:
       SPRING_DATASOURCE_USERNAME: dave
       SPRING_JPA_DATABASE: postgresql
       SPRING_JPA_HIBERNATE_DDLAUTO: validate
-      SPRING_JPA_HIBERNATE_NAMING.PHYSICALSTRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      SPRING_SECURITY_LOGGING.REQUESTS: all
+      SPRING_JPA_HIBERNATE_NAMING_PHYSICALSTRATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      SPRING_SECURITY_LOGGING_REQUESTS: all
       # flyway config for postgreSQL
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_FLYWAY_SCHEMAS: public
