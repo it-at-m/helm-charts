@@ -127,6 +127,11 @@ backend:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
+  resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
+
 
 # Dave Admin-Portal
 admin-portal:
@@ -175,6 +180,10 @@ admin-portal:
   # Ingress
   service:
     port: 8080
+  resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
 
 # Dave EAI
 eai:
@@ -193,6 +202,10 @@ eai:
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
+  resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
 
 # Dave Frontend
 frontend:
@@ -247,6 +260,10 @@ frontend:
   # Ingress
   service:
     port: 8080
+  resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
 
 # Dave Selfservice-Portal
 selfservice-portal:
@@ -294,6 +311,10 @@ selfservice-portal:
   # Ingress
   service:
     port: 8080
+  resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
 
 # Subcharts
 # Elasticsearch
@@ -321,7 +342,7 @@ elasticsearch:
     resources:
       limits:
         cpu: 2
-        memory: 1Gi
+        memory: 4Gi
       requests:
         cpu: 100m
         memory: 1Gi
@@ -362,8 +383,14 @@ keycloak:
   global:
     security:
       allowInsecureImages: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
   keycloakConfigCli:
     enabled: true
+    image:
+      repository: bitnamilegacy/keycloak-config-cli
     initContainers: |
       - name: fetch-config
         image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
@@ -387,3 +414,8 @@ keycloak:
     extraEnvVars:
       - name: IMPORT_FILES_LOCATIONS
         value: /config/*
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
