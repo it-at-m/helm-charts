@@ -2,7 +2,7 @@ apiVersion: v2
 name: backend
 description: DAVe traffic counting plattform, backend
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: "3.0.0"
 maintainers:
   - name: klml
