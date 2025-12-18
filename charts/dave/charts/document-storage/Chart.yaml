@@ -1,6 +1,6 @@
 apiVersion: v2
 name: document-storage
-description: DAVe traffic counting plattform, document-storage
+description: DAVe traffic counting platform, document-storage
 type: application
 version: 0.1.1
 appVersion: "3.0.0"
