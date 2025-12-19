@@ -66,8 +66,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "daveDocumentStorage.fullname" . }}
-            - configMapRef:
-                name: {{ include "daveDocumentStorage.fullname" . }}-email
             - secretRef:
                 name: {{ include "daveDocumentStorage.fullname" . }}-secret
           ports:
