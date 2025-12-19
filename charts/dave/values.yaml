@@ -295,6 +295,39 @@ selfservice-portal:
   service:
     port: 8080
 
+# Dave Document Storage
+document-storage:
+  replicaCount: 1
+  fullnameOverride: dave-document-storage-service
+  # Environment variables
+  extraEnvVars:
+    # Java
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
+    # Other
+    GC_MAX_METASPACE_SIZE: "256"
+    MANAGEMENT_SERVER_PORT: "8079"
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+    # Security
+    REALM: Dave
+    SPRING_SECURITY_LOGGING.REQUESTS: all
+    SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
+    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: <CLIENT-SECRET>
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
+    # S3
+    REFARCH_S3_URL: <S3-URL>
+    REFARCH_S3_BUCKETNAME: <BUCKET-NAME>
+    REFARCH_S3_ACCESSKEY: <ACCESSKEY>
+    REFARCH_S3_SECRETKEY: <SECRETKEY>
+  # Volume for CA-Certfificates
+  extraVolumeMounts: []
+  extraVolumes: []
+
 # Subcharts
 # Elasticsearch
 # https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
