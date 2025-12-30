@@ -111,7 +111,7 @@ backend:
       DAVE_MAP_CENTER_LAT: "48.89529"
       DAVE_MAP_CENTER_LNG: "11.18026"
       DAVE_MAP_CENTER_ZOOM: "12"
-      # Currently, only the maps of geoportal.muenchen.de are used, which cover the whole of Bavaria. 
+      # Currently, only the maps of geoportal.muenchen.de are used, which cover the whole of Bavaria.
       # FR for other maps https://github.com/it-at-m/dave/issues/4
       # Dave Email Settings
       DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
