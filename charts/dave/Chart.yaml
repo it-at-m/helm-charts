@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.2.0
+version: 0.2.1
 maintainers:
   - name: klml
     email: klml@muenchen.de
@@ -17,7 +17,7 @@ dependencies:
     condition: externalCharts.elasticsearch.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 18.1.14
+    version: 18.2.0
     condition: externalCharts.postgresql.enabled
   - name: keycloak
     repository: https://charts.bitnami.com/bitnami
