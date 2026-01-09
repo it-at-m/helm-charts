@@ -106,9 +106,9 @@ backend:
       DOCUMENT_STORAGE_URL: http://dave-document-storage-service:8080
       # path to KI-model
       DAVE_ONNX_MODEL_PATH: model/Rad_Modell_DAVE.onnx
-      # map center
-      # Eichstätt
+      # Tenant configuration
       DAVE_TENANT_DEPARTMENT: "Stadtverwaltung"
+      # map center (Eichstätt)
       DAVE_TENANT_MAP_CENTER_LAT: "48.89529"
       DAVE_TENANT_MAP_CENTER_LNG: "11.18026"
       DAVE_TENANT_MAP_CENTER_ZOOM: "12"
