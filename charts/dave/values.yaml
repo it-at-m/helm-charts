@@ -125,6 +125,9 @@ backend:
       DAVE_EMAIL_RECEIVER_SHEDLOCK: "4M"
       DAVE_EMAIL_SENDER_URL_ADMINPORTAL: https://dave-adminportal
       DAVE_EMAIL_SENDER_URL_SELFSERVICEPORTAL: https://dave-selfserviceportal
+      # Dave Reports Settings
+      DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
+      DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
     # Credentials
     credentials:
       SPRING_DATASOURCE_PASSWORD: dave_pwd
