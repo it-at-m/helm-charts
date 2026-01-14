@@ -312,7 +312,7 @@ document-storage:
 # Dave Geodata Eai
 geodata-eai:
   replicaCount: 1
-  fullnameOverride: dave-document-storage-service
+  fullnameOverride: dave-geodata-eai-service
   # Environment variables
   extraEnvVars:
     # Java
