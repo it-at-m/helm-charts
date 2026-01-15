@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.2.2
+version: 0.2.3
 maintainers:
   - name: klml
     email: klml@muenchen.de
@@ -34,4 +34,6 @@ dependencies:
   - name: eai
     version: "*"
   - name: document-storage
+    version: "*"
+  - name: geodata-eai
     version: "*"
