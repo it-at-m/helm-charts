@@ -315,8 +315,6 @@ geodata-eai:
   fullnameOverride: dave-geodata-eai-service
   # Environment variables
   extraEnvVars:
-    # Java
-    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
     # Other
     GC_MAX_METASPACE_SIZE: "256"
     MANAGEMENT_SERVER_PORT: "8079"
