@@ -35,3 +35,5 @@ dependencies:
     version: "*"
   - name: document-storage
     version: "*"
+  - name: geodata-eai
+    version: "*"

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: geodata-eai
+description: DAVe traffic counting platform, geodata-eai
+type: application
+version: 0.1.3
+appVersion: "3.0.0"
+maintainers:
+  - name: klml
+    email: klml@muenchen.de
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave/charts/geodata-eai
+sources:
+  - "https://github.com/it-at-m/helm-charts"
