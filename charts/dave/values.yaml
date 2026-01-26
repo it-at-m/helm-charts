@@ -106,11 +106,12 @@ backend:
       DOCUMENT_STORAGE_URL: http://dave-document-storage-service:8080
       # path to KI-model
       DAVE_ONNX_MODEL_PATH: model/Rad_Modell_DAVE.onnx
-      # map center
-      # Eichstätt
-      DAVE_MAP_CENTER_LAT: "48.89529"
-      DAVE_MAP_CENTER_LNG: "11.18026"
-      DAVE_MAP_CENTER_ZOOM: "12"
+      # Tenant configuration
+      DAVE_TENANT_DATENPORTAL_HEADER: "Datenportal"
+      # map center (Eichstätt)
+      DAVE_TENANT_MAP_CENTER_LAT: "48.89529"
+      DAVE_TENANT_MAP_CENTER_LNG: "11.18026"
+      DAVE_TENANT_MAP_CENTER_ZOOM: "12"
       # Currently, only the maps of geoportal.muenchen.de are used, which cover the whole of Bavaria.
       # FR for other maps https://github.com/it-at-m/dave/issues/4
       # Dave Email Settings
