@@ -1,6 +1,6 @@
 {{- $dot := . }}
-{{- range $module := .Values.modules -}}
-{{ $data := dict "dot" $dot "module" $module }}
+{{- range $moduleName, $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module "moduleName" $moduleName }}
 {{ if $module.applicationYML }}
 {{ $checksum := $module.applicationYML | toYaml | sha256sum | trunc 64 }}
 ---
