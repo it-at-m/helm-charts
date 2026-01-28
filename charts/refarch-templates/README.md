@@ -121,7 +121,7 @@ Further configuration option can be seen in the documentation of the [API-Gatewa
 ### Module configurations
 
 Modules consist of individual components in a dict.
-Each module consist of individuell Kubernetes resources (e.g. Deployment, Service, HPA, ...).
+Each module consists of individual Kubernetes resources (e.g., Deployment, Service, HPA, ...).
 All configuration options need to be inside a `module`.
 
 Example:
