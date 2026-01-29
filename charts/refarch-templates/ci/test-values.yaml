@@ -30,6 +30,11 @@ modules:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-eai
       tag: "latest"
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 3
+      targetMemoryUtilizationPercentage: 80
     service:
       http: true
 
