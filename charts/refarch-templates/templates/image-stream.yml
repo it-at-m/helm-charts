@@ -7,12 +7,12 @@ spec:
   lookupPolicy:
     local: false
   tags:
-  {{- range .Values.modules }}
-    - name: {{.name}}
+  {{- range $moduleName, $module := .Values.modules }}
+    - name: {{ $moduleName }}
       annotations: {}
       from:
         kind: DockerImage
-        name: {{.image.registry}}/{{.image.repository}}:{{.image.tag}}
+        name: {{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}
       importPolicy:
         scheduled: true
       referencePolicy:
