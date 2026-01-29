@@ -55,7 +55,6 @@ modules:
       repository: it-at-m/refarch-templates/refarch-backend
       tag: "0.1.0"
     autoscaling:
-      enabled: true
       minReplicas: 2
       maxReplicas: 3
       targetMemoryUtilizationPercentage: 80
