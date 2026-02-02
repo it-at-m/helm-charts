@@ -54,6 +54,10 @@ modules:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-backend
       tag: "0.1.0"
+    autoscaling:
+      minReplicas: 2
+      maxReplicas: 3
+      targetMemoryUtilizationPercentage: 80
     envFrom:
       - prefix: SSO_
         secretRef:

@@ -14,7 +14,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "getFullname" $moduleName }}
+    name: {{ include "getFullname" $data }}
   minReplicas: {{ $module.autoscaling.minReplicas | default 1 }}
   maxReplicas: {{ $module.autoscaling.maxReplicas }}
   metrics:
