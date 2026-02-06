@@ -28,6 +28,27 @@ externalCharts:
   keycloak:
     # enable/disable keycloak chart dependency
     enabled: true
+  backend:
+    # enable/disable backend chart dependency
+    enabled: true
+  frontend:
+    # enable/disable frontend chart dependency
+    enabled: true
+  adminportal:
+    # enable/disable adminportal chart dependency
+    enabled: true
+  selfserviceportal:
+    # enable/disable selfservice chart dependency
+    enabled: true
+  eai:
+    # enable/disable eai chart dependency
+    enabled: true
+  documentstorage:
+    # enable/disable documentstorage chart dependency
+    enabled: true
+  geodataeai:
+    # enable/disable geodataeai chart dependency
+    enabled: true
 
 # Dave Backend
 backend:
