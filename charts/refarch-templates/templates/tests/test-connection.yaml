@@ -1,6 +1,6 @@
 {{- $dot := . }}
-{{- range $module := .Values.modules -}}
-{{ $data := dict "dot" $dot "module" $module }}
+{{- range $moduleName, $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module "moduleName" $moduleName }}
 ---
 apiVersion: v1
 kind: Pod

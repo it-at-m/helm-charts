@@ -130,14 +130,14 @@ imageStream:
 
 ### Module configurations
 
-Modules consist of individual components in an array.
-Each module consist of individuell Kubernetes resources (e.g. Deployment, Service, HPA, ...).
+Modules consist of individual components in a dict.
+Each module consists of individual Kubernetes resources (e.g., Deployment, Service, HPA, ...).
 All configuration options need to be inside a `module`.
 
 Example:
 ```yaml
   modules:
-    # add your modules configuration here (as a list)
+    # add your modules configuration here (as a dict)
 ```
 
 #### Base information
@@ -147,7 +147,7 @@ Additionally, you can override the `pullPolicy`, which is set to `IfNotPresent` 
 
 Example:
 ```yaml
-    - name: frontend
+    frontend:
       image:
         registry: ghcr.io
         repository: it-at-m/refarch-templates/refarch-frontend

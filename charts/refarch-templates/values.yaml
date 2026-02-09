@@ -8,7 +8,7 @@ secrets: []
 imagePullSecrets: []
 
 # Configuration of Modules
-modules: []
+modules: {}
 
 # Configuration of ImageStream
 imageStream:
