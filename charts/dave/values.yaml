@@ -67,7 +67,7 @@ backend:
       # DB
       # [By default such tables (and other objects) are automatically put into a schema named “public”. Every new database contains such a schema](https://www.postgresql.org/docs/current/ddl-schemas.html#DDL-SCHEMAS-PUBLIC).
       DB_SCHEMA: public
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
+      spring.jpa.properties.hibernate.default_schema: public
       SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
       SPRING_DATASOURCE_USERNAME: dave
       SPRING_JPA_DATABASE: postgresql
