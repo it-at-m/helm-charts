@@ -5,7 +5,7 @@ ad:
 ews:
   ewsServiceUrl: "https://ews.mydomain.test/EWS/Exchange.asmx"
 gravatar:
-  enabled: true
+  enabled: false
 credentials:
   adUserDn: "DN=test.user,OU=Users,DC=mycompany,DC=test"
   adPassword: "testTest"

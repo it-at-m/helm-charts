@@ -133,7 +133,7 @@ ews:
   # EWS service URL, e.g. https://computer.domain.contoso.com/EWS/Exchange.asmx
   ewsServiceUrl: ""
 gravatar:
-  # Enables/disables the gravatar compatability endpoint.
+  # Enables/disables the gravatar compatibility endpoint.
   enabled: false
   # cron expression for periodic refresh of the SHA256 email address hashes, "-" to disable.
   hashCacheRefreshCron: "0 0 4 * * *"
