@@ -4,7 +4,8 @@ ad:
   userSearchFilter: "(&(objectClass=organizationalPerson)(cn={uid}))"
 ews:
   ewsServiceUrl: "https://ews.mydomain.test/EWS/Exchange.asmx"
-  domain: "ews.mydomain.test"
+gravatar:
+  enabled: false
 credentials:
   adUserDn: "DN=test.user,OU=Users,DC=mycompany,DC=test"
   adPassword: "testTest"

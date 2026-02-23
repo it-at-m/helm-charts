@@ -17,8 +17,12 @@ data:
         user-search-filter: {{ required "AD user-search-filter must be provided" .ad.userSearchFilter | quote }}
       ews:
         ews-service-url: {{ required "EWS service url must be provided" .ews.ewsServiceUrl | quote }}
-        domain: {{ required "EWS domain must be provided" .ews.domain | quote }}
-      web.docs.url: {{ .docsUrl | default "https://github.com/it-at-m/ad2image" | quote }}
+      gravatar:
+        enabled: {{ .gravatar.enabled | quote }}
+        hash-cache-refresh-cron: {{ .gravatar.hashCacheRefreshCron | quote }}
+        map-population-filter: {{ .gravatar.mapPopulationFilter | quote }}
+        page-size: {{ .gravatar.pageSize | quote }}
+      web.docs.url: {{ .docsUrl | default "/swagger-ui/index.html" | quote }}
 
     logging:
       level:
