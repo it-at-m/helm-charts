@@ -18,7 +18,7 @@ The command deploys ad2image on the Kubernetes cluster with some default configu
 
 | Key                           | Type   | Default                                             | Description                                                                                                                            |
 | ----------------------------- | ------ | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| image.imagePullSecrets        | list   | `[]`                                                | Image pull secrets specification                                                                                                       |
+| imagePullSecrets              | list   | `[]`                                                | Image pull secrets specification                                                                                                       |
 | image.pullPolicy              | string | `"IfNotPresent"`                                    | Image pull policy                                                                                                                      |
 | image.repository              | string | `"ghcr.io/it-at-m/ad2image"`                        | Image to use for deploying                                                                                                             |
 | image.tag                     | string | `""`                                                | Image tag                                                                                                                              |
@@ -65,7 +65,7 @@ The command deploys ad2image on the Kubernetes cluster with some default configu
 #### appVersion 2.0.0
 
 - `ews.domain` value removed as it was only needed for NTLM authentication and is no longer relevant for Basic Authentication used in 2.0.0.
-- `gravatar.***` compatibility endpoint configuration options added
+- `gravatar.*` compatibility endpoint configuration options added
 
 ### 2.0.0
 
