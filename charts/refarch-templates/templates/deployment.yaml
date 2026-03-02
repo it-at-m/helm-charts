@@ -1,6 +1,6 @@
 {{- $dot := . }}
-{{- range $module := .Values.modules -}}
-{{ $data := dict "dot" $dot "module" $module }}
+{{- range $moduleName, $module := .Values.modules -}}
+{{ $data := dict "dot" $dot "module" $module "moduleName" $moduleName }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,7 +37,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ $module.name }}
+        - name: {{ $moduleName }}
           securityContext:
             capabilities:
               drop:

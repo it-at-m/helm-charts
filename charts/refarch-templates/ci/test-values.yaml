@@ -1,12 +1,12 @@
 modules:
-  - name: frontend
+  frontend:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-frontend
       tag: "latest"
     service:
       http: true
-  - name: webcomponent
+  webcomponent:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-webcomponent
@@ -25,7 +25,7 @@ modules:
 #          active: "no-security"
 #    service:
 #      http: true
-  - name: eai
+  eai:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-eai
