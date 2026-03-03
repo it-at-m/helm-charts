@@ -67,7 +67,8 @@ spec:
             httpGet:
               path: /actuator/health
               port: http
-            initialDelaySeconds: 60
+            initialDelaySeconds: 10
+            failureThreshold: 9
             {{- end }}
           livenessProbe:
             {{- if $module.livenessProbe }}
