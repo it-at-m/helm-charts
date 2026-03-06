@@ -2,7 +2,7 @@ apiVersion: v2
 name: dave
 description: DAVe traffic counting plattform
 type: application
-version: 0.2.4
+version: 0.2.5
 maintainers:
   - name: klml
     email: klml@muenchen.de
@@ -25,15 +25,22 @@ dependencies:
     condition: externalCharts.keycloak.enabled
   - name: backend
     version: "*"
+    condition: externalCharts.backend.enabled
   - name: frontend
     version: "*"
+    condition: externalCharts.frontend.enabled
   - name: admin-portal
     version: "*"
+    condition: externalCharts.adminportal.enabled
   - name: selfservice-portal
     version: "*"
+    condition: externalCharts.selfserviceportal.enabled
   - name: eai
     version: "*"
+    condition: externalCharts.eai.enabled
   - name: document-storage
     version: "*"
+    condition: externalCharts.documentstorage.enabled
   - name: geodata-eai
     version: "*"
+    condition: externalCharts.geodataeai.enabled
