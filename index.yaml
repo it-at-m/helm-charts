@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   ad2image:
   - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-03-09T09:43:44.288822164Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 52f2663364cfab7a06dfc33d4a0f8a18a2ef63b48944e4103973b02d2df215fd
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-2.1.1/ad2image-2.1.1.tgz
+    version: 2.1.1
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2026-02-23T08:40:56.248270743Z"
     dependencies:
@@ -3500,4 +3521,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-06T09:32:25.448578103Z"
+generated: "2026-03-09T09:43:44.289253792Z"
