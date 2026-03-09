@@ -22,6 +22,9 @@ data:
         hash-cache-refresh-cron: {{ .gravatar.hashCacheRefreshCron | quote }}
         map-population-filter: {{ .gravatar.mapPopulationFilter | quote }}
         page-size: {{ .gravatar.pageSize | quote }}
+        {{- if .gravatar.defaultMode }}
+        default-mode: {{ .gravatar.defaultMode | quote }}
+        {{- end }}
       web.docs.url: {{ .docsUrl | default "/swagger-ui/index.html" | quote }}
 
     logging:

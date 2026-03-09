@@ -141,6 +141,8 @@ gravatar:
   mapPopulationFilter: "(&(objectClass=organizationalPerson)(mail=*))"
   # page size for retrieval of users
   pageSize: 500
+  # to overwrite the default mode for gravatar endpoint
+  # defaultMode: "M_FALLBACK_IDENTICON"
 
 credentials:
   # Bind User-DN for AD authentication
