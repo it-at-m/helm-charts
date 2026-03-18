@@ -18,7 +18,7 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "kf-app-eai.labels" . | nindent 4 }}
-    type: web2tier
+    {{- include ".Values.ingress.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
