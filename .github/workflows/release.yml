@@ -26,7 +26,7 @@ jobs:
       - name: Setup git user
         uses: fregante/setup-git-user@v2
       - name: Install Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
       - name: Add dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
