@@ -1587,6 +1587,24 @@ entries:
     version: 0.1.1
   kf-app-eai:
   - apiVersion: v2
+    appVersion: 1.0.6
+    created: "2026-03-27T07:36:40.810817676Z"
+    description: Enterprise application interface to allow Munich's kita-app access
+      to kitafinder data.
+    digest: 7f6202ab2559d4e16516ed8133de3ad27d53e33dee8dde6fdc09e4a4c17154b2
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/kf-app-eai
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: max.zollbrecht@gmail.com
+      name: maximilian-zollbrecht
+    name: kf-app-eai
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/kf-app-eai-0.1.6/kf-app-eai-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
     appVersion: 1.0.2
     created: "2025-09-01T13:08:04.413490244Z"
     description: Enterprise application interface to allow Munich's kita-app access
@@ -3542,4 +3560,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-09T10:37:03.77981124Z"
+generated: "2026-03-27T07:36:40.811046624Z"
