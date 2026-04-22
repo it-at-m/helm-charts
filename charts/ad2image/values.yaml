@@ -132,16 +132,26 @@ ad:
 ews:
   # EWS service URL, e.g. https://computer.domain.contoso.com/EWS/Exchange.asmx
   ewsServiceUrl: ""
-  # Exchange/EWS domain, e.g. 'domain.contoso.com'
-  domain: ""
+gravatar:
+  # Enables/disables the gravatar compatibility endpoint.
+  enabled: false
+  # cron expression for periodic refresh of the SHA256 email address hashes, "-" to disable.
+  hashCacheRefreshCron: "0 0 4 * * *"
+  # LDAP search filter for users which should be included in generation of SHA256-hashed email addresses
+  mapPopulationFilter: "(&(objectClass=organizationalPerson)(mail=*))"
+  # page size for retrieval of users
+  pageSize: 500
+  # to overwrite the default mode for gravatar endpoint
+  # defaultMode: "M_FALLBACK_IDENTICON"
+
 credentials:
   # Bind User-DN for AD authentication
   adUserDn: ""
   # Password for AD authentication
   adPassword: ""
-  # Username for EWS NTLM authentication.
+  # Username for EWS Basic authentication.
   ewsUsername: ""
-  # Password for EWS NTLM authentication.
+  # Password for EWS Basic authentication.
   ewsPassword: ""
   existingSecret: ""
 
