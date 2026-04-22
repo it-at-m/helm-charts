@@ -26,7 +26,7 @@ secrets:
       - PASSWORD
 # Module-specific configuration
 modules:
-  - name: frontend
+  frontend:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
@@ -36,7 +36,7 @@ modules:
       tag: "0.0.1"
     service:
       http: true
-  - name: webcomponent
+  webcomponent:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
@@ -46,7 +46,7 @@ modules:
       tag: "latest"
     service:
       http: true
-  - name: backend
+  backend:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
@@ -81,11 +81,11 @@ modules:
         value: "Europe/Berlin"
     service:
       http: true
-    volumes: 
-     - *cacertsVolume
-    volumeMounts: 
-     - *cacertsVolumeMount
-  - name: eai
+    volumes:
+      - *cacertsVolume
+    volumeMounts:
+      - *cacertsVolumeMount
+  eai:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
@@ -95,8 +95,10 @@ modules:
       tag: "latest"
     service:
       http: true
-    volumes: *cacertsVolume
-    volumeMounts: *cacertsVolumeMount
+    volumes:
+      - *cacertsVolume
+    volumeMounts:
+      - *cacertsVolumeMount
 
 # Sample Gateway configuration, which is enabled by default. For further configuration option view the chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
 refarch-gateway:
