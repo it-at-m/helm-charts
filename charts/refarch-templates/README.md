@@ -357,3 +357,27 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
     serviceMonitor:
       enabled: true
 ```
+
+## Migration
+
+### to v2
+
+Modules need to be migrated from array to dict, by using `name` value as dict key.
+
+```yaml
+# old
+modules:
+  - name: frontend
+    ...:
+  - name: backend
+    ...:
+```
+
+```yaml
+# new
+modules:
+  frontend:
+    ...:
+  backend:
+    ...:
+```
