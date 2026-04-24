@@ -8,8 +8,8 @@ cacertsVolume: &cacertsVolume
       - key: cacerts-lhm
         path: cacerts
 cacertsVolumeMount: &cacertsVolumeMount
-  mountPath: /etc/pki/ca-trust/extracted/java
   name: cacerts-volume
+  mountPath: /etc/pki/ca-trust/extracted/java
   readOnly: true
 
 # Global configuration
@@ -84,8 +84,6 @@ modules:
       # mappings, normally don't have to be changed
       - name: REFARCH_SECURITY_CLIENTID
         value: "${SSO_CLIENTID}"
-      - name: REFARCH_SECURITY_USERINFOURI
-        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
       - name: REFARCH_SECURITY_PERMISSIONS_URI
         value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/token"
       - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI

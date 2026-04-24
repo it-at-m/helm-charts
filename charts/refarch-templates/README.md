@@ -185,7 +185,7 @@ If you don't set those properties, those values will be used by default:
 
 > **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
 
-Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscalling` block).
+Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscaling` block).
 
 More information about Autoscaling can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/autoscaling/).
 
