@@ -8,9 +8,10 @@ cacertsVolume: &cacertsVolume
       - key: cacerts-lhm
         path: cacerts
 cacertsVolumeMount: &cacertsVolumeMount
-  mountPath: /etc/pki/ca-trust/extracted/java
   name: cacerts-volume
+  mountPath: /etc/pki/ca-trust/extracted/java
   readOnly: true
+
 # Global configuration
 secrets:
   - name: sso
@@ -24,40 +25,50 @@ secrets:
       - URL # e.g. jdbc:postgresql://db.example.com:5432/mydb
       - USERNAME
       - PASSWORD
-# Module-specific configuration
+
+# OpenShift-specific configuration, if you have plain Kubernetes, you can't use this feature
+# imageStream:
+#   enabled: true # 'true' will automatically register an Image-stream trigger for the deployments, see https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
+
+# Module-specific configuration for own application containers
 modules:
-  - name: frontend
+  frontend:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-frontend
-      tag: "0.0.1"
+      # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
+      tag: "1.0.0"
+    env:
+      - name: TZ
+        value: "Europe/Berlin"
     service:
       http: true
-  - name: webcomponent
+  webcomponent:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-webcomponent
-      tag: "latest"
+      # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
+      tag: "1.0.0"
+    env:
+      - name: TZ
+        value: "Europe/Berlin"
     service:
       http: true
-  - name: backend
+  backend:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-backend
-      tag: "0.1.0"
-    autoscaling:
-      minReplicas: 2
-      maxReplicas: 3
-      targetMemoryUtilizationPercentage: 80
+      # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
+      tag: "1.0.0"
     envFrom:
       - prefix: SSO_
         secretRef:
@@ -66,37 +77,45 @@ modules:
         secretRef:
           name: db
     env:
-      - name: SECURITY_LOGGINGMODE
+      - name: TZ
+        value: "Europe/Berlin"
+      - name: REFARCH_SECURITY_LOGGINGMODE
         value: "all"
       # mappings, normally don't have to be changed
+      - name: REFARCH_SECURITY_CLIENTID
+        value: "${SSO_CLIENTID}"
+      - name: REFARCH_SECURITY_PERMISSIONS_URI
+        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/token"
       - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI
         value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
       # validates, that the client is contained in the aud claim
       # requires setup of an according mapper
       #- name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0
       #  value: "${SSO_CLIENTID}"
-      - name: SECURITY_USERINFOURI
-        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
-      - name: TZ
-        value: "Europe/Berlin"
     service:
       http: true
-    volumes: 
-     - *cacertsVolume
-    volumeMounts: 
-     - *cacertsVolumeMount
-  - name: eai
+    volumes:
+      - *cacertsVolume
+    volumeMounts:
+      - *cacertsVolumeMount
+  eai:
     image:
       # Please don't use the tag latest, because every time the image is updated you need to restart the pod.
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
       repository: it-at-m/refarch-templates/refarch-eai
-      tag: "latest"
+      # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
+      tag: "1.0.0"
+    env:
+      - name: TZ
+        value: "Europe/Berlin"
     service:
       http: true
-    volumes: *cacertsVolume
-    volumeMounts: *cacertsVolumeMount
+    volumes:
+      - *cacertsVolume
+    volumeMounts:
+      - *cacertsVolumeMount
 
 # Sample Gateway configuration, which is enabled by default. For further configuration option view the chart dependency on https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
 refarch-gateway:
@@ -105,12 +124,14 @@ refarch-gateway:
       secretRef:
         name: sso
   envAppend:
+    - name: TZ
+      value: "Europe/Berlin"
     - name: SPRING_PROFILES_ACTIVE
       value: "hazelcast-k8s"
     - name: ALLOWED_ORIGINS_PUBLIC
-      value: "https://*.domain.example"
+      value: "https://*.example.com"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
-      value: "profile, openid"
+      value: "profile, openid, roles"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
       value: "sso"
     # mappings, normally don't have to be changed
@@ -136,32 +157,32 @@ refarch-gateway:
                   filters:
                     - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
                 - id: "webcomponent"
-                  uri: "http://myrelease-webcomponent:8080/"
+                  uri: "http://<HELM_RELEASE_NAME>-webcomponent:8080/"
                   predicates:
                     - "Path=/public/webcomponent"
                   filters:
                     - "RewritePath=/public/webcomponent/(?<urlsegments>.*), /$\\{urlsegments}"
                 - id: "backend"
-                  uri: "http://myrelease-backend:8080/"
+                  uri: "http://<HELM_RELEASE_NAME>-backend:8080/"
                   predicates:
-                    - "Path=/api/refarch-backend/**"
+                    - "Path=/api/backend/**"
                   filters:
-                    - "RewritePath=/api/refarch-backend/(?<urlsegments>.*), /$\\{urlsegments}"
+                    - "RewritePath=/api/backend/(?<urlsegments>.*), /$\\{urlsegments}"
                 - id: "eai"
-                  uri: "http://myrelease-eai:8080/"
+                  uri: "http://<HELM_RELEASE_NAME>-eai:8080/"
                   predicates:
-                    - "Path=/api/refarch-eai/**"
+                    - "Path=/api/eai/**"
                   filters:
-                    - "RewritePath=/api/refarch-eai/(?<urlsegments>.*), /$\\{urlsegments}"
+                    - "RewritePath=/api/eai/(?<urlsegments>.*), /$\\{urlsegments}"
                 # The catch all route needs to be stand at the end.
                 - id: "frontend"
-                  uri: "http://myrelease-frontend:8080/"
+                  uri: "http://<HELM_RELEASE_NAME>-frontend:8080/"
                   predicates:
                     - "Path=/**"
   ingress:
     enabled: true
     hosts:
-      - host: mygateway.example.com
+      - host: myapp.example.com
         paths:
           - path: /
             pathType: "ImplementationSpecific"

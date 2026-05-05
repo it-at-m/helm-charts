@@ -10,7 +10,7 @@ Get the truncated module name #backend
 Get the truncated module name with the release name #dev-backend
 */}}
 {{- define "getFullname" -}}
-{{- $moduleName := .module.name }}
+{{- $moduleName := .moduleName }}
 {{- printf "%s-%s" .dot.Release.Name $moduleName | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -34,7 +34,7 @@ Get the truncated chart name
 Get the Common labels
 */}}
 {{- define "getLabels" -}}
-{{- $moduleName := .module.name }}
+{{- $moduleName := .moduleName }}
 helm.sh/chart: {{ include "getChartName" .dot }}
 {{- include "getSelectorLabels" . }}
 {{- if ".Chart.Version" }}
@@ -47,7 +47,7 @@ app.kubernetes.io/managed-by: {{ .dot.Release.Service }}
 Get the Selector labels for connection between service and pods
 */}}
 {{- define "getSelectorLabels" -}}
-{{- $moduleName := .module.name }}
+{{- $moduleName := .moduleName }}
 {{- if $moduleName }}
 app.kubernetes.io/name: {{ include "getName" $moduleName }}
 {{- end }}

@@ -130,14 +130,14 @@ imageStream:
 
 ### Module configurations
 
-Modules consist of individual components in an array.
-Each module consist of individuell Kubernetes resources (e.g. Deployment, Service, HPA, ...).
+Modules consist of individual components in a dict.
+Each module consists of individual Kubernetes resources (e.g., Deployment, Service, HPA, ...).
 All configuration options need to be inside a `module`.
 
 Example:
 ```yaml
   modules:
-    # add your modules configuration here (as a list)
+    # add your modules configuration here (as a dict)
 ```
 
 #### Base information
@@ -147,7 +147,7 @@ Additionally, you can override the `pullPolicy`, which is set to `IfNotPresent` 
 
 Example:
 ```yaml
-    - name: frontend
+    frontend:
       image:
         registry: ghcr.io
         repository: it-at-m/refarch-templates/refarch-frontend
@@ -185,7 +185,7 @@ If you don't set those properties, those values will be used by default:
 
 > **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
 
-Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscalling` block).
+Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscaling` block).
 
 More information about Autoscaling can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/autoscaling/).
 
@@ -356,4 +356,28 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 ```yaml
     serviceMonitor:
       enabled: true
+```
+
+## Migration
+
+### to v2
+
+Modules need to be migrated from array to dict, by using `name` value as dict key.
+
+```yaml
+# old
+modules:
+  - name: frontend
+    ...:
+  - name: backend
+    ...:
+```
+
+```yaml
+# new
+modules:
+  frontend:
+    ...:
+  backend:
+    ...:
 ```
