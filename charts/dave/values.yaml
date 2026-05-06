@@ -133,8 +133,17 @@ backend:
       DAVE_TENANT_MAP_CENTER_LAT: "48.89529"
       DAVE_TENANT_MAP_CENTER_LNG: "11.18026"
       DAVE_TENANT_MAP_CENTER_ZOOM: "12"
-      # Currently, only the maps of geoportal.muenchen.de are used, which cover the whole of Bavaria.
-      # FR for other maps https://github.com/it-at-m/dave/issues/4
+      # map base layers
+      DAVE_MAP_BASELAYERS_0_BASEURL: "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+      DAVE_MAP_BASELAYERS_0_LAYERNAME: ""
+      DAVE_MAP_BASELAYERS_0_LAYERNAMETODISPLAY: "OpenStreetMap"
+      DAVE_MAP_BASELAYERS_0_ATTRIBUTION: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
+      # map overlay layers
+      DAVE_MAP_OVERLAYLAYERS_0_BASEURL: ""
+      DAVE_MAP_OVERLAYLAYERS_0_LAYERNAME: ""
+      DAVE_MAP_OVERLAYLAYERS_0_LAYERNAMETODISPLAY: ""
+      DAVE_MAP_OVERLAYLAYERS_0_ATTRIBUTION: ""
+      
       # Dave Email Settings
       DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
       DAVE_EMAIL_URL_SELFSERVICEPORTAL: "http://localhost:8086"
