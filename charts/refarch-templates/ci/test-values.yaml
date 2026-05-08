@@ -3,14 +3,14 @@ modules:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/frontend
-      tag: "latest"
+      tag: "dev"
     service:
       http: true
   webcomponent:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/webcomponent
-      tag: "latest"
+      tag: "dev"
     service:
       http: true
 # Commented out because backend currently cannot be tested publicly without DB connection
@@ -29,7 +29,7 @@ modules:
     image:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/eai
-      tag: "latest"
+      tag: "dev"
     autoscaling:
       minReplicas: 2
       maxReplicas: 3
