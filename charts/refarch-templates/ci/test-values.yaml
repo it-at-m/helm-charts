@@ -2,14 +2,14 @@ modules:
   frontend:
     image:
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-frontend
+      repository: it-at-m/refarch-templates/frontend
       tag: "latest"
     service:
       http: true
   webcomponent:
     image:
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-webcomponent
+      repository: it-at-m/refarch-templates/webcomponent
       tag: "latest"
     service:
       http: true
@@ -17,7 +17,7 @@ modules:
 #  - name: backend
 #    image:
 #      registry: ghcr.io
-#      repository: it-at-m/refarch-templates/refarch-backend
+#      repository: it-at-m/refarch-templates/backend
 #      tag: "latest"
 #    applicationYML:
 #      spring:
@@ -28,7 +28,7 @@ modules:
   eai:
     image:
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-eai
+      repository: it-at-m/refarch-templates/eai
       tag: "latest"
     autoscaling:
       minReplicas: 2
