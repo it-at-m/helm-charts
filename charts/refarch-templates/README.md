@@ -5,10 +5,10 @@
 This chart bootstraps a sample RefArch deployment based on the architecture described in [RefArch documentation](https://refarch.oss.muenchen.de/overview.html) on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 It acts as an example and dependency to create Helm charts for deploying applications based on the RefArch and [its templates](https://refarch.oss.muenchen.de/templates/).
 It consists of the following components:
-- [refarch-backend](https://github.com/it-at-m/refarch-templates/tree/main/refarch-backend)
-- [refarch-eai](https://github.com/it-at-m/refarch-templates/tree/main/refarch-eai)
-- [refarch-frontend](https://github.com/it-at-m/refarch-templates/tree/main/refarch-frontend)
-- [refarch-webcomponent](https://github.com/it-at-m/refarch-templates/tree/main/refarch-webcomponent)
+- [backend](https://github.com/it-at-m/refarch-templates/tree/main/backend)
+- [eai](https://github.com/it-at-m/refarch-templates/tree/main/eai)
+- [frontend](https://github.com/it-at-m/refarch-templates/tree/main/frontend)
+- [webcomponent](https://github.com/it-at-m/refarch-templates/tree/main/webcomponent)
 
 > **Note:** This chart does not ship with an [API Gateway](https://refarch.oss.muenchen.de/gateway.html).
 If you need an API Gateway define it as an additional chart dependency. The respective chart can be found [here](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway)
@@ -150,7 +150,7 @@ Example:
     frontend:
       image:
         registry: ghcr.io
-        repository: it-at-m/refarch-templates/refarch-frontend
+        repository: it-at-m/refarch-templates/frontend
         pullPolicy: Always # Defaults to IfNotPresent
         tag: "latest"
 ```
@@ -347,7 +347,7 @@ The following configuration is picked up by default:
 ```
 
 > **Note:**: Those defaults are suitable for Spring-based applications, because applications like `refarch-backend` or `refarch-eai` expose those endpoints via Spring Actuator.
-Web components like `refarch-frontend` or `refarch-webcomponent` are compatible as well, as those mimic the actuator API
+Web deployments like `frontend` or `webcomponent` are compatible as well, as those mimic the actuator API
 
 #### Service-Monitor (works only on OpenShift)
 

@@ -38,7 +38,7 @@ modules:
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-frontend
+      repository: it-at-m/refarch-templates/frontend
       # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
       tag: "1.0.0"
     env:
@@ -52,7 +52,7 @@ modules:
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-webcomponent
+      repository: it-at-m/refarch-templates/webcomponent
       # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
       tag: "1.0.0"
     env:
@@ -66,7 +66,7 @@ modules:
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-backend
+      repository: it-at-m/refarch-templates/backend
       # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
       tag: "1.0.0"
     envFrom:
@@ -104,7 +104,7 @@ modules:
       # In Openshift you can use the ImageStreamTrigger. https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
       # You can use direct the version number of an inmutable image. for example: 1.0.0
       registry: ghcr.io
-      repository: it-at-m/refarch-templates/refarch-eai
+      repository: it-at-m/refarch-templates/eai
       # pullPolicy: Always # Defaults to 'IfNotPresent', best choice for immutable images e.g. 1.0.0; 'Always' should be used for reference changing tags e.g. dev,test,latest and should be used in combination with `imageStream.enabled=true`
       tag: "1.0.0"
     env:
