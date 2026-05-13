@@ -26,6 +26,11 @@ secrets:
       - USERNAME
       - PASSWORD
 
+configMaps:
+  - name: test
+    data:
+      test: test
+
 # OpenShift-specific configuration, if you have plain Kubernetes, you can't use this feature
 # imageStream:
 #   enabled: true # 'true' will automatically register an Image-stream trigger for the deployments, see https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/triggering-updates-on-imagestream-changes
