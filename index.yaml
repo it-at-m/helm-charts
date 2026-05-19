@@ -727,6 +727,63 @@ entries:
     version: 1.0.0
   dave:
   - apiVersion: v2
+    created: "2026-05-19T13:48:06.951363926Z"
+    dependencies:
+    - condition: externalCharts.elasticsearch.enabled
+      name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.6
+    - condition: externalCharts.postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.2.0
+    - condition: externalCharts.keycloak.enabled
+      name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 25.2.0
+    - condition: externalCharts.backend.enabled
+      name: backend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.frontend.enabled
+      name: frontend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.adminportal.enabled
+      name: admin-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.selfserviceportal.enabled
+      name: selfservice-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.eai.enabled
+      name: eai
+      repository: ""
+      version: '*'
+    - condition: externalCharts.documentstorage.enabled
+      name: document-storage
+      repository: ""
+      version: '*'
+    - condition: externalCharts.geodataeai.enabled
+      name: geodata-eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: 937147fd7f1dc3ec313b0077b96df0cca2233847a1ccd540f0652226fa817046
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.2.7/dave-0.2.7.tgz
+    version: 0.2.7
+  - apiVersion: v2
     created: "2026-05-08T12:06:24.635719961Z"
     dependencies:
     - condition: externalCharts.elasticsearch.enabled
@@ -2277,6 +2334,41 @@ entries:
     version: 1.0.0
   refarch-templates:
   - apiVersion: v2
+    created: "2026-05-19T13:48:07.167065683Z"
+    dependencies:
+    - condition: refarch-gateway.enabled
+      name: refarch-gateway
+      repository: '@it-at-m'
+      version: 1.7.2
+    description: Helm Chart for deploying a it@M Reference Architecture application.
+    digest: db9703611a1d2677fa039a86e97198fee0c2ac567e77ad10101ae80b9dc57cae
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    - name: DanielOber
+      url: https://github.com/DanielOber
+    - name: langehm
+      url: https://github.com/langehm
+    - name: ejcsid
+      url: https://github.com/ejcsid
+    - name: hupling
+      url: https://github.com/hupling
+    - name: tobiasholler
+      url: https://github.com/tobiasholler
+    - name: ffmuc
+      url: https://github.com/ffmuc
+    name: refarch-templates
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-templates-2.0.4/refarch-templates-2.0.4.tgz
+    version: 2.0.4
+  - apiVersion: v2
     created: "2026-05-08T12:06:24.796321134Z"
     dependencies:
     - condition: refarch-gateway.enabled
@@ -3572,4 +3664,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-05-08T12:06:24.796797479Z"
+generated: "2026-05-19T13:48:07.167498096Z"
