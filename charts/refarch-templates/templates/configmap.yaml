@@ -1,6 +1,6 @@
 {{- $dot := . }}
 {{- range $configmap := .Values.configMaps -}}
-{{ $data := dict "dot" $dot "module" $configmap }}
+{{ $data := dict "dot" $dot "module" $configmap "moduleName" $configmap.name }}
 {{ $checksum := $configmap.data | toYaml | sha256sum | trunc 64 }}
 ---
 apiVersion: v1

@@ -1,3 +1,8 @@
+configMaps:
+  - name: test
+    data:
+      test: test
+
 modules:
   frontend:
     image:
