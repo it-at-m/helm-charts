@@ -10,6 +10,16 @@ global:
 # Dave Backend
 backend:
   existingSecret: ""                # verhindert Fehler durch fehlendes Secret
+  service:
+    ports:
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: service
+      - port: 5701
+        targetPort: 5701
+        protocol: TCP
+        name: hazelcast
   # Environment Variables
   extraEnvVars:
     env:
@@ -46,6 +56,17 @@ backend:
 
 # Dave Admin-Portal
 admin-portal:
+  service:
+    port: 8080
+    ports:
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: service
+      - port: 5701
+        targetPort: 5701
+        protocol: TCP
+        name: hazelcast
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
@@ -93,6 +114,17 @@ eai:
 
 # Dave Frontend
 frontend:
+  service:
+    port: 8080
+    ports:
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: service
+      - port: 5701
+        targetPort: 5701
+        protocol: TCP
+        name: hazelcast
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
@@ -124,6 +156,17 @@ frontend:
 
 # Dave Selfservice-Portal
 selfservice-portal:
+  service:
+    port: 8080
+    ports:
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: service
+      - port: 5701
+        targetPort: 5701
+        protocol: TCP
+        name: hazelcast
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
