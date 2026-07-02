@@ -29,6 +29,7 @@ backend:
         --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+      SPRING_PROFILES_ACTIVE: dev,no-security
       KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
       ELASTICSEARCH_SCHEME: http
       ELASTICSEARCH_SECURITY_ENABLED: "false"
@@ -75,6 +76,7 @@ admin-portal:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
   # Volume for CA-Certfificates
@@ -101,6 +103,7 @@ eai:
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
+    SPRING_PROFILES_ACTIVE: dev,no-security
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -133,6 +136,7 @@ frontend:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
   # Volume for CA-Certfificates
@@ -175,6 +179,7 @@ selfservice-portal:
       java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
@@ -202,6 +207,7 @@ document-storage:
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
+    SPRING_PROFILES_ACTIVE: dev,no-security
     KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
     REFARCH_S3_URL: s3.example.com
     REFARCH_S3_BUCKETNAME: DAVE-BUCKET
