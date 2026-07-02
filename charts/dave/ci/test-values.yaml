@@ -177,6 +177,7 @@ selfservice-portal:
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/${spring.realm}
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
