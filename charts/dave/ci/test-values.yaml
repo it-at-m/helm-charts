@@ -20,6 +20,8 @@ backend:
         targetPort: 5701
         protocol: TCP
         name: hazelcast
+  hazelcast:
+    enabled: false
   # Environment Variables
   extraEnvVars:
     env:
@@ -70,6 +72,8 @@ admin-portal:
         targetPort: 5701
         protocol: TCP
         name: hazelcast
+  hazelcast:
+    enabled: false
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
@@ -102,6 +106,8 @@ admin-portal:
 
 # Dave EAI
 eai:
+  hazelcast:
+    enabled: false
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
@@ -130,6 +136,8 @@ frontend:
         targetPort: 5701
         protocol: TCP
         name: hazelcast
+  hazelcast:
+    enabled: false
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
@@ -173,6 +181,8 @@ selfservice-portal:
         targetPort: 5701
         protocol: TCP
         name: hazelcast
+  hazelcast:
+    enabled: false
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS:
@@ -206,6 +216,8 @@ selfservice-portal:
 
 # Dave Document Storage
 document-storage:
+  hazelcast:
+    enabled: false
   # Environment variables
   extraEnvVars:
     JAVA_OPTIONS: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
