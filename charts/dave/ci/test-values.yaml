@@ -7,11 +7,6 @@ global:
   credentials:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: WFhYWC1TRUNSRVQtWFhYWAo=
 
-refarch-gateway:
-  hazelcast:
-    enabled: false
-    assignRoleToServiceAccount: false
-
 # Dave Backend
 backend:
   existingSecret: ""                # verhindert Fehler durch fehlendes Secret
@@ -21,10 +16,6 @@ backend:
         targetPort: 8080
         protocol: TCP
         name: service
-      - port: 5701
-        targetPort: 5701
-        protocol: TCP
-        name: hazelcast
   hazelcast:
     enabled: false
   # Environment Variables
@@ -73,10 +64,6 @@ admin-portal:
         targetPort: 8080
         protocol: TCP
         name: service
-      - port: 5701
-        targetPort: 5701
-        protocol: TCP
-        name: hazelcast
   hazelcast:
     enabled: false
   # Environment variables
@@ -137,10 +124,6 @@ frontend:
         targetPort: 8080
         protocol: TCP
         name: service
-      - port: 5701
-        targetPort: 5701
-        protocol: TCP
-        name: hazelcast
   hazelcast:
     enabled: false
   # Environment variables
@@ -182,10 +165,6 @@ selfservice-portal:
         targetPort: 8080
         protocol: TCP
         name: service
-      - port: 5701
-        targetPort: 5701
-        protocol: TCP
-        name: hazelcast
   hazelcast:
     enabled: false
   # Environment variables
