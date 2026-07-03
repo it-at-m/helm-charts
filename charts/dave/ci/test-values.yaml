@@ -7,6 +7,11 @@ global:
   credentials:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: WFhYWC1TRUNSRVQtWFhYWAo=
 
+refarch-gateway:
+  hazelcast:
+    enabled: false
+    assignRoleToServiceAccount: false
+
 # Dave Backend
 backend:
   existingSecret: ""                # verhindert Fehler durch fehlendes Secret
@@ -195,6 +200,8 @@ selfservice-portal:
     SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    HZ_INTEGRITYCHECKER_ENABLED: "false"
+    HZ_JET_ENABLED: "false"
   # Volume for CA-Certfificates
   # extraVolumeMounts:
   #   - name: cacerts
@@ -228,6 +235,12 @@ document-storage:
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
 
+# Dave Geodata Eai
+geodata-eai:
+  hazelcast:
+    enabled: false
+
+# Keycloak
 keycloak:
   fullnameOverride: "dave-keycloak"
   keycloakConfigCli:
