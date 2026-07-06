@@ -39,7 +39,7 @@ backend:
     ELASTICSEARCH_PORT: "9200"
     ELASTICSEARCH_HTTPCACERTIFICATE: ""
     SPRING_DATA_ELASTICSEARCH_REPOSITORIES_ENABLED: "false"
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/dave_db
+    SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
     SPRING_DATASOURCE_USERNAME: dave
     SPRING_DATASOURCE_PASSWORD: davepassword
     HZ_INTEGRITYCHECKER_ENABLED: "false"
@@ -256,6 +256,7 @@ elasticsearch:
         memory: 256Mi
 
 postgresql:
+  fullnameOverride: dave-postgresql
   primary.persistence.enabled: false
   auth:
     postgresPassword: postgrespw               # Superuser-Passwort (optional)
