@@ -21,7 +21,7 @@ global:
 externalCharts:
   elasticsearch:
     # enable/disable elasticsearch chart dependency
-    enabled: true
+    enabled: false
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
