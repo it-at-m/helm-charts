@@ -42,6 +42,7 @@ backend:
     SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
     SPRING_DATASOURCE_USERNAME: dave
     SPRING_DATASOURCE_PASSWORD: dave_pwd
+    SPRING_JPA_HIBERNATE_DDLAUTO: none
     HZ_INTEGRITYCHECKER_ENABLED: "false"
     HZ_JET_ENABLED: "false"
     # Dave Email Settings
