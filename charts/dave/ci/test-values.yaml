@@ -41,7 +41,7 @@ backend:
     SPRING_DATA_ELASTICSEARCH_REPOSITORIES_ENABLED: "false"
     SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
     SPRING_DATASOURCE_USERNAME: dave
-    SPRING_DATASOURCE_PASSWORD: davepassword
+    SPRING_DATASOURCE_PASSWORD: dave_pwd
     HZ_INTEGRITYCHECKER_ENABLED: "false"
     HZ_JET_ENABLED: "false"
     # Dave Email Settings
@@ -261,5 +261,5 @@ postgresql:
   auth:
     postgresPassword: postgrespw               # Superuser-Passwort (optional)
     username: dave                              # erzeugter DB-User
-    password: davepassword                      # Passwort für erzeugten User
+    password: dave_pwd                      # Passwort für erzeugten User
     database: dave_db                           # erzeugte DB
