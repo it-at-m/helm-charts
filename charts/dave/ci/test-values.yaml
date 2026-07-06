@@ -45,7 +45,7 @@ backend:
     DAVE_EMAIL_RECEIVER_HOSTNAME: imap.example.com
     DAVE_EMAIL_SENDER_HOSTNAME: smtp.example.com
     DAVE_EMAIL_ADDRESS: dave-dev@example.com
-    DAVE_EMAIL_RECEIVER_CUT_EMAIL_BODY_LINE_CONTAINS_STRINGS: Example City;-----Ursprüngliche Nachricht-----;dave-dev@example.com,
+    DAVE_EMAIL_RECEIVER_CUTEMAILBODY_LINECONTAINSSTRINGS: Example City;-----Ursprüngliche Nachricht-----;dave-dev@example.com,
   # Credentials
     DAVE_EMAIL_PASSWORD: WFhYWC1TRUNSRVQtWFhYWAo=
   # Volume for CA-Certfificates
@@ -218,7 +218,7 @@ document-storage:
     REFARCH_S3_BUCKETNAME: dave-bucket
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
-    DE_MUENCHEN_REFARCH_INTEGRATION_S3_ENABLED: false
+    DE_MUENCHEN_REFARCH_INTEGRATION_S3_ENABLED: "false"
     SPRING_SECURITY_LOGGING_REQUESTS: all
 
 # Dave Geodata Eai
@@ -253,4 +253,4 @@ elasticsearch:
         memory: 256Mi
 
 postgresql:
-  persistence.enabled: false
+  primary.persistence.enabled: false

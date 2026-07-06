@@ -157,11 +157,12 @@ backend:
     # Dave Reports Settings
     DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
     DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
+    # CA cert fingerprint for elasticsearch security
+    ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
+  credentials:
     SPRING_DATASOURCE_PASSWORD: dave_pwd
     DAVE_EMAIL_PASSWORD: <Email-Password>
     ELASTICSEARCH_PASSWORD: elasticsearch_pwd
-    # CA cert fingerprint for elasticsearch security
-    ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
   # Environment variables from other secrets/config maps
   extraEnvVarsSources: []
   extraVolumeMounts: []
