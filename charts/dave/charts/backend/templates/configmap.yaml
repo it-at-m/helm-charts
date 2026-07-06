@@ -5,6 +5,6 @@ metadata:
   labels: 
     {{- include "daveBackend.labels" . | nindent 4 }}
 data:
-  {{- with .Values.extraEnvVars.env }}
+  {{- with .Values.extraEnvVars }}
     {{- toYaml . | nindent 12 }}
   {{- end}}
