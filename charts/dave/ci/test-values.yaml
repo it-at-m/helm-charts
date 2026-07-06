@@ -39,6 +39,9 @@ backend:
     ELASTICSEARCH_PORT: "9200"
     ELASTICSEARCH_HTTPCACERTIFICATE: ""
     SPRING_DATA_ELASTICSEARCH_REPOSITORIES_ENABLED: "false"
+    SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/dave_db
+    SPRING_DATASOURCE_USERNAME: dave
+    SPRING_DATASOURCE_PASSWORD: davepassword
     HZ_INTEGRITYCHECKER_ENABLED: "false"
     HZ_JET_ENABLED: "false"
     # Dave Email Settings
@@ -254,3 +257,8 @@ elasticsearch:
 
 postgresql:
   primary.persistence.enabled: false
+  auth:
+    postgresPassword: postgrespw               # Superuser-Passwort (optional)
+    username: dave                              # erzeugter DB-User
+    password: davepassword                      # Passwort für erzeugten User
+    database: dave_db                           # erzeugte DB
