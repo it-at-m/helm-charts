@@ -214,6 +214,7 @@ document-storage:
     REFARCH_S3_BUCKETNAME: DAVE-BUCKET
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
+    SPRING_SECURITY_LOGGING_REQUESTS: all
 
 # Dave Geodata Eai
 geodata-eai:
