@@ -240,7 +240,7 @@ keycloak:
       # to trigger immediate execution of keycloak-config-ci
       helm.sh/hook: null
 
-#elasticsearch:
+# elasticsearch:
 #  fullnameOverride: dave-elasticsearch
 #  # keine persistent volumes im CI (kind)
 #  persistence:
