@@ -6,6 +6,9 @@
 global:
   credentials:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: WFhYWC1TRUNSRVQtWFhYWAo=
+  extraEnvVars:
+    - name: SPRING_SECURITY_LOGGING_REQUESTS
+      value: "all"
 
 # Dave Backend
 backend:
