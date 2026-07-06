@@ -212,7 +212,7 @@ document-storage:
     SPRING_PROFILES_ACTIVE: dev,no-security
     KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
     REFARCH_S3_URL: s3.example.com
-    REFARCH_S3_BUCKETNAME: DAVE-BUCKET
+    REFARCH_S3_BUCKETNAME: dave-bucket
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
     SPRING_SECURITY_LOGGING_REQUESTS: all
