@@ -239,6 +239,7 @@ keycloak:
       helm.sh/hook: null
 
 elasticsearch:
+  fullnameOverride: dave-elasticsearch
   # keine persistent volumes im CI (kind)
   persistence:
     enabled: false
