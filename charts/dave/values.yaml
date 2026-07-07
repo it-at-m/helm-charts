@@ -89,11 +89,11 @@ backend:
     # fixes missing fonts bug
     ORG_APACHE_POI_SS_IGNOREMISSINGFONTSYSTEM: "true"
     # Elasticsearch
-#    ELASTICSEARCH_HOST: dave-elasticsearch
-#    ELASTICSEARCH_USER: elastic
-#    ELASTICSEARCH_PORT: "9200"
-#    ELASTICSEARCH_CONNECTTIMEOUT: "10"
-#    ELASTICSEARCH_SOCKETTIMEOUT: "30"
+    ELASTICSEARCH_HOST: dave-elasticsearch
+    ELASTICSEARCH_USER: elastic
+    ELASTICSEARCH_PORT: "9200"
+    ELASTICSEARCH_CONNECTTIMEOUT: "10"
+    ELASTICSEARCH_SOCKETTIMEOUT: "30"
 #    ELASTICSEARCH_REINDEX: "true"
 #    ELASTICSEARCH_INDEX_SUFFIX: ""
     # dave requires HTTPS so you need to enable elasticsearch security
