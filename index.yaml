@@ -2506,6 +2506,39 @@ entries:
     version: 1.0.0
   refarch-templates:
   - apiVersion: v2
+    created: "2026-07-13T15:24:27.577681653Z"
+    dependencies:
+    - condition: refarch-gateway.enabled
+      name: refarch-gateway
+      repository: '@it-at-m'
+      version: 1.9.0
+    description: Helm Chart for deploying a it@M Reference Architecture application.
+    digest: d650eff1be5d23dd4a00d04dc48d34f39b8a612efb6f6a4c77af7cd764377ae4
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    - name: langehm
+      url: https://github.com/langehm
+    - name: ejcsid
+      url: https://github.com/ejcsid
+    - name: hupling
+      url: https://github.com/hupling
+    - name: tobiasholler
+      url: https://github.com/tobiasholler
+    - name: ffmuc
+      url: https://github.com/ffmuc
+    name: refarch-templates
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-templates-2.2.0/refarch-templates-2.2.0.tgz
+    version: 2.2.0
+  - apiVersion: v2
     created: "2026-06-17T10:48:26.0889742Z"
     dependencies:
     - condition: refarch-gateway.enabled
@@ -3920,4 +3953,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-13T14:56:10.928371698Z"
+generated: "2026-07-13T15:24:27.578102368Z"
