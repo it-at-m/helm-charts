@@ -126,7 +126,8 @@ initContainers:
         echo "Elasticsearch erreichbar."
     env:
       - name: ELASTICSEARCH_URL
-        value: {{ .Values.elasticsearch.url | default "http://dave-elasticsearch:9200" }}
+        # keine Helm-Template-Ausdrücke in values.yaml! Setze hier einen literal string
+        value: "http://dave-elasticsearch:9200"
 credentials:
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
   existingSecret: ""
