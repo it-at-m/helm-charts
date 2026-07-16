@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/it-at-m/dave-backend/dave-backend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "1.1.1"
+  tag: "test-chart"
 
 imagePullSecrets: []
 # nameOverride: ""
@@ -109,16 +109,25 @@ extraVolumes:
 
 # can be used to add init containers
 initContainers:
-  []
-  # - name: my-init-container-name
-  #   image: some-image:latest
-  #   env:
-  #     - name: AWS_DEFAULT_REGION
-  #       value: "eu-central-1"
-  #   volumeMounts:
-  #     - name: help-zammad
-  #       mountPath: /opt/zammad
-
+#  []
+  - name: wait-for-elasticsearch
+    image: curlimages/curl:8.2.1
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        ES_URL="${ELASTICSEARCH_URL:-http://dave-elasticsearch:9200}"
+        echo "Warte auf Elasticsearch ${ES_URL} ..."
+        until curl -sSf "$ES_URL/" >/dev/null; do
+          echo "Elasticsearch nicht erreichbar, warte 2s..."
+          sleep 2
+        done
+        echo "Elasticsearch erreichbar."
+    env:
+      - name: ELASTICSEARCH_URL
+        # keine Helm-Template-Ausdrücke in values.yaml! Setze hier einen literal string
+        value: "http://dave-elasticsearch:9200"
 credentials:
   # secret must contain keys USER_DN and PASSWORD for ldap authentication
   existingSecret: ""
