@@ -52,6 +52,10 @@ externalCharts:
 
 # Dave Backend
 backend:
+  image:
+    repository: ghcr.io/it-at-m/dave-backend/dave-backend
+    pullPolicy: IfNotPresent
+    tag: "test-chart"
   replicaCount: 1
   fullnameOverride: dave-backend-service
   # Secret in OpenShift das über pipeline angelegt wird
