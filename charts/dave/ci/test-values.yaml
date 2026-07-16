@@ -94,7 +94,7 @@ admin-portal:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_PROFILES_ACTIVE: dev,no-security
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
   # Volume for CA-Certfificates
   # extraVolumeMounts:
@@ -154,7 +154,7 @@ frontend:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_PROFILES_ACTIVE: dev,no-security
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
   # Volume for CA-Certfificates
   # extraVolumeMounts:
@@ -195,7 +195,7 @@ selfservice-portal:
       java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
     SPRING_PROFILES_ACTIVE: dev,no-security
-    SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://dave-keycloak/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: http://dave-keycloak/
     SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: http://dave-keycloak/realms/dave
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
     HZ_INTEGRITYCHECKER_ENABLED: "false"
