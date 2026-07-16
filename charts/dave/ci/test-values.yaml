@@ -29,7 +29,7 @@ backend:
       --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
       --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
       --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-    SPRING_PROFILES_ACTIVE: dev,no-security
+    SPRING_PROFILES_ACTIVE: dev,local,no-security
     SPRING_FLYWAY_ENABLED: "false"
     KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
     ELASTICSEARCH_SCHEME: http
@@ -46,7 +46,9 @@ backend:
     SPRING_DATA_ELASTICSEARCH_REPOSITORIES_ENABLED: "true"
     SPRING_ELASTICSEARCH_URIS: "http://dave-elasticsearch:9200"
 #    SPRING_ELASTICSEARCH_URIS: ""
-    SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration
+#    SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration
+    LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_DATA_ELASTICSEARCH: DEBUG
+    LOGGING_LEVEL_CO_ELASTIC_CLIENTS: DEBUG
     # Postgres
     SPRING_DATASOURCE_URL: jdbc:postgresql://dave-postgresql:5432/dave_db
     SPRING_DATASOURCE_USERNAME: dave
