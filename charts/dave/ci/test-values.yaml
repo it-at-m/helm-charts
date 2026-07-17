@@ -32,7 +32,7 @@ backend:
         --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
-      SPRING_PROFILES_ACTIVE: local,no-security
+      SPRING_PROFILES_ACTIVE: dev,no-security
       SPRING_FLYWAY_ENABLED: "false"
       KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
       # Elasticsearch
