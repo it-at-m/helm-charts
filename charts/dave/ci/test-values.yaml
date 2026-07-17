@@ -224,11 +224,12 @@ elasticsearch:
       discovery.type: single-node
   # geringe Ressourcen für CI/kind
   master:
+    heapSize: 512m
     resources:
       limits:
-        memory: 512Mi
+        memory: 1Gi
       requests:
-        memory: 256Mi
+        memory: 512Mi
 
 postgresql:
   fullnameOverride: dave-postgresql
