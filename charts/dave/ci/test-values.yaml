@@ -7,6 +7,20 @@ global:
   credentials:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: WFhYWC1TRUNSRVQtWFhYWAo=
 
+externalCharts:
+  frontend:
+    enabled: false
+  admin-portal:
+    enabled: false
+  selfservice-portal:
+    enabled: false
+  eai:
+    enabled: false
+  document-storage:
+    enabled: false
+  geodata-eai:
+    enabled: false
+
 # Dave Backend
 backend:
   # Environment Variables
