@@ -12,15 +12,15 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: elasticsearch
-    repository: bitnamilegacy/elasticsearch
+    repository: https://charts.bitnami.com/bitnami
     version: 22.1.6
     condition: externalCharts.elasticsearch.enabled
   - name: postgresql
-    repository: bitnamilegacy/postgresql
+    repository: https://charts.bitnami.com/bitnami
     version: 18.2.0
     condition: externalCharts.postgresql.enabled
   - name: keycloak
-    repository: bitnamilegacy/keycloak
+    repository: https://charts.bitnami.com/bitnami
     version: 25.2.0
     condition: externalCharts.keycloak.enabled
   - name: backend
