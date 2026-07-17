@@ -8,17 +8,35 @@ global:
     SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: WFhYWC1TRUNSRVQtWFhYWAo=
 
 externalCharts:
+  elasticsearch:
+    # enable/disable elasticsearch chart dependency
+    enabled: true
+  postgresql:
+    # enable/disable postgresql chart dependency
+    enabled: true
+  keycloak:
+    # enable/disable keycloak chart dependency
+    enabled: true
+  backend:
+    # enable/disable backend chart dependency
+    enabled: true
   frontend:
+    # enable/disable frontend chart dependency
     enabled: false
-  admin-portal:
+  adminportal:
+    # enable/disable adminportal chart dependency
     enabled: false
-  selfservice-portal:
+  selfserviceportal:
+    # enable/disable selfservice chart dependency
     enabled: false
   eai:
+    # enable/disable eai chart dependency
     enabled: false
-  document-storage:
+  documentstorage:
+    # enable/disable documentstorage chart dependency
     enabled: false
-  geodata-eai:
+  geodataeai:
+    # enable/disable geodataeai chart dependency
     enabled: false
 
 # Dave Backend
