@@ -22,7 +22,7 @@ externalCharts:
     enabled: true
   frontend:
     # enable/disable frontend chart dependency
-    enabled: false
+    enabled: true
   adminportal:
     # enable/disable adminportal chart dependency
     enabled: false
