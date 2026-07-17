@@ -227,7 +227,7 @@ elasticsearch:
     heapSize: 512m
     resources:
       limits:
-        memory: 512m
+        memory: 512Mi
       requests:
         memory: 256Mi
 
