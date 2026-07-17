@@ -35,7 +35,7 @@ spec:
               service:
                 name: {{ $fullName}}
                 port:
-                  number: {{ $svcPort }}
+                  number: {{ default 8080 .Values.frontend.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}
