@@ -51,7 +51,7 @@ backend:
         --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED
         --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
       SPRING_PROFILES_ACTIVE: dev,no-security
-      SPRING_FLYWAY_ENABLED: "false"
+#      SPRING_FLYWAY_ENABLED: "false"
       KEYCLOAK_AUTH-SERVER-URL: http://dave-keycloak
       # Elasticsearch
       ELASTICSEARCH_SECURITY_ENABLED: "false"
@@ -227,9 +227,9 @@ elasticsearch:
     heapSize: 512m
     resources:
       limits:
-        memory: 1Gi
+        memory: 512m
       requests:
-        memory: 512Mi
+        memory: 256Mi
 
 postgresql:
   fullnameOverride: dave-postgresql
