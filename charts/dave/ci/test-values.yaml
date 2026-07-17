@@ -16,7 +16,7 @@ externalCharts:
     enabled: true
   keycloak:
     # enable/disable keycloak chart dependency
-    enabled: true
+    enabled: false
   backend:
     # enable/disable backend chart dependency
     enabled: true
