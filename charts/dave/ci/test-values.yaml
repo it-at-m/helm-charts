@@ -226,7 +226,7 @@ elasticsearch:
       discovery.type: single-node
   # geringe Ressourcen für CI/kind
   master:
-    heapSize: 512m
+    heapSize: 256m
     resources:
       limits:
         memory: 512Mi
