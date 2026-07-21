@@ -2,8 +2,8 @@ apiVersion: v2
 name: document-storage
 description: DAVe traffic counting platform, document-storage
 type: application
-version: 0.2.11
-appVersion: "9.0.0"
+version: 0.2.12
+appVersion: "10.0.0"
 maintainers:
   - name: klml
     email: klml@muenchen.de
