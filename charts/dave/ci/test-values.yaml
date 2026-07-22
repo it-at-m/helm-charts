@@ -28,7 +28,7 @@ externalCharts:
     enabled: true
   selfserviceportal:
     # enable/disable selfservice chart dependency
-    enabled: false
+    enabled: true
   eai:
     # enable/disable eai chart dependency
     enabled: false
