@@ -218,7 +218,8 @@ elasticsearch:
   # keine persistent volumes im CI (kind)
   persistence:
     enabled: false
-  config:
+#  config:
+  esConfig:
     elasticsearch.yml: |
       xpack.security.enabled: false
       xpack.security.http.ssl.enabled: false
