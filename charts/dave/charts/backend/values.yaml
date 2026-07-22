@@ -119,7 +119,7 @@ initContainers:
         set -e
         ES_URL="${ELASTICSEARCH_URL:-http://dave-elasticsearch:9200}"
         echo "Warte auf Elasticsearch ${ES_URL} ..."
-        until curl -sSf "$ES_URL/" >/dev/null; do
+        until curl -sSf --connect-timeout 5 --max-time 10 "$ES_URL/" >/dev/null; do
           echo "Elasticsearch nicht erreichbar, warte 2s..."
           sleep 2
         done

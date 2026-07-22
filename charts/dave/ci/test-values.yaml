@@ -218,7 +218,6 @@ elasticsearch:
   # keine persistent volumes im CI (kind)
   persistence:
     enabled: false
-#  config:
   esConfig:
     elasticsearch.yml: |
       xpack.security.enabled: false
@@ -227,8 +226,6 @@ elasticsearch:
       discovery.type: single-node
   # geringe Ressourcen für CI/kind
   master:
-#    persistence:
-#      enabled: false
     heapSize: 512m
     resources:
       limits:
