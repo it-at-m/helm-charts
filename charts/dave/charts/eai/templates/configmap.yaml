@@ -5,6 +5,6 @@ metadata:
   labels: 
     {{- include "daveEai.labels" . | nindent 4 }}
 data:
-  {{- with .Values.extraEnvVars }}
+  {{- with .Values.extraEnvVars.env }}
     {{- toYaml . | nindent 12 }}
   {{- end}}
