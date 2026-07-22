@@ -25,7 +25,7 @@ externalCharts:
     enabled: true
   adminportal:
     # enable/disable adminportal chart dependency
-    enabled: false
+    enabled: true
   selfserviceportal:
     # enable/disable selfservice chart dependency
     enabled: false
