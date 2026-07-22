@@ -216,9 +216,7 @@ keycloak:
 elasticsearch:
   fullnameOverride: "dave-elasticsearch"
   # keine persistent volumes im CI (kind)
-  persistence:
-    enabled: false
-  esConfig:
+  config:
     elasticsearch.yml: |
       xpack.security.enabled: false
       xpack.security.http.ssl.enabled: false
@@ -226,6 +224,8 @@ elasticsearch:
       discovery.type: single-node
   # geringe Ressourcen für CI/kind
   master:
+    persistence:
+      enabled: false
     heapSize: 512m
     resources:
       limits:
