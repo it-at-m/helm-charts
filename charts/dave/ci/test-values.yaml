@@ -31,13 +31,13 @@ externalCharts:
     enabled: true
   eai:
     # enable/disable eai chart dependency
-    enabled: false
+    enabled: true
   documentstorage:
     # enable/disable documentstorage chart dependency
-    enabled: false
+    enabled: true
   geodataeai:
     # enable/disable geodataeai chart dependency
-    enabled: false
+    enabled: true
 
 # Dave Backend
 backend:
