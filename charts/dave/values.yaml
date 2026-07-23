@@ -161,7 +161,7 @@ backend:
     DAVE_EMAIL_PASSWORD: <Email-Password>
     ELASTICSEARCH_PASSWORD: elasticsearch_pwd
     # CA cert fingerprint for elasticsearch security
-    ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
+    ELASTICSEARCH_HTTPCACERTIFICATE: ""
   # Environment variables from other secrets/config maps
   extraEnvVarsSources: []
   extraVolumeMounts: []
