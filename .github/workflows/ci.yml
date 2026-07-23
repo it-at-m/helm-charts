@@ -21,7 +21,6 @@ jobs:
       - name: Add dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo add bitnamilegacy https://charts.bitnami.com/bitnami-legacy
           helm repo add it-at-m https://it-at-m.github.io/helm-charts
       - name: Run chart-testing (list-changed)
         id: list-changed
