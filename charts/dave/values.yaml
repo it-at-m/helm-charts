@@ -25,9 +25,6 @@ externalCharts:
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
-  keycloak:
-    # enable/disable keycloak chart dependency
-    enabled: true
   backend:
     # enable/disable backend chart dependency
     enabled: true
@@ -327,14 +324,6 @@ document-storage:
       # Security
       REALM: Dave
       SPRING_SECURITY_LOGGING_REQUESTS: all
-      SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: <CLIENT-SECRET>
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
       # S3
       REFARCH_S3_URL: <S3-URL>
       REFARCH_S3_BUCKETNAME: <BUCKET-NAME>
@@ -430,43 +419,3 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
-
-# Keycloak
-# https://github.com/bitnami/charts/tree/bitnami/keycloak
-keycloak:
-  postgresql:
-    nameOverride: keycloak-postgresql
-    # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
-    image:
-      repository: bitnamilegacy/postgresql
-image:
-  repository: bitnamilegacy/keycloak
-  global:
-    security:
-      allowInsecureImages: true
-
-  keycloakConfigCli:
-    enabled: true
-    initContainers: |
-      - name: fetch-config
-        image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
-        command:
-          - /bin/sh
-          - -c
-          - |
-            curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
-              jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /config/sso.json
-        volumeMounts:
-          - name: config-volume
-            mountPath: /config
-        securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.keycloakConfigCli.containerSecurityContext "context" $) | nindent 4 }}
-    extraVolumes:
-      - name: config-volume
-        emptyDir:
-          sizeLimit: 10Mi
-    extraVolumeMounts:
-      - name: config-volume
-        mountPath: /config
-    extraEnvVars:
-      - name: IMPORT_FILES_LOCATIONS
-        value: /config/*
