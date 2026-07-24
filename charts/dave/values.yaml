@@ -25,6 +25,9 @@ externalCharts:
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
+  keycloak:
+    # enable/disable keycloak chart dependency
+    enabled: true
   backend:
     # enable/disable backend chart dependency
     enabled: true
@@ -155,13 +158,13 @@ backend:
       # Dave Reports Settings
       DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
       DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
-  # Credentials
-  credentials:
-    SPRING_DATASOURCE_PASSWORD: dave_pwd
-    DAVE_EMAIL_PASSWORD: <Email-Password>
-    ELASTICSEARCH_PASSWORD: elasticsearch_pwd
-    # CA cert fingerprint for elasticsearch security
-    ELASTICSEARCH_HTTPCACERTIFICATE: ""
+    # Credentials
+    credentials:
+      SPRING_DATASOURCE_PASSWORD: dave_pwd
+      DAVE_EMAIL_PASSWORD: <Email-Password>
+      ELASTICSEARCH_PASSWORD: elasticsearch_pwd
+      # CA cert fingerprint for elasticsearch security
+      ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
   # Environment variables from other secrets/config maps
   extraEnvVarsSources: []
   extraVolumeMounts: []
@@ -173,35 +176,34 @@ admin-portal:
 
   # Environment variables
   extraEnvVars:
-    env:
-      # Hazelcast
-      HAZELCAST_GROUP_NAME: dave-adminportal-apigateway-service-session_replication_group
-      HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
-      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-adminportal-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-adminportal-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
 
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -213,11 +215,10 @@ eai:
 
   # Environment variables
   extraEnvVars:
-    env:
-      BACKEND_URI: dave-backend-service:8080
-      MANAGEMENT_SERVER_PORT: "8079"
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
+    BACKEND_URI: dave-backend-service:8080
+    MANAGEMENT_SERVER_PORT: "8079"
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -229,41 +230,40 @@ frontend:
 
   # Environment variables
   extraEnvVars:
-    env:
-      # Hazelcast
-      HAZELCAST_GROUP_NAME: dave-frontend-apigateway-service-session_replication_group
-      HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
-      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-frontend-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-frontend-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
 
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET,POST
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_ID: eai
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_URI: http://dave-eai-service:8080/
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_PREDICATES_0: Path=/api/dave-eai-service/**
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_METADATA_RESPONSETIMEOUT: "1800000"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET,POST
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_ID: eai
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_URI: http://dave-eai-service:8080/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_PREDICATES_0: Path=/api/dave-eai-service/**
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_METADATA_RESPONSETIMEOUT: "1800000"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_FILTERS_0: RewritePath=/api/dave-eai-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_2_FILTERS_1: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -274,35 +274,34 @@ selfservice-portal:
   fullnameOverride: dave-selfserviceportal-apigateway-service
 
   extraEnvVars:
-    env:
-      # Hazelcast
-      HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
-      HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
-      HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
+    # Hazelcast
+    HAZELCAST_GROUP_NAME: dave-selfserviceportal-apigateway-service-session_replication_group
+    HAZELCAST_INSTANCE: dave-selfserviceportal-apigateway-service-hazl_instance
+    HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
 
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
-      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_PREDICATES_0: Path=/api/sso/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_FILTERS_0: RewritePath=/api/sso/userinfo, /auth/realms/<realm>/protocol/openid-connect/userinfo
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_ID: backend
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_URI: http://dave-backend-service:8080/
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_PREDICATES_0: Path=/api/dave-backend-service/**
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_NAME: Retry
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_RETRIES: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_METHODS: GET
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FIRSTBACKOFF: 10ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_MAXBACKOFF: 50ms
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_FACTOR: "2"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_0_ARGS_BACKOFF_BASEDONPREVIOUSVALUE: "false"
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_1: RewritePath=/api/dave-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_1_FILTERS_2: RemoveResponseHeader=WWW-Authenticate
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_0: RemoveResponseHeader=Expires
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_1: RemoveRequestHeader=cookie
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_2: RemoveRequestHeader=x-xsrf-token
+    SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_DEFAULTFILTERS_3: TokenRelay=
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -313,23 +312,29 @@ document-storage:
   fullnameOverride: dave-document-storage-service
   # Environment variables
   extraEnvVars:
-    env:
-      # Java
-      JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
-      # Other
-      GC_MAX_METASPACE_SIZE: "256"
-      MANAGEMENT_SERVER_PORT: "8079"
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      # Security
-      REALM: Dave
-      SPRING_SECURITY_LOGGING_REQUESTS: all
-      # S3
-      REFARCH_S3_URL: <S3-URL>
-      REFARCH_S3_BUCKETNAME: <BUCKET-NAME>
-      REFARCH_S3_ACCESSKEY: <ACCESSKEY>
-      REFARCH_S3_SECRETKEY: <SECRETKEY>
-
+    # Java
+    JAVA_OPTS_APPEND: -Dfile.encoding=UTF-8
+    # Other
+    GC_MAX_METASPACE_SIZE: "256"
+    MANAGEMENT_SERVER_PORT: "8079"
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev
+    # Security
+    REALM: Dave
+    SPRING_SECURITY_LOGGING_REQUESTS: all
+    SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
+    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
+    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: <CLIENT-SECRET>
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
+    # S3
+    REFARCH_S3_URL: <S3-URL>
+    REFARCH_S3_BUCKETNAME: <BUCKET-NAME>
+    REFARCH_S3_ACCESSKEY: <ACCESSKEY>
+    REFARCH_S3_SECRETKEY: <SECRETKEY>
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
@@ -419,3 +424,43 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
+
+# Keycloak
+# https://github.com/bitnami/charts/tree/bitnami/keycloak
+keycloak:
+  postgresql:
+    nameOverride: keycloak-postgresql
+    # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
+    image:
+      repository: bitnamilegacy/postgresql
+image:
+  repository: bitnamilegacy/keycloak
+  global:
+    security:
+      allowInsecureImages: true
+
+  keycloakConfigCli:
+    enabled: true
+    initContainers: |
+      - name: fetch-config
+        image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
+        command:
+          - /bin/sh
+          - -c
+          - |
+            curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
+              jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /config/sso.json
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+        securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.keycloakConfigCli.containerSecurityContext "context" $) | nindent 4 }}
+    extraVolumes:
+      - name: config-volume
+        emptyDir:
+          sizeLimit: 10Mi
+    extraVolumeMounts:
+      - name: config-volume
+        mountPath: /config
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: /config/*
