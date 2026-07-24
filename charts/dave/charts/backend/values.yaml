@@ -111,7 +111,7 @@ extraVolumes:
 initContainers:
 #  []
   - name: wait-for-elasticsearch
-    image: curlimages/curl:8.2.1
+    image: curlimages/curl:8.21.0
     command:
       - /bin/sh
       - -c
