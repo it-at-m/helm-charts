@@ -2,7 +2,7 @@ apiVersion: v2
 name: selfservice-portal
 description: DAVe traffic counting plattform, selfservice-portal
 type: application
-version: 0.2.12
+version: 0.2.13
 appVersion: "10.0.0"
 maintainers:
   - name: klml
