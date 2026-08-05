@@ -112,6 +112,7 @@ document-storage:
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
 
+# Geodata EAI
 geodata-eai:
   # Environment variables
   extraEnvVars:
