@@ -125,16 +125,7 @@ document-storage:
     REFARCH_S3_ACCESSKEY: EXAMPLE
     REFARCH_S3_SECRETKEY: dummysecret
 
-# Geodata EAI
-# geodata-eai:
-  # Environment variables
-#  extraEnvVars:
-#    MOBIDAM_MESSWERTE_EAI_URL: http://mobidam.example.com
-#    FEATURE_SERVER_URL_MESSSTELLE: https://mobidam.example.com/Verkehrsdetektoren_VIEW/FeatureServer/1000/query
-#    FEATURE_SERVER_URL_MESSQUERSCHNITT: https://mobidam.example.com/Verkehrsdetektoren_VIEW/FeatureServer/2000/query
-#    FEATURE_SERVER_URL_MESSFAEHIGKEIT: https://mobidam.example.com/Verkehrsdetektoren_VIEW/FeatureServer/3000/query
-#    FEATURE_SERVER_URL_MESSWERTETAGESAGGREGAT: https://mobidam.example.com/Verkehrsdetektoren_VIEW/FeatureServer/4000/query
-
+# Elasticsearch
 elasticsearch:
   fullnameOverride: "dave-elasticsearch"
   # keine persistent volumes im CI (kind)
@@ -155,6 +146,7 @@ elasticsearch:
       requests:
         memory: 512Mi
 
+# Postgres
 postgresql:
   fullnameOverride: dave-postgresql
   primary:
