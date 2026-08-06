@@ -39,7 +39,14 @@ backend:
           set -e
           ES_URL="${ELASTICSEARCH_URL:-http://dave-elasticsearch:9200}"
           echo "Warte auf Elasticsearch ${ES_URL} ..."
+          attempts=0
+          max_attempts=100
           until curl -sSf --connect-timeout 5 --max-time 10 "$ES_URL/" >/dev/null; do
+            attempts=$((attempts + 1))
+            if [ "$attempts" -ge "$max_attempts" ]; then
+              echo "Elasticsearch did not become reachable before the retry limit." >&2
+              exit 1
+            fi
             echo "Elasticsearch nicht erreichbar, warte 2s..."
             sleep 2
           done
