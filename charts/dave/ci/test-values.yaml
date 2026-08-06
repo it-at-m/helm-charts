@@ -19,6 +19,7 @@ backend:
       ELASTICSEARCH_SCHEME: http
       ELASTICSEARCH_HTTPCACERTIFICATE: ""
       SPRING_FLYWAY_ENABLED: "false"
+      SPRING_JPA_HIBERNATE_DDLAUTO: "create-drop"
     # Dave Email Settings
     email:
       DAVE_EMAIL_RECEIVER_HOSTNAME: imap.example.com
