@@ -3,6 +3,27 @@ entries:
   ad2image:
   - apiVersion: v2
     appVersion: 2.1.1
+    created: "2026-09-01T09:05:19.68063307Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 0b4e273f26e43acd533ac739bf558277744345d93110eb973e613df61265aa69
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-2.1.3/ad2image-2.1.3.tgz
+    version: 2.1.3
+  - apiVersion: v2
+    appVersion: 2.1.1
     created: "2026-03-09T10:37:03.779451691Z"
     dependencies:
     - name: common
@@ -362,6 +383,27 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
     version: 1.0.4
   appswitcher-server:
+  - apiVersion: v2
+    appVersion: 1.3.0
+    created: "2026-09-01T09:05:19.899305135Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Server component for a Google-like app switching experience.
+    digest: d198149845638b4d066367e1c409517e11faa69d297c39d42e880705217d9e0a
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-2.0.2/appswitcher-server-2.0.2.tgz
+    version: 2.0.2
   - apiVersion: v2
     appVersion: 1.3.0
     created: "2025-10-22T08:29:25.621287045Z"
@@ -726,6 +768,63 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/common-1.0.0/common-1.0.0.tgz
     version: 1.0.0
   dave:
+  - apiVersion: v2
+    created: "2026-09-01T09:05:20.155480401Z"
+    dependencies:
+    - condition: externalCharts.elasticsearch.enabled
+      name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.6
+    - condition: externalCharts.postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.2.0
+    - condition: externalCharts.keycloak.enabled
+      name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 25.2.0
+    - condition: externalCharts.backend.enabled
+      name: backend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.frontend.enabled
+      name: frontend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.adminportal.enabled
+      name: admin-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.selfserviceportal.enabled
+      name: selfservice-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.eai.enabled
+      name: eai
+      repository: ""
+      version: '*'
+    - condition: externalCharts.documentstorage.enabled
+      name: document-storage
+      repository: ""
+      version: '*'
+    - condition: externalCharts.geodataeai.enabled
+      name: geodata-eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: f89ee6b8e57dd1b88bea45349e6fd566de0262d306dbb7ccfacf7573ec029131
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.2.14/dave-0.2.14.tgz
+    version: 0.2.14
   - apiVersion: v2
     created: "2026-07-24T09:14:51.151361374Z"
     dependencies:
@@ -1658,6 +1757,27 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2026-09-01T09:05:20.357647638Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.0
+    description: ezLDAP - easy read access for LDAP
+    digest: c9a87ee200fe4de20de75bfb6ee8d5a3519ccec452859dcfbeb70985df344f43
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-2.0.2/ezldap-2.0.2.tgz
+    version: 2.0.2
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2025-10-22T08:29:25.886066985Z"
     dependencies:
     - name: common
@@ -1801,6 +1921,26 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
   java-spring-boot:
+  - apiVersion: v2
+    created: "2026-09-01T09:05:20.554340762Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: d71ff3e01bd338d06546a9dbe6ebb312c0ccbf631ae4f31f592ad144166667ad
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-1.1.1/java-spring-boot-1.1.1.tgz
+    version: 1.1.1
   - apiVersion: v2
     created: "2025-12-02T15:22:06.35946097Z"
     dependencies:
@@ -2040,6 +2180,24 @@ entries:
   kf-app-eai:
   - apiVersion: v2
     appVersion: 1.0.6
+    created: "2026-09-01T09:05:20.752719512Z"
+    description: Enterprise application interface to allow Munich's kita-app access
+      to kitafinder data.
+    digest: 203abbcd6326e168ae4bdc6fccd6b880ab941df30ffb38b6a8183f60603272c8
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/kf-app-eai
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: max.zollbrecht@gmail.com
+      name: maximilian-zollbrecht
+    name: kf-app-eai
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/kf-app-eai-0.1.7/kf-app-eai-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.0.6
     created: "2026-03-27T07:36:40.810817676Z"
     description: Enterprise application interface to allow Munich's kita-app access
       to kitafinder data.
@@ -2167,6 +2325,24 @@ entries:
   pentaho-carte:
   - apiVersion: v2
     appVersion: 0.0.2
+    created: "2026-09-01T09:05:20.95365223Z"
+    description: Pentaho Data Integration installation and starts the Pentaho Carte
+      Server
+    digest: ee5c1c1adbaafacc1a525875c887ac2916a5173c3a1de488fc02fab2cb012f8e
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/pentaho-carte
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: ejcsid@gmail.com
+      name: ejcsid
+    name: pentaho-carte
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/pentaho-carte-0.1.5/pentaho-carte-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 0.0.2
     created: "2025-09-01T13:08:04.534643899Z"
     description: Pentaho Data Integration installation and starts the Pentaho Carte
       Server
@@ -2256,6 +2432,24 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/pentaho-carte-0.1.0/pentaho-carte-0.1.0.tgz
     version: 0.1.0
   refarch-gateway:
+  - apiVersion: v2
+    created: "2026-09-01T09:05:21.148615371Z"
+    description: Helm chart for deploying the it@M refarch-gateway
+    digest: 3952cfbf3de99798d036f6cad78587b550446d61f20ea18ad74ebfb2eb3db52c
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    name: refarch-gateway
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-gateway-1.9.1/refarch-gateway-1.9.1.tgz
+    version: 1.9.1
   - apiVersion: v2
     created: "2026-07-13T14:56:10.927860823Z"
     description: Helm chart for deploying the it@M refarch-gateway
@@ -2729,6 +2923,39 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/refarch-gateway-1.0.0/refarch-gateway-1.0.0.tgz
     version: 1.0.0
   refarch-templates:
+  - apiVersion: v2
+    created: "2026-09-01T09:05:21.351476413Z"
+    dependencies:
+    - condition: refarch-gateway.enabled
+      name: refarch-gateway
+      repository: '@it-at-m'
+      version: 1.9.0
+    description: Helm Chart for deploying a it@M Reference Architecture application.
+    digest: 0424b2a7ac2410a3a59d4ffe42df218b6f55df7ea51b8051bb1160e1f7d60b32
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: devtobi
+      url: https://github.com/devtobi
+    - name: simonhir
+      url: https://github.com/simonhir
+    - name: langehm
+      url: https://github.com/langehm
+    - name: ejcsid
+      url: https://github.com/ejcsid
+    - name: hupling
+      url: https://github.com/hupling
+    - name: tobiasholler
+      url: https://github.com/tobiasholler
+    - name: ffmuc
+      url: https://github.com/ffmuc
+    name: refarch-templates
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/refarch-templates-2.2.1/refarch-templates-2.2.1.tgz
+    version: 2.2.1
   - apiVersion: v2
     created: "2026-07-13T15:24:27.577681653Z"
     dependencies:
@@ -3905,6 +4132,24 @@ entries:
   wjh-rechner:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-09-01T09:05:21.544308288Z"
+    description: Orientation calculator for "Wirschaftliche Jugendhilfe" (WJH, economic
+      youth welfare)
+    digest: 356bb805a08820786d9627f065d1014dee3dd7ddf79928a1a515c38af5b9119d
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/wjh-rechner
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: matthias.karl@muenchen.de
+      name: itgkarl
+    name: wjh-rechner
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-1.0.4/wjh-rechner-1.0.4.tgz
+    version: 1.0.4
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-09-01T13:08:05.270195802Z"
     description: Orientation calculator for "Wirschaftliche Jugendhilfe" (WJH, economic
       youth welfare)
@@ -4009,6 +4254,20 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/wjh-rechner-0.0.1/wjh-rechner-0.0.1.tgz
     version: 0.0.1
   zammad-ldap-sync:
+  - apiVersion: v2
+    created: "2026-09-01T09:05:21.750312512Z"
+    digest: 59937c2efc08c2099e848ded945d6f809f160edd5d8e96bdfc5c308d4da71d6f
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/zammad-ldap-sync
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: zammad-ldap-sync
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.6.5/zammad-ldap-sync-0.6.5.tgz
+    version: 0.6.5
   - apiVersion: v2
     created: "2026-06-08T06:10:04.416392342Z"
     digest: 380110bab08e7564123f1152a2d2f3c4dc4f7afaf6fd29cbd691d9fe90d4bde9
@@ -4177,4 +4436,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-24T09:14:51.151683886Z"
+generated: "2026-09-01T09:05:21.75122731Z"
