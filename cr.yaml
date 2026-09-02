@@ -1,2 +1,6 @@
 # additional configuration for chart releaser (cr): https://github.com/helm/chart-releaser?tab=readme-ov-file#configuration
 generate-release-notes: true
+# Set to true for GPG signing
+sign: true
+# UID of the GPG key to use
+key: "Michael Prankl (helm-charts signing key) <michael.prankl@muenchen.de>"
