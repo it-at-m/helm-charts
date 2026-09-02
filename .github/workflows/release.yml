@@ -59,9 +59,9 @@ jobs:
       - name: Push Charts to Registry
         run: |
           ls -l .cr-release-packages
-          for pkg in .cr-release-packages/*; do
-            if [ -z "${pkg:-}" ]; then
-              break
+          for pkg in .cr-release-packages/*.tgz; do
+            if [ -e "$pkg" ]; then
+              helm push "$pkg" oci://${{env.REGISTRY}}/${{ github.repository }}
             fi
-            helm push "${pkg}" oci://${{env.REGISTRY}}/${{ github.repository }}
           done
+
