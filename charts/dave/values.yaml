@@ -25,9 +25,6 @@ externalCharts:
   postgresql:
     # enable/disable postgresql chart dependency
     enabled: true
-  keycloak:
-    # enable/disable keycloak chart dependency
-    enabled: true
   backend:
     # enable/disable backend chart dependency
     enabled: true
@@ -86,7 +83,7 @@ backend:
       HAZELCAST_OPENSHIFTSERVICENAME: dave-backend-service
       HAZELCAST_OPENSHIFTNAMESPACE: dave-ng-demo
       SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: dev,no-security
       # fixes missing fonts bug
       ORG_APACHE_POI_SS_IGNOREMISSINGFONTSYSTEM: "true"
       # Elasticsearch
@@ -144,6 +141,7 @@ backend:
       DAVE_TENANT_MAP_OVERLAYLAYERS_0_LAYERNAMETODISPLAY: ""
       DAVE_TENANT_MAP_OVERLAYLAYERS_0_ATTRIBUTION: ""
       # Dave Email Settings
+    email:
       DAVE_EMAIL_URL_ADMINPORTAL: "http://localhost:8085"
       DAVE_EMAIL_URL_SELFSERVICEPORTAL: "http://localhost:8086"
       DAVE_EMAIL_RECEIVER_HOSTNAME: <Hostname>  # imap.url.de
@@ -159,16 +157,17 @@ backend:
       DAVE_REPORTS_LOGOICON: classpath:/pdf/images/kindl.jpg
       DAVE_REPORTS_LOGOSUBTITLE: "Landeshauptstadt<br/>München<br/><b>Mobilitätsreferat</b>"
     # Credentials
-    credentials:
-      SPRING_DATASOURCE_PASSWORD: dave_pwd
-      DAVE_EMAIL_PASSWORD: <Email-Password>
-      ELASTICSEARCH_PASSWORD: elasticsearch_pwd
-      # CA cert fingerprint for elasticsearch security
-      ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
+  credentials:
+    SPRING_DATASOURCE_PASSWORD: dave_pwd
+    DAVE_EMAIL_PASSWORD: <Email-Password>
+    ELASTICSEARCH_PASSWORD: elasticsearch_pwd
+    # CA cert fingerprint for elasticsearch security
+    ELASTICSEARCH_HTTPCACERTIFICATE: <fingerprint>
   # Environment variables from other secrets/config maps
   extraEnvVarsSources: []
   extraVolumeMounts: []
   extraVolumes: []
+
 # Dave Admin-Portal
 admin-portal:
   replicaCount: 1
@@ -182,7 +181,7 @@ admin-portal:
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-adminportal-apigateway-service
 
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
@@ -218,7 +217,7 @@ eai:
     BACKEND_URI: dave-backend-service:8080
     MANAGEMENT_SERVER_PORT: "8079"
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
+    SPRING_PROFILES_ACTIVE: dev,no-security
 
   extraVolumeMounts: []
   extraVolumes: []
@@ -236,7 +235,7 @@ frontend:
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-frontend-apigateway-service
 
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
@@ -280,7 +279,7 @@ selfservice-portal:
     HAZELCAST_OPENSHIFT_SERVICE_NAME: dave-selfserviceportal-apigateway-service
 
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_CLOUD_GATEWAY_ACTUATOR_VERBOSE_ENABLED: "false"
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_ID: sso
     SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_ROUTES_0_URI: <SSO URI>
@@ -318,18 +317,9 @@ document-storage:
     GC_MAX_METASPACE_SIZE: "256"
     MANAGEMENT_SERVER_PORT: "8079"
     SERVER_PORT: "8080"
-    SPRING_PROFILES_ACTIVE: dev
+    SPRING_PROFILES_ACTIVE: dev,no-security
     # Security
-    REALM: Dave
     SPRING_SECURITY_LOGGING_REQUESTS: all
-    SPRING_SECURITY_OAUTH2_RESOURCE_USER-INFO-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/userinfo
-    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: ${keycloak.auth-server-url}/realms/${realm}
-    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/certs
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: ${keycloak.auth-server-url}/realms/${realm}/protocol/openid-connect/token
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-ID: dave
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-SECRET: <CLIENT-SECRET>
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION-GRANT-TYPE: client_credentials
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT-AUTHENTICATION-METHOD: client_secret_post
     # S3
     REFARCH_S3_URL: <S3-URL>
     REFARCH_S3_BUCKETNAME: <BUCKET-NAME>
@@ -345,28 +335,20 @@ geodata-eai:
   fullnameOverride: dave-geodata-eai-service
   # Environment variables
   extraEnvVars:
-    env:
-      # Other
-      GC_MAX_METASPACE_SIZE: "256"
-      MANAGEMENT_SERVER_PORT: "8079"
-      SERVER_PORT: "8080"
-      SPRING_PROFILES_ACTIVE: dev
-      # Security
-      SPRING_SECURITY_LOGGING_REQUESTS: all
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: <URL-TO-ISSUER-URI>
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: <URL-TO-JWK-SET-URI>
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO-MOBIDAM-MESSWERTE_TOKENURI: <URL-TO-MOBIDAM-TOKEN-URI>
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO-MOBIDAM-MESSWERTE_CLIENTID: <CLIENT-ID>
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO-MOBIDAM-MESSWERTE_CLIENTSECRET: <CLIENT-SECRET>
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO-MOBIDAM-MESSWERTE_AUTHORIZATIONGRANTTYPE: client_credentials
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO-MOBIDAM-MESSWERTE_CLIENTAUTHENTICATIONMETHOD: client_secret_post
-      SPRING_CODEC_MAXINMEMORYSIZE: "52428800"
-      # API for data extraction
-      MOBIDAM_MESSWERTE_EAI_URL: <URL-TO-EAI-FOR-MESSWERTE-EXTRACTION>
-      FEATURE_SERVER_URL_MESSSTELLE: <URL-TO-ARCGIS-FEATURE-FOR-MESSSTELLE>
-      FEATURE_SERVER_URL_MESSQUERSCHNITT: <URL-TO-ARCGIS-FEATURE-FOR-MESSQUERSCHNITT>
-      FEATURE_SERVER_URL_MESSFAEHIGKEIT: <URL-TO-ARCGIS-FEATURE-FOR-MESSFAEHIGKEIT>
-      FEATURE_SERVER_URL_MESSWERTETAGESAGGREGAT: <URL-TO-ARCGIS-FEATURE-FOR-MESSWERTE-TAGESAGGREGAT>
+    # Other
+    GC_MAX_METASPACE_SIZE: "256"
+    MANAGEMENT_SERVER_PORT: "8079"
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: dev,no-security
+    # Security
+    SPRING_SECURITY_LOGGING_REQUESTS: all
+    SPRING_CODEC_MAXINMEMORYSIZE: "52428800"
+    # API for data extraction
+    MOBIDAM_MESSWERTE_EAI_URL: <URL-TO-EAI-FOR-MESSWERTE-EXTRACTION>
+    FEATURE_SERVER_URL_MESSSTELLE: <URL-TO-ARCGIS-FEATURE-FOR-MESSSTELLE>
+    FEATURE_SERVER_URL_MESSQUERSCHNITT: <URL-TO-ARCGIS-FEATURE-FOR-MESSQUERSCHNITT>
+    FEATURE_SERVER_URL_MESSFAEHIGKEIT: <URL-TO-ARCGIS-FEATURE-FOR-MESSFAEHIGKEIT>
+    FEATURE_SERVER_URL_MESSWERTETAGESAGGREGAT: <URL-TO-ARCGIS-FEATURE-FOR-MESSWERTE-TAGESAGGREGAT>
   # Volume for CA-Certfificates
   extraVolumeMounts: []
   extraVolumes: []
@@ -424,43 +406,3 @@ postgresql:
       enabled: false
     podSecurityContext:
       enabled: false
-
-# Keycloak
-# https://github.com/bitnami/charts/tree/bitnami/keycloak
-keycloak:
-  postgresql:
-    nameOverride: keycloak-postgresql
-    # Workaround: switch to bitnami legacy image repository (https://github.com/bitnami/containers/issues/83267)
-    image:
-      repository: bitnamilegacy/postgresql
-image:
-  repository: bitnamilegacy/keycloak
-  global:
-    security:
-      allowInsecureImages: true
-
-  keycloakConfigCli:
-    enabled: true
-    initContainers: |
-      - name: fetch-config
-        image: {{ include "common.images.image" (dict "imageRoot" (dict "repository" "bitnami/os-shell" "tag" "latest") "global" .Values.global) }}
-        command:
-          - /bin/sh
-          - -c
-          - |
-            curl -L https://github.com/it-at-m/dave-backend/raw/refs/heads/sprint/sso-config/sso-client.json |
-              jq '{"clients": [.], "enabled": true, "realm": "Dave", "displayName": "DAVe"}' > /config/sso.json
-        volumeMounts:
-          - name: config-volume
-            mountPath: /config
-        securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.keycloakConfigCli.containerSecurityContext "context" $) | nindent 4 }}
-    extraVolumes:
-      - name: config-volume
-        emptyDir:
-          sizeLimit: 10Mi
-    extraVolumeMounts:
-      - name: config-volume
-        mountPath: /config
-    extraEnvVars:
-      - name: IMPORT_FILES_LOCATIONS
-        value: /config/*
