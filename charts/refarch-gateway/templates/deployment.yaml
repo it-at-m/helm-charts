@@ -59,11 +59,22 @@ spec:
             {{- if .Values.redis.enabled }}
             - name: SPRING_PROFILES_INCLUDE
               value: redis-session
-            - name: SPRING_DATA_REDIS_URL
+            - name: SPRING_DATA_REDIS_SENTINEL_MASTER
+              value: {{ .Values.redis.sentinel.masterName }}
+            - name: SPRING_DATA_REDIS_SENTINEL_NODES
+              value: dev-redis-headless.refarch.svc.cluster.local:26379
+            {{- range $prefix := list "SPRING_DATA_REDIS_SENTINEL" "SPRING_DATA_REDIS" }}
+            - name: {{ $prefix }}_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "refarch-gateway.redisSecretName" . }}
-                  key: uri
+                  name: {{ include "refarch-gateway.redisSecretName" $ }}
+                  key: username
+            - name: {{ $prefix }}_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "refarch-gateway.redisSecretName" $ }}
+                  key: redis-password
+            {{- end }}
             {{- end }}
             {{- if gt (len .Values.env) 0 }}
             {{- tpl (toYaml .Values.env) . | nindent 12 }}

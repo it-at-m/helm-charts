@@ -148,7 +148,7 @@ redis:
     tag: 8.10.1-alpine@sha256:becdda6c7f4b3fb42e42fd7f120bbf5c54c4caaaf16f26da24e4563d2c1f0576 # TODO Overriding here leads to more LCM effort on our side
     pullPolicy: IfNotPresent
   # Common parameters, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#common-parameters
-  architecture: standalone # replication
+  architecture: replication # replication
   replicaCount: 2 # only with replication
   # Metrics, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#metrics
   metrics:
@@ -159,9 +159,9 @@ redis:
     resources: # TODO Set good defaults
       requests:
         cpu: 100m
-        memory: 512Mi
+        memory: 128Mi
       limits:
-        memory: 512Mi
+        memory: 256Mi
     service:
       enabled: true
       name: redis-metrics
@@ -175,11 +175,22 @@ redis:
   resources: # TODO Set good defaults
     requests:
       cpu: 100m
-      memory: 512Mi
+      memory: 128Mi
     limits:
-      memory: 512Mi
+      memory: 256Mi
   # Pod Assignment / Eviction, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#pod-assignment--eviction
-  # terminationGracePeriodSeconds: 60 (for Sentinel)
+  terminationGracePeriodSeconds: 60 # (for Sentinel)
   # Redis Sentinel Configuration (High Availability), online when architecture "replication", see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#redis-sentinel-configuration-high-availability
-  # sentinel:
-  # ServiceAccount, might be relevant for Sentinel access to slaves, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#serviceaccount
+  sentinel:
+    enabled: true
+    image:
+      tag: 8.10.1-alpine@sha256:becdda6c7f4b3fb42e42fd7f120bbf5c54c4caaaf16f26da24e4563d2c1f0576 # TODO Overriding here leads to more LCM effort on our side
+      pullPolicy: IfNotPresent
+    masterName: redis-master
+    quorum: 2
+    resources: # TODO Set good defaults
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
