@@ -11,9 +11,6 @@ spec:
       port: http
       scheme: http
       path: {{ .Values.serviceMonitor.path }}
-  namespaceSelector:
-    matchNames:
-      - {{ .Release.Namespace }}
   selector:
     matchLabels:
       {{- include "refarch-gateway.selectorLabels" . | nindent 6 }}
