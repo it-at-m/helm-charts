@@ -126,6 +126,7 @@ document-storage:
   # Environment variables
   extraEnvVars:
     JAVA_OPTS_APPEND: -Djavax.net.ssl.trustStore=/mnt/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Xmx512m
+    SPRING_PROFILES_ACTIVE: dev,no-security
     SPRING_SECURITY_LOGGING_REQUESTS: all
     DE_MUENCHEN_REFARCH_INTEGRATION_S3_ENABLED: "false"
     REFARCH_S3_URL: s3.example.com
