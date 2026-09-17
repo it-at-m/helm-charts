@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Redis subchart secret name. Avoid duplicating the suffix when the release name already ends with "-redis".
+*/}}
+{{- define "refarch-gateway.redisSecretName" -}}
+{{- if hasSuffix "-redis" .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-redis" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}

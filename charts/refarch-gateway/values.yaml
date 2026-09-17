@@ -150,9 +150,6 @@ redis:
   # Common parameters, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#common-parameters
   architecture: standalone # replication
   replicaCount: 2 # only with replication
-  # Authentication, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#authentication
-  # auth:
-    # existingSecret: # TODO TEST
   # Metrics, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#metrics
   metrics:
     enabled: false

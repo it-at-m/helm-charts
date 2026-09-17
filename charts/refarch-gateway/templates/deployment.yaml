@@ -59,6 +59,11 @@ spec:
             {{- if .Values.redis.enabled }}
             - name: SPRING_PROFILES_INCLUDE
               value: redis-session
+            - name: SPRING_DATA_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "refarch-gateway.redisSecretName" . }}
+                  key: uri
             {{- end }}
             {{- if gt (len .Values.env) 0 }}
             {{- tpl (toYaml .Values.env) . | nindent 12 }}
