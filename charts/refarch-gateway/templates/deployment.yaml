@@ -62,7 +62,7 @@ spec:
             - name: SPRING_DATA_REDIS_SENTINEL_MASTER
               value: {{ .Values.redis.sentinel.masterName }}
             - name: SPRING_DATA_REDIS_SENTINEL_NODES
-              value: dev-redis-headless.refarch.svc.cluster.local:26379
+              value: {{ .Release.Name }}-sentinel.{{ .Release.Namespace }}.svc.cluster.local:26379
             {{- range $prefix := list "SPRING_DATA_REDIS_SENTINEL" "SPRING_DATA_REDIS" }}
             - name: {{ $prefix }}_USERNAME
               valueFrom:

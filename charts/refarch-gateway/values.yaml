@@ -148,8 +148,8 @@ redis:
     tag: 8.10.1-alpine@sha256:becdda6c7f4b3fb42e42fd7f120bbf5c54c4caaaf16f26da24e4563d2c1f0576 # TODO Overriding here leads to more LCM effort on our side
     pullPolicy: IfNotPresent
   # Common parameters, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#common-parameters
-  architecture: replication # replication
-  replicaCount: 2 # only with replication
+  architecture: replication # replication or standalone
+  replicaCount: 3 # only with replication, minimum 3 required
   # Metrics, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/redis#metrics
   metrics:
     enabled: false
