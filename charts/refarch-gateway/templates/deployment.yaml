@@ -59,6 +59,14 @@ spec:
             {{- if .Values.redis.enabled }}
             - name: SPRING_PROFILES_INCLUDE
               value: redis-session
+            {{- if eq .Values.redis.architecture "standalone" }}
+            - name: SPRING_DATA_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "refarch-gateway.redisSecretName" . }}
+                  key: uri
+            {{- end }}
+            {{- if and (eq .Values.redis.architecture "replication") .Values.redis.sentinel.enabled }}
             - name: SPRING_DATA_REDIS_SENTINEL_MASTER
               value: {{ .Values.redis.sentinel.masterName }}
             - name: SPRING_DATA_REDIS_SENTINEL_NODES
@@ -74,6 +82,7 @@ spec:
                 secretKeyRef:
                   name: {{ include "refarch-gateway.redisSecretName" $ }}
                   key: redis-password
+            {{- end }}
             {{- end }}
             {{- end }}
             {{- if gt (len .Values.env) 0 }}
