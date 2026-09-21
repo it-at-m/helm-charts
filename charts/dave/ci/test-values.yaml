@@ -31,7 +31,7 @@ backend:
     DAVE_EMAIL_PASSWORD: WFhYWC1TRUNSRVQtWFhYWAo=
   initContainers:
     - name: wait-for-elasticsearch
-      image: curlimages/curl:8.21.0
+      image: curlimages/curl:8.22.0
       command:
         - /bin/sh
         - -c
