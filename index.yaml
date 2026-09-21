@@ -790,6 +790,59 @@ entries:
     version: 1.0.0
   dave:
   - apiVersion: v2
+    created: "2026-09-21T15:03:07.67373011Z"
+    dependencies:
+    - condition: externalCharts.elasticsearch.enabled
+      name: elasticsearch
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.6
+    - condition: externalCharts.postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.2.0
+    - condition: externalCharts.backend.enabled
+      name: backend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.frontend.enabled
+      name: frontend
+      repository: ""
+      version: '*'
+    - condition: externalCharts.adminportal.enabled
+      name: admin-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.selfserviceportal.enabled
+      name: selfservice-portal
+      repository: ""
+      version: '*'
+    - condition: externalCharts.eai.enabled
+      name: eai
+      repository: ""
+      version: '*'
+    - condition: externalCharts.documentstorage.enabled
+      name: document-storage
+      repository: ""
+      version: '*'
+    - condition: externalCharts.geodataeai.enabled
+      name: geodata-eai
+      repository: ""
+      version: '*'
+    description: DAVe traffic counting plattform
+    digest: 781ae8fb9edc8960c664d4d7d96dad95be38969bf461954fd121b6f69fec4ced
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/dave
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: klml@muenchen.de
+      name: klml
+    name: dave
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/dave-0.2.17/dave-0.2.17.tgz
+    version: 0.2.17
+  - apiVersion: v2
     created: "2026-09-17T07:59:16.241851101Z"
     dependencies:
     - condition: externalCharts.elasticsearch.enabled
@@ -4622,4 +4675,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-17T07:59:16.242177202Z"
+generated: "2026-09-21T15:03:07.674496376Z"
