@@ -53,6 +53,10 @@ refarch-templates:
   - changed-files:
       - any-glob-to-any-file: charts/refarch-templates/**
 
+mucgpt:
+  - changed-files:
+      - any-glob-to-any-file: charts/mucgpt/**
+
 sps-sample:
   - changed-files:
       - any-glob-to-any-file: charts/sps-sample/**
