@@ -194,9 +194,17 @@ Example:
     autoscaling:
       minReplicas: 1 # defaults to 1
       maxReplicas: 10
-      targetCPUUtilizationPercentage: 80 # optional
-      targetMemoryUtilizationPercentage: 80 # optional
+      targetCPUUtilizationPercentage: 80 # optional, percentage-based CPU target
+      targetMemoryUtilizationPercentage: 80 # optional, percentage-based memory target
+      targetCPUAverageValue: 250m # optional, absolute CPU target (e.g. "250m" or "1")
+      targetMemoryAverageValue: 512Mi # optional, absolute memory target
+      # optional, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-policies
+      behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 60
 ```
+
+> **Note:** Percentage-based and absolute (`AverageValue`) targets are mutually exclusive per resource. The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
 
 #### Configuration management
 
@@ -359,6 +367,10 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 ```
 
 ## Migration
+
+### to 2.4.0
+
+The per-module resources check previously looked at `resources.request` (singular). Modules that set `resources.requests` (plural) got the built-in default requests silently applied. If you relied on the (broken) behavior, rename the key to `requests`. No other changes required.
 
 ### to v2
 

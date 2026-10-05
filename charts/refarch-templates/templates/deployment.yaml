@@ -13,7 +13,7 @@ metadata:
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
-  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
+  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage $module.autoscaling.targetCPUAverageValue $module.autoscaling.targetMemoryAverageValue))}}
   replicas: {{ ternary $module.replicas 1 (not (eq $module.replicas nil)) }}
   {{- end }}
   selector:
@@ -87,19 +87,27 @@ spec:
               port: http
             {{- end }}
           resources:
-            {{- if and $module.resources $module.resources.request  }}
-            {{- toYaml $module.resources | nindent 12 }}
-            {{- else }}
+            {{- $requests := dict }}
+            {{- if $module.resources }}
+            {{- $requests = $module.resources.requests | default dict }}
+            {{- end }}
+            {{- $limits := dict }}
+            {{- if $module.resources }}
+            {{- $limits = $module.resources.limits | default dict }}
+            {{- end }}
             requests:
+              {{- if $requests }}
+              {{- toYaml $requests | nindent 14 }}
+              {{- else }}
               cpu: 100m
               memory: 512Mi
-            {{- end }}
-            {{- if and $module.resources $module.resources.limits }}
-            {{- toYaml $module.resources | nindent 12 }}
-            {{- else }}
+              {{- end }}
             limits:
+              {{- if $limits }}
+              {{- toYaml $limits | nindent 14 }}
+              {{- else }}
               memory: 512Mi
-            {{- end }}
+              {{- end }}
           {{- if $module.env }}
           env:
             {{- toYaml $module.env | nindent 12 }}
