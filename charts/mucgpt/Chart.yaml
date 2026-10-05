@@ -1,0 +1,31 @@
+apiVersion: v2
+name: mucgpt
+description: Helm chart for deploying MUCGPT, a chatbot application for workers at public administrations.
+type: application
+version: 0.1.0
+home: https://github.com/it-at-m/helm-charts/tree/main/charts/mucgpt
+icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+sources:
+  - "https://github.com/it-at-m/helm-charts"
+  - "https://github.com/it-at-m/mucgpt"
+dependencies:
+  - name: refarch-templates
+    version: 2.4.0
+    repository: "file://../refarch-templates"
+  - name: valkey
+    condition: valkey.enabled
+    version: 0.25.13
+    repository: https://cloudpirates-io.github.io/helm-charts
+  - name: postgres
+    condition: postgres.enabled
+    version: 0.21.1
+    repository: https://cloudpirates-io.github.io/helm-charts
+maintainers:
+  - name: freinold
+    url: https://github.com/freinold
+  - name: illuminate97
+    url: https://github.com/illuminate97
+  - name: Meteord
+    url: https://github.com/Meteord
+  - name: danielnwz
+    url: https://github.com/danielnwz
