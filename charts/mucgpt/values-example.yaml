@@ -1,0 +1,208 @@
+# Sample values demonstrating a full MUCGPT deployment.
+# Copy and adjust for your environment. Replace all placeholders marked with
+# <ANGLE_BRACKETS>.
+
+# Application configuration for the core service (mounted as /app/config.yaml).
+# Alternatively reference a pre-created Secret containing a 'config.yaml' key:
+# coreConfig:
+#   existingSecret: "<MY-CORE-CONFIG-SECRET>"
+coreConfig:
+  data:
+    ENV_NAME: "<MY-ENVIRONMENT>"
+    LOG_CONFIG:
+      LOGLEVEL: INFO
+    # Where documents are parsed. See MUCGPT documentation for the
+    # available parser backends and how to deploy them.
+    PARSER_BACKEND: "<XBERG>"
+    XBERG_URL: "http://<XBERG-SERVICE>:8000"
+    # Optional LLM observability (e.g. Langfuse)
+    LANGFUSE:
+      HOST: "https://<LANGFUSE-HOST>"
+      PUBLIC_KEY: "<PUBLIC-KEY>"
+      SECRET_KEY: "<SECRET-KEY>"
+    # Model definitions (type, llm_name, endpoint, api_key, model_info, ...)
+    MODELS: []
+    # Cache settings. HOST/PORT/PASSWORD must match the valkey settings below.
+    REDIS:
+      HOST: "{{ Release.Name }}-valkey-master"
+      PORT: 6379
+      PASSWORD: "<VALKEY-PASSWORD>"
+      USERNAME: default
+
+# Application configuration for the assistant service (mounted as /app/config.yaml).
+# Alternatively reference a pre-created Secret containing a 'config.yaml' key:
+# assistantConfig:
+#   existingSecret: "<MY-ASSISTANT-CONFIG-SECRET>"
+assistantConfig:
+  data:
+    LOG_CONFIG:
+      LOGLEVEL: INFO
+    DB:
+      HOST: "<POSTGRES-HOST>"
+      PORT: 5432
+      NAME: "<POSTGRES-DB>"
+      USER: "<POSTGRES-USER>"
+      PASSWORD: "<POSTGRES-PASSWORD>"
+    REDIS:
+      HOST: "{{ Release.Name }}-valkey-master"
+      PORT: 6379
+      PASSWORD: "<VALKEY-PASSWORD>"
+      USERNAME: default
+
+# Database credentials for the assistant migrations job
+assistantsMigration:
+  envFrom:
+    - prefix: MUCGPT_ASSISTANT_DB_
+      secretRef:
+        name: mucgpt-assistants-db
+
+# Generic CA certificate handling (e.g. for TLS-inspecting proxies or private CAs).
+# Creates a volume from an existing Secret/ConfigMap, mounts it into the
+# migrations job (when assistantsMigration.useCAcerts=true) and sets
+# SSL_CERT_FILE accordingly. For the application containers, add the
+# volume/volumeMount/env snippets to the corresponding modules.
+caCerts:
+  enabled: false
+  # existingSecret: "<MY-CA-BUNDLE>"      # Secret or ConfigMap containing the bundle
+  # existingConfigmap: "<MY-CA-BUNDLE>"
+  key: "ca-bundle.crt"
+  mountPath: /etc/pki/ca-trust/extracted/pem
+
+refarch-templates:
+  secrets:
+    - name: sso
+      keys:
+        - URL            # e.g. https://sso.example.com
+        - REALM
+        - CLIENTID
+        - CLIENTSECRET
+        - SCOPE
+        - ROLE
+
+  modules:
+    frontend:
+      service:
+        http: true
+
+    core:
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+      env:
+        # If caCerts.enabled, point SSL_CERT_FILE to the mounted bundle:
+        # - name: SSL_CERT_FILE
+        #   value: "/etc/pki/ca-trust/extracted/pem/ca-bundle.crt"
+        - name: GIT_PYTHON_REFRESH
+          value: "quiet"
+      volumeMounts:
+        - name: mucgpt-core-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+        # CA bundle (if caCerts.enabled):
+        # - name: mucgpt-ca-certs
+        #   readOnly: true
+        #   mountPath: /etc/pki/ca-trust/extracted/pem
+      volumes:
+        - name: mucgpt-core-config
+          secret:
+            secretName: "{{ Release.Name }}-core-config"
+        # CA bundle (if caCerts.enabled):
+        # - name: mucgpt-ca-certs
+        #   secret:
+        #     secretName: "<MY-CA-BUNDLE>"
+        #     items:
+        #       - key: ca-bundle.crt
+        #         path: ca-bundle.crt
+
+    assistants:
+      volumeMounts:
+        - name: mucgpt-assistant-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+      volumes:
+        - name: mucgpt-assistant-config
+          secret:
+            secretName: "{{ Release.Name }}-assistant-config"
+
+  refarch-gateway:
+    envAppend:
+      - name: ALLOWED_ORIGINS_PUBLIC
+        value: "https://<MY-DOMAIN>.example.com"
+      - name: ALLOWED_ORIGINS_CLIENTS
+        value: "https://<MY-DOMAIN>.example.com"
+    applicationYML:
+      spring:
+        session:
+          timeout: 10h # should match the SSO session lifetime
+        cloud:
+          gateway:
+            httpclient:
+              connect-timeout: 10000
+              response-timeout: 120s
+            server:
+              webflux:
+                routes:
+                  - id: "sso"
+                    uri: ${SSO_URL}
+                    predicates:
+                      - "Path=/api/sso/userinfo"
+                    filters:
+                      - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+                  - id: "core"
+                    uri: "http://{{ Release.Name }}-core:8000/"
+                    predicates:
+                      - "Path=/api/backend/**"
+                    filters:
+                      - "RewritePath=/api/backend/(?<urlsegments>.*), /api/$\\{urlsegments}"
+                  - id: "assistants"
+                    uri: "http://{{ Release.Name }}-assistants:8084/"
+                    predicates:
+                      - "Path=/api/assistant/**,/api/user/**,/api/directory/**,/api/admin/**"
+                  # The catch all route has to be the last route.
+                  - id: "frontend"
+                    uri: "http://{{ Release.Name }}-frontend:8080/"
+                    predicates:
+                      - "Path=/**"
+    ingress:
+      enabled: true
+      hosts:
+        - host: "<MY-HOSTNAME>"
+          paths:
+            - path: /
+              pathType: "ImplementationSpecific"
+      # OpenShift-specific configuration; adjust for plain Kubernetes.
+      # annotations:
+      #   route.openshift.io/termination: "edge"
+      # className: openshift-default
+
+# Optional example autoscaling using absolute CPU targets and scaling behavior.
+# refarch-templates:
+#   modules:
+#     core:
+#       autoscaling:
+#         minReplicas: 2
+#         maxReplicas: 4
+#         targetCPUAverageValue: "250m"
+#         behavior:
+#           scaleUp:
+#             stabilizationWindowSeconds: 60
+
+# Valkey cache. Consider using an external cache or the Valkey operator
+# (https://github.com/valkey-io/valkey-operator, early development) instead.
+valkey:
+  enabled: true
+  auth:
+    existingSecret: mucgpt-valkey
+    existingSecretPasswordKey: PASSWORD
+  resources:
+    requests:
+      cpu: 50m
+      memory: 500Mi
+    limits:
+      memory: 500Mi
+  persistence:
+    enabled: true
+    size: 1Gi

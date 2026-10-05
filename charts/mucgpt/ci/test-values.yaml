@@ -1,0 +1,38 @@
+# Minimal values for CI installation in a kind cluster.
+# Keycloak, database and cache are simulated/minimal; the gateway runs
+# without security so no external SSO is required.
+assistantsMigration:
+  enabled: false
+
+refarch-templates:
+  refarch-gateway:
+    applicationYML:
+      spring:
+        profiles:
+          active: "no-security"
+        cloud:
+          gateway:
+            server:
+              webflux:
+                routes:
+                  - id: "sso"
+                    uri: "http://localhost:8100"
+                    predicates:
+                      - "Path=/api/sso/userinfo"
+                  - id: "core"
+                    uri: "http://localhost:8000/"
+                    predicates:
+                      - "Path=/api/backend/**"
+                  - id: "assistants"
+                    uri: "http://localhost:8084/"
+                    predicates:
+                      - "Path=/api/assistant/**,/api/user/**,/api/directory/**,/api/admin/**"
+                  # The catch all route has to be the last route.
+                  - id: "frontend"
+                    uri: "http://localhost:8080/"
+                    predicates:
+                      - "Path=/**"
+
+valkey:
+  auth:
+    enabled: false

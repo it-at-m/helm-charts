@@ -1,0 +1,29 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+Deployed components:
+{{- $rt := index .Values "refarch-templates" }}
+{{- if index $rt "refarch-gateway" "enabled" }}
+  * refarch-gateway (single entry point)
+{{- end }}
+{{- range $moduleName, $module := $rt.modules }}
+  * {{ $moduleName }}
+{{- end }}
+{{- if .Values.valkey.enabled }}
+  * valkey (cache)
+{{- end }}
+{{- if .Values.postgres.enabled }}
+  * postgres (database)
+{{- end }}
+{{- if .Values.assistantsMigration.enabled }}
+  * assistants-migrations job (runs on install/upgrade)
+{{- end }}
+
+Further information:
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+Please make sure to provide the required secrets (SSO, database, config.yaml)
+as described in the chart README:
+https://github.com/it-at-m/helm-charts/tree/main/charts/mucgpt
