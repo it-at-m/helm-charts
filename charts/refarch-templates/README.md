@@ -194,17 +194,19 @@ Example:
     autoscaling:
       minReplicas: 1 # defaults to 1
       maxReplicas: 10
+      # Pick the single CPU target that fits your workload best (percentage OR absolute):
       targetCPUUtilizationPercentage: 80 # optional, percentage-based CPU target
+      # targetCPUAverageValue: 250m # optional, absolute CPU target (e.g. "250m" or "1")
+      # Pick the single memory target that fits your workload best (percentage OR absolute):
       targetMemoryUtilizationPercentage: 80 # optional, percentage-based memory target
-      targetCPUAverageValue: 250m # optional, absolute CPU target (e.g. "250m" or "1")
-      targetMemoryAverageValue: 512Mi # optional, absolute memory target
+      # targetMemoryAverageValue: 512Mi # optional, absolute memory target
       # optional, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-policies
       behavior:
         scaleUp:
           stabilizationWindowSeconds: 60
 ```
 
-> **Note:** Percentage-based and absolute (`AverageValue`) targets are mutually exclusive per resource. The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
+> **Note:** If both a percentage-based and an absolute (`AverageValue`) target are configured for the same resource (e.g. `targetCPUUtilizationPercentage` and `targetCPUAverageValue`), both metrics are rendered into the HPA. Kubernetes then evaluates each metric and scales based on the larger of the recommended replica counts (see [Scaling on multiple metrics](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/#scaling-on-multiple-metrics)). This is discouraged though – prefer picking the single target per resource that fits your workload best. The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
 
 #### Configuration management
 
