@@ -18,6 +18,9 @@ spec:
   minReplicas: {{ $module.autoscaling.minReplicas | default 1 }}
   maxReplicas: {{ $module.autoscaling.maxReplicas }}
   metrics:
+    {{- if and $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetCPUAverageValue }}
+    {{- fail "autoscaling: targetCPUUtilizationPercentage and targetCPUAverageValue are mutually exclusive - configure only one CPU target" }}
+    {{- end }}
     {{- if $module.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
@@ -33,6 +36,9 @@ spec:
         target:
           type: AverageValue
           averageValue: {{ $module.autoscaling.targetCPUAverageValue | quote }}
+    {{- end }}
+    {{- if and $module.autoscaling.targetMemoryUtilizationPercentage $module.autoscaling.targetMemoryAverageValue }}
+    {{- fail "autoscaling: targetMemoryUtilizationPercentage and targetMemoryAverageValue are mutually exclusive - configure only one memory target" }}
     {{- end }}
     {{- if $module.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource

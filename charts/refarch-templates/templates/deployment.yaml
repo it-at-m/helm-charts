@@ -87,27 +87,7 @@ spec:
               port: http
             {{- end }}
           resources:
-            {{- $requests := dict }}
-            {{- if $module.resources }}
-            {{- $requests = $module.resources.requests | default dict }}
-            {{- end }}
-            {{- $limits := dict }}
-            {{- if $module.resources }}
-            {{- $limits = $module.resources.limits | default dict }}
-            {{- end }}
-            requests:
-              {{- if $requests }}
-              {{- toYaml $requests | nindent 14 }}
-              {{- else }}
-              cpu: 100m
-              memory: 512Mi
-              {{- end }}
-            limits:
-              {{- if $limits }}
-              {{- toYaml $limits | nindent 14 }}
-              {{- else }}
-              memory: 512Mi
-              {{- end }}
+            {{- toYaml (mergeOverwrite (deepCopy $.Values.defaultResources) ($module.resources | default dict)) | nindent 12 }}
           {{- if $module.env }}
           env:
             {{- toYaml $module.env | nindent 12 }}

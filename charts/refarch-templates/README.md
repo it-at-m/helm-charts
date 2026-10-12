@@ -172,7 +172,7 @@ You can define your resources like CPU and RAM and the desired replicas.
 
 More information about Resources can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
 
-If you don't set those properties, those values will be used by default:
+By default, the following values are applied to every module:
 ```yaml
     resources:
       requests:
@@ -183,30 +183,30 @@ If you don't set those properties, those values will be used by default:
     replicas: 1
 ```
 
-> **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
+> **Note:** These defaults are defined in the `defaultResources` chart value and merged per key with each module's `resources`.
+Every single entry (e.g. only `requests.cpu` or only `limits.memory`) can be overridden individually per module; unset keys fall back to the defaults above.
+
+> **Note:** The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
 
 Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscaling` block).
 
 More information about Autoscaling can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/autoscaling/).
+
+Auto-scaling supports one CPU target and one memory target per module, each either as a percentage of the requested resource or as an absolute `AverageValue` (e.g. `250m` CPU, `512Mi` memory). Configuring both target types for the same resource fails chart rendering.
 
 Example:
 ```yaml
     autoscaling:
       minReplicas: 1 # defaults to 1
       maxReplicas: 10
-      # Pick the single CPU target that fits your workload best (percentage OR absolute):
-      targetCPUUtilizationPercentage: 80 # optional, percentage-based CPU target
-      # targetCPUAverageValue: 250m # optional, absolute CPU target (e.g. "250m" or "1")
-      # Pick the single memory target that fits your workload best (percentage OR absolute):
-      targetMemoryUtilizationPercentage: 80 # optional, percentage-based memory target
-      # targetMemoryAverageValue: 512Mi # optional, absolute memory target
-      # optional, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-policies
-      behavior:
+      targetCPUUtilizationPercentage: 80
+      # targetCPUAverageValue: 250m
+      targetMemoryUtilizationPercentage: 80
+      # targetMemoryAverageValue: 512Mi
+      behavior: # optional, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-policies
         scaleUp:
-          stabilizationWindowSeconds: 60
+          stabilizationWindowSeconds: 300
 ```
-
-> **Note:** If both a percentage-based and an absolute (`AverageValue`) target are configured for the same resource (e.g. `targetCPUUtilizationPercentage` and `targetCPUAverageValue`), both metrics are rendered into the HPA. Kubernetes then evaluates each metric and scales based on the larger of the recommended replica counts (see [Scaling on multiple metrics](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/#scaling-on-multiple-metrics)). This is discouraged though – prefer picking the single target per resource that fits your workload best. The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
 
 #### Configuration management
 
@@ -372,7 +372,8 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 
 ### to 2.4.0
 
-The per-module resources check previously looked at `resources.request` (singular). Modules that set `resources.requests` (plural) got the built-in default requests silently applied. If you relied on the (broken) behavior, rename the key to `requests`. No other changes required.
+- The per-module resources check previously looked at `resources.request` (singular). Modules that set `resources.requests` (plural) got the built-in default requests silently applied. If you relied on the (broken) behavior, rename the key to `requests`.
+- Per-module `resources` are now merged per key on top of the new `defaultResources` chart value (defaults: `requests.cpu: 100m`, `requests.memory: 512Mi`, `limits.memory: 512Mi`). Previously, overriding only `requests` or only `limits` disabled all defaults for both blocks. If you override only one block and don't want the corresponding default entries (e.g. default `requests.cpu` interfering with a percentage-based CPU autoscaling target), set them explicitly to your desired values.
 
 ### to v2
 
