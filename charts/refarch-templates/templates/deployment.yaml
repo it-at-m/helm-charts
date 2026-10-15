@@ -13,7 +13,7 @@ metadata:
   labels:
     {{- include "getLabels" $data | trim | nindent 4 }}
 spec:
-  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage))}}
+  {{- if not (and $module.autoscaling (or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage $module.autoscaling.targetCPUAverageValue $module.autoscaling.targetMemoryAverageValue))}}
   replicas: {{ ternary $module.replicas 1 (not (eq $module.replicas nil)) }}
   {{- end }}
   selector:
@@ -87,19 +87,7 @@ spec:
               port: http
             {{- end }}
           resources:
-            {{- if and $module.resources $module.resources.request  }}
-            {{- toYaml $module.resources | nindent 12 }}
-            {{- else }}
-            requests:
-              cpu: 100m
-              memory: 512Mi
-            {{- end }}
-            {{- if and $module.resources $module.resources.limits }}
-            {{- toYaml $module.resources | nindent 12 }}
-            {{- else }}
-            limits:
-              memory: 512Mi
-            {{- end }}
+            {{- toYaml (mergeOverwrite (deepCopy $.Values.defaultResources) ($module.resources | default dict)) | nindent 12 }}
           {{- if $module.env }}
           env:
             {{- toYaml $module.env | nindent 12 }}

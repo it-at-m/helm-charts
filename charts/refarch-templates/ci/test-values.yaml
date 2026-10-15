@@ -9,6 +9,10 @@ modules:
       registry: ghcr.io
       repository: it-at-m/refarch-templates/frontend
       tag: "dev"
+    autoscaling:
+      minReplicas: 1
+      maxReplicas: 2
+      targetCPUAverageValue: 250m
     service:
       http: true
   webcomponent:
