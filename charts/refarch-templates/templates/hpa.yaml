@@ -2,7 +2,7 @@
 {{- range $moduleName, $module := .Values.modules -}}
 {{ $data := dict "dot" $dot "module" $module "moduleName" $moduleName }}
 {{- if $module.autoscaling }}
-{{- if or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage }}
+{{- if or $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetMemoryUtilizationPercentage $module.autoscaling.targetCPUAverageValue $module.autoscaling.targetMemoryAverageValue }}
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -18,6 +18,9 @@ spec:
   minReplicas: {{ $module.autoscaling.minReplicas | default 1 }}
   maxReplicas: {{ $module.autoscaling.maxReplicas }}
   metrics:
+    {{- if and $module.autoscaling.targetCPUUtilizationPercentage $module.autoscaling.targetCPUAverageValue }}
+    {{- fail "autoscaling: targetCPUUtilizationPercentage and targetCPUAverageValue are mutually exclusive - configure only one CPU target" }}
+    {{- end }}
     {{- if $module.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
@@ -25,6 +28,17 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ $module.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if $module.autoscaling.targetCPUAverageValue }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: {{ $module.autoscaling.targetCPUAverageValue | quote }}
+    {{- end }}
+    {{- if and $module.autoscaling.targetMemoryUtilizationPercentage $module.autoscaling.targetMemoryAverageValue }}
+    {{- fail "autoscaling: targetMemoryUtilizationPercentage and targetMemoryAverageValue are mutually exclusive - configure only one memory target" }}
     {{- end }}
     {{- if $module.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
@@ -34,6 +48,18 @@ spec:
           type: Utilization
           averageUtilization: {{ $module.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
+    {{- if $module.autoscaling.targetMemoryAverageValue }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: {{ $module.autoscaling.targetMemoryAverageValue | quote }}
+    {{- end }}
+  {{- with $module.autoscaling.behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
