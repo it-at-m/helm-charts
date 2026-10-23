@@ -1,0 +1,294 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Kubernetes definitions are referenced from schema/kubernetes.json, vendored from yannh/kubernetes-json-schema v1.34.9 under Apache-2.0. See schema/README.md and schema/LICENSE.",
+  "title": "refarch-templates values",
+  "type": "object",
+  "properties": {
+    "configMaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "data"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "secrets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "keys"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "items": {
+        "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+      }
+    },
+    "modules": {
+      "type": "object",
+      "description": "Module names are user-defined; each value follows the module configuration schema.",
+      "additionalProperties": {
+        "$ref": "#/definitions/module"
+      }
+    },
+    "imageStream": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "module": {
+      "type": "object",
+      "required": [
+        "image"
+      ],
+      "properties": {
+        "image": {
+          "type": "object",
+          "required": [
+            "registry",
+            "repository",
+            "tag"
+          ],
+          "properties": {
+            "registry": {
+              "type": "string"
+            },
+            "repository": {
+              "type": "string"
+            },
+            "tag": {
+              "type": "string"
+            },
+            "pullPolicy": {
+              "type": "string",
+              "enum": [
+                "Always",
+                "IfNotPresent",
+                "Never"
+              ]
+            }
+          }
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deploymentStrategy": {
+          "type": "string",
+          "enum": [
+            "RollingUpdate",
+            "Recreate"
+          ]
+        },
+        "autoscaling": {
+          "type": "object",
+          "properties": {
+            "minReplicas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maxReplicas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "targetCPUUtilizationPercentage": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "targetMemoryUtilizationPercentage": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "resources": {
+          "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.ResourceRequirements"
+        },
+        "initContainers": {
+          "type": "array",
+          "items": {
+            "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.Container"
+          }
+        },
+        "env": {
+          "type": "array",
+          "items": {
+            "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.EnvVar"
+          }
+        },
+        "envFrom": {
+          "type": "array",
+          "items": {
+            "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.EnvFromSource"
+          }
+        },
+        "applicationYML": {
+          "type": "object",
+          "description": "Application configuration is application-specific.",
+          "additionalProperties": true
+        },
+        "applicationYMLMountPath": {
+          "type": "string"
+        },
+        "service": {
+          "type": "object",
+          "properties": {
+            "http": {
+              "type": "boolean"
+            },
+            "ports": {
+              "type": "array",
+              "items": {
+                "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.ServicePort"
+              }
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "className": {
+              "type": "string"
+            },
+            "annotations": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "labels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "tls": {
+              "type": "array",
+              "items": {
+                "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.networking.v1.IngressTLS"
+              }
+            },
+            "hosts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "host": {
+                    "type": "string"
+                  },
+                  "paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "path"
+                      ],
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "pathType": {
+                          "type": "string",
+                          "enum": [
+                            "Exact",
+                            "Prefix",
+                            "ImplementationSpecific"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.Volume"
+          }
+        },
+        "volumeMounts": {
+          "type": "array",
+          "items": {
+            "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.VolumeMount"
+          }
+        },
+        "startupProbe": {
+          "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.Probe"
+        },
+        "livenessProbe": {
+          "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.Probe"
+        },
+        "readinessProbe": {
+          "$ref": "./schema/kubernetes.json#/definitions/io.k8s.api.core.v1.Probe"
+        },
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "interval": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "port": {
+              "type": "string"
+            },
+            "scheme": {
+              "type": "string",
+              "enum": [
+                "http",
+                "https"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
