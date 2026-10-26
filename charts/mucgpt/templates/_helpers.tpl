@@ -1,15 +1,19 @@
 {{- define "mucgpt.caCertsVolume" -}}
 {{- if .Values.caCerts.enabled -}}
+{{- if and (not .Values.caCerts.existingSecret) (not .Values.caCerts.existingConfigmap) }}
+{{- fail "caCerts.enabled requires either caCerts.existingSecret or caCerts.existingConfigmap to be set" }}
+{{- end }}
 - name: mucgpt-ca-certs
+  {{- if .Values.caCerts.existingSecret }}
   secret:
-    {{- if .Values.caCerts.existingSecret }}
     secretName: {{ .Values.caCerts.existingSecret }}
-    {{- else if .Values.caCerts.existingConfigmap }}
-    secretName: {{ .Values.caCerts.existingConfigmap }}
-    {{- end }}
-    items:
-      - key: {{ .Values.caCerts.key }}
-        path: {{ .Values.caCerts.key }}
+  {{- else }}
+  configMap:
+    name: {{ .Values.caCerts.existingConfigmap }}
+  {{- end }}
+  items:
+    - key: {{ .Values.caCerts.key }}
+      path: {{ .Values.caCerts.key }}
 {{- end -}}
 {{- end -}}
 

@@ -38,13 +38,9 @@ MUCGPT requires an OIDC identity provider (e.g. Keycloak). Deploy and operate Ke
 
 ### Database
 
-The assistant service needs a PostgreSQL database (schema migrations run automatically via the `assistants-migrations` job). **You are strongly encouraged to operate PostgreSQL via a database operator** such as [CloudNativePG](https://cloudnative-pg.io) instead of rolling the included `postgres` subchart yourself. Only use the subchart for quick evaluations:
+The assistant service needs a PostgreSQL database (schema migrations run automatically via the `assistants-migrations` job). **You are strongly encouraged to operate PostgreSQL via a database operator** such as [CloudNativePG](https://cloudnative-pg.io) instead of rolling the included `postgres` subchart yourself. Note that the subchart cannot be combined with the automatic migrations (the job runs as a `pre-install` hook, before the bundled PostgreSQL exists) - if you enable it, set `assistantsMigration.enabled=false` and run the migrations manually.
 
-```console
-helm install my-release ... --set postgres.enabled=true
-```
-
-Provide the database credentials to the assistant service via its `config.yaml` (`assistantConfig`) and to the migrations job via `assistantsMigration.envFrom`.
+Provide the database credentials to the assistant service via its `config.yaml` (`assistantConfig`) and - for external databases with automatic migrations - to the migrations job via `assistantsMigration.envFrom`.
 
 ### Cache
 
@@ -71,7 +67,7 @@ The following table lists the main configurable parameters of the chart and thei
 | `assistantsMigration.useCAcerts` | bool | `false` | Mount the CA bundle (see `caCerts`) into the migration job |
 | `assistantsMigration.envFrom` | list | `[]` | envFrom entries (e.g. database credentials secret) |
 | `assistantsMigration.env` | list | `[]` | Environment variables for the migration job |
-| `caCerts.enabled` | bool | `false` | Mount a CA bundle into all application containers and set `SSL_CERT_FILE` |
+| `caCerts.enabled` | bool | `false` | Mount a CA bundle into the migrations job (when `assistantsMigration.useCAcerts=true`) and set `SSL_CERT_FILE` there. Application containers need their own volume/mount/env wiring (see [values-example.yaml](./values-example.yaml)) |
 | `caCerts.existingSecret` | string | `nil` | Existing Secret holding the CA bundle |
 | `caCerts.existingConfigmap` | string | `nil` | Existing ConfigMap holding the CA bundle (alternative to `existingSecret`) |
 | `caCerts.key` | string | `ca-bundle.crt` | Key within the Secret/ConfigMap |
@@ -81,6 +77,11 @@ The following table lists the main configurable parameters of the chart and thei
 | `valkey.*` | various | see [valkey chart](https://github.com/CloudPirates-io/helm-charts/tree/main/charts/valkey) | Valkey configuration |
 | `postgres.enabled` | bool | `false` | Deploy the bundled PostgreSQL (discouraged, see README section "Database") |
 | `postgres.*` | various | see [postgres chart](https://github.com/CloudPirates-io/helm-charts/tree/main/charts/postgres) | PostgreSQL configuration |
+
+> **Note:** The Secrets rendered from `coreConfig.data` / `assistantConfig.data` (named `<release>-core-config` / `<release>-assistant-config`) are **not mounted automatically**.
+Add the matching `volumes` / `volumeMounts` entries to the `core` / `assistants` module configuration yourself (see [values-example.yaml](./values-example.yaml)) - the services read their configuration from `/app/config.yaml`.
+
+> **Note:** The bundled `postgres` subchart cannot be combined with the automatic migrations: the `assistants-migrations` job runs as a `pre-install` hook, before the in-chart PostgreSQL is created, and chart rendering fails if both are enabled. Use an external database (e.g. via CloudNativePG) or run the migrations manually.
 
 ## Changelog
 

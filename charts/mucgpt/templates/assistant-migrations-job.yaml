@@ -1,4 +1,7 @@
 {{- if .Values.assistantsMigration.enabled }}
+{{- if and .Values.postgres.enabled .Values.assistantsMigration.enabled }}
+{{- fail "assistantsMigration cannot run against the bundled PostgreSQL: the pre-install migration hook executes before the in-chart postgres resources are created. Disable assistantsMigration (and run the migrations manually) or use an external PostgreSQL database." }}
+{{- end }}
 {{- $mountCerts := and .Values.assistantsMigration.useCAcerts .Values.caCerts.enabled }}
 apiVersion: batch/v1
 kind: Job
@@ -28,15 +31,19 @@ spec:
           {{- if or .Values.assistantsMigration.env $mountCerts }}
           env:
           {{- if .Values.assistantsMigration.env }}
-          {{ toYaml .Values.assistantsMigration.env | nindent 12 }}
+          {{- toYaml .Values.assistantsMigration.env | nindent 12 }}
           {{- end }}
           {{- if $mountCerts }}
           {{ include "mucgpt.caCertsEnv" . | nindent 12 }}
           {{- end }}
           {{- end }}
+          {{- if .Values.assistantsMigration.envFrom }}
+          envFrom:
+          {{- toYaml .Values.assistantsMigration.envFrom | nindent 12 }}
+          {{- end }}
           {{- if .Values.assistantsMigration.resources }}
           resources:
-          {{ toYaml .Values.assistantsMigration.resources | nindent 12 }}
+          {{- toYaml .Values.assistantsMigration.resources | nindent 12 }}
           {{- end }}
           {{- if or $mountCerts .Values.assistantsMigration.volumeMounts }}
           volumeMounts:

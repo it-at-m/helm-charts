@@ -7,8 +7,12 @@
 # The core and assistant services read their runtime configuration from a
 # config.yaml file (mounted into the container from a Secret).
 # Either provide the configuration inline via 'data' (YAML object rendered
-# into a Secret) or reference a pre-created Secret via 'existingSecret'.
+# into a Secret named "<release>-core-config" / "<release>-assistant-config")
+# or reference a pre-created Secret via 'existingSecret'.
 # When 'existingSecret' is set, 'data' is ignored.
+# Note: the Secret is NOT mounted automatically - add the matching
+# volume/volumeMount entries to the core/assistants module configuration
+# (see values-example.yaml).
 coreConfig:
   # existingSecret: "my-core-config"   # Secret must contain a key 'config.yaml'
   data: {}
@@ -196,6 +200,9 @@ valkey:
   enabled: true
   architecture: standalone
   config:
+    # The eviction policy is only applied when maxMemory is set - keep it
+    # below the Valkey container memory limit.
+    maxMemory: "450mb"
     maxMemoryPolicy: "allkeys-lru"
     save: ""  # Disable RDB persistence, AOF persistence is enabled below.
     extraConfig:
