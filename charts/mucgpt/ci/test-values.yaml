@@ -1,11 +1,36 @@
 # Minimal values for CI installation in a kind cluster.
 # Keycloak, database and cache are simulated/minimal; the gateway runs
 # without security so no external SSO is required.
+#
+# KNOWN ISSUE: the mucgpt-core and mucgpt-assistant images currently declare
+# root as their default user (no USER directive in the upstream Dockerfiles)
+# and therefore cannot start on plain Kubernetes, where refarch-templates
+# enforces runAsNonRoot. They run fine on OpenShift (SCC assigns a random
+# non-root UID). Until upstream publishes non-root images, the ct install
+# in CI fails on the core/assistants deployments.
 assistantsMigration:
   enabled: false
 
 refarch-templates:
   refarch-gateway:
+    # Replace the SSO secret references with dummy literals so the gateway
+    # starts without an identity provider (no-security profile).
+    envFrom: []
+    envAppend:
+      - name: SPRING_PROFILES_ACTIVE
+        value: "hazelcast-k8s"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
+        value: "profile, openid, roles"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
+        value: "sso"
+      - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+        value: "https://sso.example.com/auth/realms/dummy"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI
+        value: "https://sso.example.com/auth/realms/dummy"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
+        value: "dummy-client-id"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
+        value: "dummy-client-secret"
     applicationYML:
       spring:
         profiles:
@@ -32,6 +57,15 @@ refarch-templates:
                     uri: "http://localhost:8080/"
                     predicates:
                       - "Path=/**"
+
+# Exercise the config-secrets rendering.
+coreConfig:
+  data:
+    ENV_NAME: "ci"
+assistantConfig:
+  data:
+    LOG_CONFIG:
+      LOGLEVEL: INFO
 
 valkey:
   auth:

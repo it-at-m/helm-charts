@@ -24,7 +24,7 @@ coreConfig:
     MODELS: []
     # Cache settings. HOST/PORT/PASSWORD must match the valkey settings below.
     REDIS:
-      HOST: "{{ Release.Name }}-valkey-master"
+      HOST: "<HELM_RELEASE_NAME>-valkey"
       PORT: 6379
       PASSWORD: "<VALKEY-PASSWORD>"
       USERNAME: default
@@ -44,7 +44,7 @@ assistantConfig:
       USER: "<POSTGRES-USER>"
       PASSWORD: "<POSTGRES-PASSWORD>"
     REDIS:
-      HOST: "{{ Release.Name }}-valkey-master"
+      HOST: "<HELM_RELEASE_NAME>-valkey"
       PORT: 6379
       PASSWORD: "<VALKEY-PASSWORD>"
       USERNAME: default
@@ -107,7 +107,7 @@ refarch-templates:
       volumes:
         - name: mucgpt-core-config
           secret:
-            secretName: "{{ Release.Name }}-core-config"
+            secretName: "<HELM_RELEASE_NAME>-core-config"
         # CA bundle (if caCerts.enabled):
         # - name: mucgpt-ca-certs
         #   secret:
@@ -125,7 +125,7 @@ refarch-templates:
       volumes:
         - name: mucgpt-assistant-config
           secret:
-            secretName: "{{ Release.Name }}-assistant-config"
+            secretName: "<HELM_RELEASE_NAME>-assistant-config"
 
   refarch-gateway:
     envAppend:
@@ -152,18 +152,18 @@ refarch-templates:
                     filters:
                       - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
                   - id: "core"
-                    uri: "http://{{ Release.Name }}-core:8000/"
+                    uri: "http://<HELM_RELEASE_NAME>-core:8000/"
                     predicates:
                       - "Path=/api/backend/**"
                     filters:
                       - "RewritePath=/api/backend/(?<urlsegments>.*), /api/$\\{urlsegments}"
                   - id: "assistants"
-                    uri: "http://{{ Release.Name }}-assistants:8084/"
+                    uri: "http://<HELM_RELEASE_NAME>-assistants:8084/"
                     predicates:
                       - "Path=/api/assistant/**,/api/user/**,/api/directory/**,/api/admin/**"
                   # The catch all route has to be the last route.
                   - id: "frontend"
-                    uri: "http://{{ Release.Name }}-frontend:8080/"
+                    uri: "http://<HELM_RELEASE_NAME>-frontend:8080/"
                     predicates:
                       - "Path=/**"
     ingress:
