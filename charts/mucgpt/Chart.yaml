@@ -11,7 +11,7 @@ sources:
 dependencies:
   - name: refarch-templates
     version: 2.4.0
-    repository: "file://../refarch-templates"
+    repository: "@it-at-m"
   - name: valkey
     condition: valkey.enabled
     version: 0.25.13
