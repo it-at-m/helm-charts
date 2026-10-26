@@ -372,7 +372,7 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 
 ### to 2.4.0
 
-- The per-module resources check previously looked at `resources.request` (singular). Modules that set `resources.requests` (plural) got the built-in default requests silently applied. If you relied on the (broken) behavior, rename the key to `requests`.
+- The per-module resources check previously looked at `resources.request` (singular). Modules that set the correct `resources.requests` (plural) key were therefore silently ignored and the built-in default requests were applied instead. These values now take effect - review them and set the request values you want explicitly. If you set `resources.request` (singular), rename the key to `requests` so it is picked up.
 - Per-module `resources` are now merged per key on top of the new `defaultResources` chart value (defaults: `requests.cpu: 100m`, `requests.memory: 512Mi`, `limits.memory: 512Mi`). Previously, overriding only `requests` or only `limits` disabled all defaults for both blocks. If you override only one block and don't want the corresponding default entries (e.g. default `requests.cpu` interfering with a percentage-based CPU autoscaling target), set them explicitly to your desired values.
 
 ### to v2
