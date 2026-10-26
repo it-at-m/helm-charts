@@ -25,7 +25,7 @@ assistantsMigration:
   image:
     registry: ghcr.io
     repository: it-at-m/mucgpt/mucgpt-assistant-migrations
-    tag: "0.7.0"
+    tag: "0.8.0"
   resources:
     requests:
       cpu: 50m
@@ -62,9 +62,9 @@ caCerts:
 refarch-templates:
   enabled: true
 
-  frontendTag: &frontendTag "0.34.0"
-  assistantTag: &assistantTag "0.12.0"
-  coreTag: &coreTag "0.19.0"
+  frontendTag: &frontendTag "0.37.1"
+  assistantTag: &assistantTag "0.15.0"
+  coreTag: &coreTag "0.22.2"
 
   # Global secrets referenced by the modules below. The secrets themselves
   # have to be created externally (values are not managed by this chart).
@@ -160,6 +160,14 @@ refarch-templates:
   # for all supported options.
   refarch-gateway:
     enabled: true
+    # MUCGPT needs more gateway memory than the refarch-gateway default,
+    # see https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway#memory-limit-change
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 1Gi
     envFrom:
       - prefix: SSO_
         secretRef:
