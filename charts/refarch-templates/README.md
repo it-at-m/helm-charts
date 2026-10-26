@@ -172,7 +172,7 @@ You can define your resources like CPU and RAM and the desired replicas.
 
 More information about Resources can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
 
-If you don't set those properties, those values will be used by default:
+By default, the following values are applied to every module:
 ```yaml
     resources:
       requests:
@@ -183,19 +183,29 @@ If you don't set those properties, those values will be used by default:
     replicas: 1
 ```
 
-> **Note:** You can also just override the `requests` or `limits` individually. If you do so, the defaults for both `cpu` and `memory` will not apply.
+> **Note:** These defaults are defined in the `defaultResources` chart value and merged per key with each module's `resources`.
+Every single entry (e.g. only `requests.cpu` or only `limits.memory`) can be overridden individually per module; unset keys fall back to the defaults above.
+
+> **Note:** The `replicas` value is ignored while an `autoscaling` block with at least one target is configured.
 
 Configuring auto-scaling is optional and disabled by default (enabled by configuring the `autoscaling` block).
 
 More information about Autoscaling can be found in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/autoscaling/).
+
+Auto-scaling supports one CPU target and one memory target per module, each either as a percentage of the requested resource or as an absolute `AverageValue` (e.g. `250m` CPU, `512Mi` memory). Configuring both target types for the same resource fails chart rendering.
 
 Example:
 ```yaml
     autoscaling:
       minReplicas: 1 # defaults to 1
       maxReplicas: 10
-      targetCPUUtilizationPercentage: 80 # optional
-      targetMemoryUtilizationPercentage: 80 # optional
+      targetCPUUtilizationPercentage: 80
+      # targetCPUAverageValue: 250m
+      targetMemoryUtilizationPercentage: 80
+      # targetMemoryAverageValue: 512Mi
+      behavior: # optional, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-policies
+        scaleUp:
+          stabilizationWindowSeconds: 300
 ```
 
 #### Configuration management
@@ -359,6 +369,11 @@ You can monitor metrics for a service by configuring monitoring stacks managed b
 ```
 
 ## Migration
+
+### to 2.4.0
+
+- The per-module resources check previously looked at `resources.request` (singular). Modules that set the correct `resources.requests` (plural) key were therefore silently ignored and the built-in default requests were applied instead. These values now take effect - review them and set the request values you want explicitly. If you set `resources.request` (singular), rename the key to `requests` so it is picked up.
+- Per-module `resources` are now merged per key on top of the new `defaultResources` chart value (defaults: `requests.cpu: 100m`, `requests.memory: 512Mi`, `limits.memory: 512Mi`). Previously, overriding only `requests` or only `limits` disabled all defaults for both blocks. If you override only one block and don't want the corresponding default entries (e.g. default `requests.cpu` interfering with a percentage-based CPU autoscaling target), set them explicitly to your desired values.
 
 ### to v2
 

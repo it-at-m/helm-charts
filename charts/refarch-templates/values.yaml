@@ -10,6 +10,15 @@ imagePullSecrets: []
 # Configuration of Modules
 modules: {}
 
+# Default resources for all modules, can be overridden per module and per key
+# (e.g. only `requests.cpu` or only `limits.memory`) via the module's `resources` values
+defaultResources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    memory: 512Mi
+
 # Configuration of ImageStream
 imageStream:
   enabled: false
