@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-gateway"
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ["sh", "-c"]
+      args:
+        - |
+          echo "Writing to FROST is rejected"
+          wget -q -O /dev/null --post-data '{}' http://{{ .Release.Name }}-refarch-gateway:8080/api/frost/v1.1/Things 2>&1 | grep -q "405"
+  restartPolicy: Never

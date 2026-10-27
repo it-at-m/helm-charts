@@ -1,0 +1,93 @@
+{{- $frost := .Values.global.frost }}
+{{- $frostBaseUrl := required "global.frost.baseUrl must be provided" $frost.baseUrl | trimSuffix "/" }}
+{{- $frostPath := required "global.frost.path must be provided" $frost.path | trimSuffix "/" }}
+{{- $caCerts := .Values.collector.caCerts }}
+{{- if and $caCerts.enabled (not (or $caCerts.existingSecret $caCerts.existingConfigmap)) }}
+{{- fail "collector.caCerts.enabled requires collector.caCerts.existingSecret or collector.caCerts.existingConfigmap" }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-collector
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/component: collector
+spec:
+  replicas: 1
+  # A second collector during a rollout would write every observation twice
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: collector
+  template:
+    metadata:
+      labels:
+        {{- include "common.labels" . | nindent 8 }}
+        app.kubernetes.io/component: collector
+    spec:
+      {{- with .Values.collector.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        # Serves no HTTP and exits on fatal errors, so it needs no probes
+        - name: collector
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          image: "{{ .Values.collector.image.registry }}/{{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}"
+          imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: Europe/Berlin
+            - name: FROST_URL
+              value: {{ printf "%s%s/v1.1" $frostBaseUrl $frostPath | quote }}
+            - name: FROST_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-frost
+                  key: USERNAME
+            - name: FROST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-frost
+                  key: PASSWORD
+            # Read by Python's urllib for the data source and FROST
+            - name: HTTP_PROXY
+              value: {{ .Values.collector.proxy | quote }}
+            - name: HTTPS_PROXY
+              value: {{ .Values.collector.proxy | quote }}
+            - name: NO_PROXY
+              value: {{ .Values.collector.noProxy | quote }}
+            {{- if $caCerts.enabled }}
+            # Replaces the CA bundle of the image, so the bundle has to contain the public CAs as well
+            - name: SSL_CERT_FILE
+              value: {{ printf "%s/%s" ($caCerts.mountPath | trimSuffix "/") $caCerts.key | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.collector.resources | nindent 12 }}
+          {{- if $caCerts.enabled }}
+          volumeMounts:
+            - name: ca-certs
+              readOnly: true
+              mountPath: {{ $caCerts.mountPath }}
+          {{- end }}
+      {{- if $caCerts.enabled }}
+      volumes:
+        - name: ca-certs
+          {{- if $caCerts.existingSecret }}
+          secret:
+            secretName: {{ $caCerts.existingSecret }}
+          {{- else }}
+          configMap:
+            name: {{ $caCerts.existingConfigmap }}
+          {{- end }}
+            items:
+              - key: {{ $caCerts.key }}
+                path: {{ $caCerts.key }}
+      {{- end }}
