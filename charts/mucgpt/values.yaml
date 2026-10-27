@@ -1,0 +1,216 @@
+# Default values for the mucgpt chart.
+# This chart deploys MUCGPT (https://github.com/it-at-m/mucgpt) using the
+# refarch-templates umbrella chart plus an optional Valkey cache and an
+# optional PostgreSQL database (discouraged – see README).
+
+# YAML-based application configuration.
+# The core and assistant services read their runtime configuration from a
+# config.yaml file (mounted into the container from a Secret).
+# Either provide the configuration inline via 'data' (YAML object rendered
+# into a Secret named "<release>-core-config" / "<release>-assistant-config")
+# or reference a pre-created Secret via 'existingSecret'.
+# When 'existingSecret' is set, 'data' is ignored.
+# Note: the Secret is NOT mounted automatically - add the matching
+# volume/volumeMount entries to the core/assistants module configuration
+# (see values-example.yaml).
+coreConfig:
+  # existingSecret: "my-core-config"   # Secret must contain a key 'config.yaml'
+  data: {}
+
+assistantConfig:
+  # existingSecret: "my-assistant-config"   # Secret must contain a key 'config.yaml'
+  data: {}
+
+# Database schema migrations for the assistant service.
+# Runs as a pre-install/pre-upgrade Helm hook Job and needs the assistant
+# database credentials (e.g. via envFrom referencing an existing Secret).
+assistantsMigration:
+  enabled: true
+  image:
+    registry: ghcr.io
+    repository: it-at-m/mucgpt/mucgpt-assistant-migrations
+    tag: "0.8.0"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 512Mi
+    limits:
+      memory: 512Mi
+  # Time limit for the migration job
+  activeDeadlineSeconds: 600
+  # Mount a CA bundle into the job (see top-level 'caCerts')
+  useCAcerts: false
+  envFrom: []
+  env: []
+
+# Generic CA certificate handling.
+# If enabled, a bundle from an existing Secret or ConfigMap is mounted into
+# the migration job and exposed via the SSL_CERT_FILE environment variable.
+# Useful for clusters with TLS-inspecting proxies or private CAs.
+# For the application containers (frontend, core, assistants, gateway), add
+# the matching volume/volumeMount/env entries to the module configuration –
+# see values-example.yaml.
+caCerts:
+  enabled: false
+  # existingSecret: "my-ca-bundle"     # either a Secret...
+  # existingConfigmap: "my-ca-bundle" # ...or a ConfigMap containing the bundle
+  key: "ca-bundle.crt"               # key inside the Secret/ConfigMap
+  # Path where the bundle is mounted. The SSL_CERT_FILE environment variable
+  # is automatically set to <mountPath>/<key>.
+  mountPath: /etc/pki/ca-trust/extracted/pem
+
+# Configuration for the refarch-templates dependency (frontend, core and
+# assistants modules plus the refarch-gateway). See
+# https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates
+# for all supported options (resources, autoscaling, ingress, etc.).
+refarch-templates:
+  enabled: true
+
+  frontendTag: &frontendTag "0.37.1"
+  assistantTag: &assistantTag "0.15.0"
+  coreTag: &coreTag "0.22.2"
+
+  # Global secrets referenced by the modules below. The secrets themselves
+  # have to be created externally (values are not managed by this chart).
+  secrets:
+    - name: sso
+      keys:
+        - URL
+        - REALM
+        - CLIENTID
+        - CLIENTSECRET
+        - SCOPE
+        - ROLE
+
+  modules:
+    frontend:
+      image:
+        registry: ghcr.io
+        repository: it-at-m/mucgpt/mucgpt-frontend
+        tag: *frontendTag
+      service:
+        http: true
+
+    core:
+      image:
+        registry: ghcr.io
+        repository: it-at-m/mucgpt/mucgpt-core
+        tag: *coreTag
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+      env:
+        - name: MUCGPT_CORE_VERSION
+          value: *coreTag
+        - name: MUCGPT_CORE_FRONTEND_VERSION
+          value: *frontendTag
+        - name: MUCGPT_CORE_ASSISTANT_VERSION
+          value: *assistantTag
+        - name: GIT_PYTHON_REFRESH
+          value: "quiet"
+      service:
+        http: true
+        ports:
+          - name: custom-port
+            protocol: TCP
+            port: 8000
+            targetPort: 8000
+      startupProbe:
+        httpGet:
+          path: /api/health
+          port: 8000
+        initialDelaySeconds: 60
+      livenessProbe:
+        httpGet:
+          path: /api/health
+          port: 8000
+      readinessProbe:
+        httpGet:
+          path: /api/health
+          port: 8000
+
+    assistants:
+      image:
+        registry: ghcr.io
+        repository: it-at-m/mucgpt/mucgpt-assistant
+        tag: *assistantTag
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+      service:
+        http: true
+        ports:
+          - name: custom-port
+            protocol: TCP
+            port: 8084
+            targetPort: 8084
+      startupProbe:
+        httpGet:
+          path: /api/health
+          port: 8084
+      livenessProbe:
+        httpGet:
+          path: /api/health
+          port: 8084
+      readinessProbe:
+        httpGet:
+          path: /api/health
+          port: 8084
+
+  # API gateway (single entry point in front of all modules). See
+  # https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway
+  # for all supported options.
+  refarch-gateway:
+    enabled: true
+    # MUCGPT needs more gateway memory than the refarch-gateway default,
+    # see https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway#memory-limit-change
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 1Gi
+    envFrom:
+      - prefix: SSO_
+        secretRef:
+          name: sso
+    envAppend:
+      - name: SPRING_PROFILES_ACTIVE
+        value: "hazelcast-k8s"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
+        value: "${SSO_SCOPE}"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
+        value: "sso"
+      # SSO mappings, normally don't have to be changed
+      - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+        value: "${SSO_URL}/auth/realms/${SSO_REALM}"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI
+        value: "${SSO_URL}/auth/realms/${SSO_REALM}"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
+        value: "${SSO_CLIENTID}"
+      - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
+        value: "${SSO_CLIENTSECRET}"
+
+# Configuration for the valkey dependency (cache used by core and assistants).
+# Consider using an external cache or the official Valkey operator instead of
+# rolling this subchart yourself (see README).
+valkey:
+  enabled: true
+  architecture: standalone
+  config:
+    # The eviction policy is only applied when maxMemory is set - keep it
+    # below the Valkey container memory limit.
+    maxMemory: "450mb"
+    maxMemoryPolicy: "allkeys-lru"
+    save: ""  # Disable RDB persistence, AOF persistence is enabled below.
+    extraConfig:
+      - appendonly yes  # Enable AOF https://valkey.io/topics/persistence/
+
+# Optional in-cluster PostgreSQL database.
+# Discouraged for production use – prefer a database operator like
+# CloudNativePG (https://cloudnative-pg.io) and provide the credentials to
+# the assistant service via the assistantConfig instead.
+postgres:
+  enabled: false

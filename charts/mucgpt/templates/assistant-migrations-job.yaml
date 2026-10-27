@@ -1,0 +1,66 @@
+{{- if .Values.assistantsMigration.enabled }}
+{{- if and .Values.postgres.enabled .Values.assistantsMigration.enabled }}
+{{- fail "assistantsMigration cannot run against the bundled PostgreSQL: the pre-install migration hook executes before the in-chart postgres resources are created. Disable assistantsMigration (and run the migrations manually) or use an external PostgreSQL database." }}
+{{- end }}
+{{- $mountCerts := and .Values.assistantsMigration.useCAcerts .Values.caCerts.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mucgpt.getFullname" (dict "dot" . "module" (dict "name" "assistants-migrations")) }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-10"
+  labels:
+{{ include "mucgpt.getLabels" (dict "dot" . "module" (dict "name" "assistants-migrations")) | indent 4 }}
+spec:
+  {{- if .Values.assistantsMigration.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ .Values.assistantsMigration.activeDeadlineSeconds }}
+  {{- end }}
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+{{ include "mucgpt.getSelectorLabels" (dict "dot" . "module" (dict "name" "assistants-migrations")) | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: "{{ .Values.assistantsMigration.image.registry }}/{{ .Values.assistantsMigration.image.repository }}:{{ .Values.assistantsMigration.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          {{- if or .Values.assistantsMigration.env $mountCerts }}
+          env:
+          {{- if .Values.assistantsMigration.env }}
+          {{- toYaml .Values.assistantsMigration.env | nindent 12 }}
+          {{- end }}
+          {{- if $mountCerts }}
+          {{ include "mucgpt.caCertsEnv" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.assistantsMigration.envFrom }}
+          envFrom:
+          {{- toYaml .Values.assistantsMigration.envFrom | nindent 12 }}
+          {{- end }}
+          {{- if .Values.assistantsMigration.resources }}
+          resources:
+          {{- toYaml .Values.assistantsMigration.resources | nindent 12 }}
+          {{- end }}
+          {{- if or $mountCerts .Values.assistantsMigration.volumeMounts }}
+          volumeMounts:
+          {{- if $mountCerts }}
+{{ include "mucgpt.caCertsVolumeMount" . | indent 12 }}
+          {{- end }}
+          {{- if .Values.assistantsMigration.volumeMounts }}
+{{ toYaml .Values.assistantsMigration.volumeMounts | indent 12 }}
+          {{- end }}
+          {{- end }}
+      {{- if or $mountCerts .Values.assistantsMigration.volumes }}
+      volumes:
+      {{- if $mountCerts }}
+{{ include "mucgpt.caCertsVolume" . | indent 8 }}
+      {{- end }}
+      {{- if .Values.assistantsMigration.volumes }}
+{{ toYaml .Values.assistantsMigration.volumes | indent 8 }}
+      {{- end }}
+      {{- end }}
+{{- end }}

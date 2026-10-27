@@ -22,6 +22,7 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add it-at-m https://it-at-m.github.io/helm-charts
+          helm repo add cloudpirates https://cloudpirates-io.github.io/helm-charts
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
