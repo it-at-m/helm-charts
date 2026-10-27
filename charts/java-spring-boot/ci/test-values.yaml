@@ -1,7 +1,7 @@
 # use appswitcher-server for testing
 image:
   repository: "ghcr.io/it-at-m/appswitcher-server"
-  tag: "1.4.0"
+  tag: "1.4.1"
 
 applicationYml: |-
   applications:
