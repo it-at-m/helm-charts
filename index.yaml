@@ -426,6 +426,27 @@ entries:
     version: 1.0.4
   appswitcher-server:
   - apiVersion: v2
+    appVersion: 1.4.1
+    created: "2026-10-28T09:10:01.651362947Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Server component for a Google-like app switching experience.
+    digest: f3a256523953b1efa8fb7a370bee446b2a4122e0c50f0967dc0d76b647b9f81a
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-2.0.4/appswitcher-server-2.0.4.tgz
+    version: 2.0.4
+  - apiVersion: v2
     appVersion: 1.4.0
     created: "2026-10-28T09:08:39.685743725Z"
     dependencies:
@@ -2384,6 +2405,26 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
   java-spring-boot:
+  - apiVersion: v2
+    created: "2026-10-28T09:10:01.907630686Z"
+    dependencies:
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: fc775d088f83bf34e5c7849ab1cfc13014b08822116cf6fcaf0680162bbd4c43
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-1.1.2/java-spring-boot-1.1.2.tgz
+    version: 1.1.2
   - apiVersion: v2
     created: "2026-10-28T09:03:22.62747637Z"
     dependencies:
@@ -4983,4 +5024,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-28T09:08:39.949931916Z"
+generated: "2026-10-28T09:10:01.908087155Z"
