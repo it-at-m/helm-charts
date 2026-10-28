@@ -1,0 +1,14 @@
+{{- /* The frontend calls the gateway under /api of its own host, so both need the same hosts */}}
+{{- $templates := index .Values "refarch-templates" }}
+{{- $frontendHosts := list }}
+{{- with $templates.modules.frontend.ingress }}
+{{- range .hosts }}{{ $frontendHosts = append $frontendHosts .host }}{{ end }}
+{{- end }}
+{{- $gatewayHosts := list }}
+{{- $gatewayIngress := index $templates "refarch-gateway" "ingress" }}
+{{- if $gatewayIngress.enabled }}
+{{- range $gatewayIngress.hosts }}{{ $gatewayHosts = append $gatewayHosts .host }}{{ end }}
+{{- end }}
+{{- if ne (sortAlpha $frontendHosts | toJson) (sortAlpha $gatewayHosts | toJson) }}
+{{- fail (printf "The ingress of the frontend and of the gateway need the same hosts, got %s and %s" (sortAlpha $frontendHosts | toJson) (sortAlpha $gatewayHosts | toJson)) }}
+{{- end }}

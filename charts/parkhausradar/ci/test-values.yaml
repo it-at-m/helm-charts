@@ -1,0 +1,4 @@
+# The test cluster has no FROST-Server. The collector logs failed runs, the gateway and the frontend work without it.
+global:
+  frost:
+    baseUrl: http://frost.invalid

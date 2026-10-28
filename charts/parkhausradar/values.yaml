@@ -1,0 +1,97 @@
+global:
+  # FROST-Server the collector writes to and the gateway reads from. It is not part of this chart.
+  frost:
+    # Scheme and host, e.g. https://frost.example.com
+    baseUrl: ""
+    # Path of the service root without API version
+    path: /FROST-Server
+
+# Writes the occupancy to FROST every minute, with the BasicAuth credentials from the Secret <release>-frost
+collector:
+  image:
+    registry: ghcr.io
+    repository: it-at-m/parkhausradar/collector
+    tag: dev
+    # 'dev' is moved with every build on main, use 'IfNotPresent' for immutable tags
+    pullPolicy: Always
+  imagePullSecrets: []
+  # Proxy for the data source and FROST, e.g. http://proxy.example.com:8080. Empty for none.
+  proxy: ""
+  # Comma separated hosts reached without the proxy, e.g. frost.example.com
+  noProxy: ""
+  # CA bundle in PEM format for private CAs, e.g. of FROST. It replaces the bundle of the image, so it has to contain
+  # the public CAs as well, like the ConfigMap OpenShift fills when labeled with config.openshift.io/inject-trusted-cabundle=true
+  caCerts:
+    enabled: false
+    # existingSecret: my-ca-bundle      # either a Secret...
+    # existingConfigmap: my-ca-bundle   # ...or a ConfigMap containing the bundle
+    key: ca-bundle.crt
+    mountPath: /etc/pki/ca-trust/extracted/pem
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+
+refarch-templates:
+  modules:
+    frontend:
+      image:
+        registry: ghcr.io
+        repository: it-at-m/parkhausradar/frontend
+        tag: dev
+        pullPolicy: Always
+      env:
+        - name: TZ
+          value: Europe/Berlin
+      service:
+        http: true
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          memory: 128Mi
+
+  refarch-gateway:
+    # Only needed for sessions, which the gateway does not keep without security
+    hazelcast:
+      enabled: false
+    env:
+      - name: TZ
+        value: Europe/Berlin
+      - name: SPRING_PROFILES_ACTIVE
+        value: no-security
+      - name: FROST_BASE_URL
+        value: '{{ required "global.frost.baseUrl must be provided" .Values.global.frost.baseUrl | trimSuffix "/" }}'
+      - name: FROST_PATH
+        value: '{{ required "global.frost.path must be provided" .Values.global.frost.path | trimSuffix "/" }}'
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    applicationYML:
+      spring:
+        cloud:
+          gateway:
+            server:
+              webflux:
+                routes:
+                  # Read-only access to FROST: other methods do not match this route
+                  - id: frost
+                    uri: ${FROST_BASE_URL}
+                    predicates:
+                      - "Path=/api/frost/**"
+                      - "Method=GET,HEAD"
+                    filters:
+                      - "RewritePath=/api/frost/(?<urlsegments>.*), ${FROST_PATH}/$\\{urlsegments}"
+                  # Rejects every other method on FROST with 405 instead of 404
+                  - id: frost-read-only
+                    uri: no://op
+                    predicates:
+                      - "Path=/api/frost/**"
+                    filters:
+                      - "SetStatus=405"
