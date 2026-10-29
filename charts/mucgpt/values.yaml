@@ -5,20 +5,24 @@
 
 # YAML-based application configuration.
 # The core and assistant services read their runtime configuration from a
-# config.yaml file (mounted into the container from a Secret).
+# config.yaml file (mounted into the container from a ConfigMap).
 # Either provide the configuration inline via 'data' (YAML object rendered
-# into a Secret named "<release>-core-config" / "<release>-assistant-config")
-# or reference a pre-created Secret via 'existingSecret'.
-# When 'existingSecret' is set, 'data' is ignored.
-# Note: the Secret is NOT mounted automatically - add the matching
+# into a ConfigMap named "<release>-core-config" / "<release>-assistant-config")
+# or reference a pre-created ConfigMap via 'existingConfigmap'.
+# When 'existingConfigmap' is set, 'data' is ignored.
+# Note: the ConfigMap is NOT mounted automatically - add the matching
 # volume/volumeMount entries to the core/assistants module configuration
 # (see values-example.yaml).
+# Note: credentials (database passwords, API keys, ...) do not belong here -
+# provide them separately via a Secret and inject them as environment
+# variables (see assistantsMigration.envFrom / module envFrom in
+# values-example.yaml).
 coreConfig:
-  # existingSecret: "my-core-config"   # Secret must contain a key 'config.yaml'
+  # existingConfigmap: "my-core-config"   # ConfigMap must contain a key 'config.yaml'
   data: {}
 
 assistantConfig:
-  # existingSecret: "my-assistant-config"   # Secret must contain a key 'config.yaml'
+  # existingConfigmap: "my-assistant-config"   # ConfigMap must contain a key 'config.yaml'
   data: {}
 
 # Database schema migrations for the assistant service.
@@ -29,7 +33,7 @@ assistantsMigration:
   image:
     registry: ghcr.io
     repository: it-at-m/mucgpt/mucgpt-assistant-migrations
-    tag: "0.8.0"
+    tag: "0.9.0"
   resources:
     requests:
       cpu: 50m
@@ -66,9 +70,9 @@ caCerts:
 refarch-templates:
   enabled: true
 
-  frontendTag: &frontendTag "0.37.1"
-  assistantTag: &assistantTag "0.15.0"
-  coreTag: &coreTag "0.22.2"
+  frontendTag: &frontendTag "0.38.1"
+  assistantTag: &assistantTag "0.16.0"
+  coreTag: &coreTag "0.22.3"
 
   # Global secrets referenced by the modules below. The secrets themselves
   # have to be created externally (values are not managed by this chart).

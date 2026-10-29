@@ -1,11 +1,19 @@
 # Sample values demonstrating a full MUCGPT deployment.
 # Copy and adjust for your environment. Replace all placeholders marked with
 # <ANGLE_BRACKETS>.
+#
+# MUCGPT reads its configuration with the following priority (highest first):
+#   1. Environment variables (MUCGPT_CORE_* / MUCGPT_ASSISTANT_*, nested values
+#      use '__' as delimiter, e.g. MUCGPT_CORE_REDIS__PASSWORD)
+#   2. The config.yaml file (mounted from the ConfigMaps below)
+# Keep credentials (passwords, API keys) out of config.yaml - provide them via
+# Secrets injected as environment variables instead (see the envFrom entries
+# of the modules and of assistantsMigration below).
 
 # Application configuration for the core service (mounted as /app/config.yaml).
-# Alternatively reference a pre-created Secret containing a 'config.yaml' key:
+# Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
 # coreConfig:
-#   existingSecret: "<MY-CORE-CONFIG-SECRET>"
+#   existingConfigmap: "<MY-CORE-CONFIG>"
 coreConfig:
   data:
     ENV_NAME: "<MY-ENVIRONMENT>"
@@ -15,24 +23,26 @@ coreConfig:
     # available parser backends and how to deploy them.
     PARSER_BACKEND: "<XBERG>"
     XBERG_URL: "http://<XBERG-SERVICE>:8000"
-    # Optional LLM observability (e.g. Langfuse)
+    # Optional LLM observability (e.g. Langfuse). The SECRET_KEY is injected
+    # via the MUCGPT_CORE_LANGFUSE__SECRET_KEY environment variable.
     LANGFUSE:
       HOST: "https://<LANGFUSE-HOST>"
       PUBLIC_KEY: "<PUBLIC-KEY>"
-      SECRET_KEY: "<SECRET-KEY>"
     # Model definitions (type, llm_name, endpoint, api_key, model_info, ...)
+    # Note: model API keys are part of the model configuration and therefore
+    # live here - the app does not support per-model env overrides.
     MODELS: []
-    # Cache settings. HOST/PORT/PASSWORD must match the valkey settings below.
+    # Cache settings. HOST/PORT must match the valkey settings below.
+    # The PASSWORD is injected via the MUCGPT_CORE_REDIS__PASSWORD env variable.
     REDIS:
       HOST: "<HELM_RELEASE_NAME>-valkey"
       PORT: 6379
-      PASSWORD: "<VALKEY-PASSWORD>"
       USERNAME: default
 
 # Application configuration for the assistant service (mounted as /app/config.yaml).
-# Alternatively reference a pre-created Secret containing a 'config.yaml' key:
+# Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
 # assistantConfig:
-#   existingSecret: "<MY-ASSISTANT-CONFIG-SECRET>"
+#   existingConfigmap: "<MY-ASSISTANT-CONFIG>"
 assistantConfig:
   data:
     LOG_CONFIG:
@@ -42,19 +52,26 @@ assistantConfig:
       PORT: 5432
       NAME: "<POSTGRES-DB>"
       USER: "<POSTGRES-USER>"
-      PASSWORD: "<POSTGRES-PASSWORD>"
+      # The PASSWORD is injected via the MUCGPT_ASSISTANT_DB__PASSWORD env variable.
     REDIS:
       HOST: "<HELM_RELEASE_NAME>-valkey"
       PORT: 6379
-      PASSWORD: "<VALKEY-PASSWORD>"
       USERNAME: default
+      # The PASSWORD is injected via the MUCGPT_ASSISTANT_REDIS__PASSWORD env variable.
 
-# Database credentials for the assistant migrations job
+# Credentials for the assistant service and the migrations job. Create the
+# Secret yourself, e.g.:
+#   kubectl create secret generic mucgpt-assistant-secrets \
+#     --from-literal=DB__PASSWORD=<...> \
+#     --from-literal=REDIS__PASSWORD=<...>
+# Combined with the 'MUCGPT_ASSISTANT_' envFrom prefix below, the keys become
+# the environment variables MUCGPT_ASSISTANT_DB__PASSWORD and
+# MUCGPT_ASSISTANT_REDIS__PASSWORD (env vars override config.yaml).
 assistantsMigration:
   envFrom:
-    - prefix: MUCGPT_ASSISTANT_DB_
+    - prefix: MUCGPT_ASSISTANT_
       secretRef:
-        name: mucgpt-assistants-db
+        name: mucgpt-assistant-secrets
 
 # Generic CA certificate handling (e.g. for TLS-inspecting proxies or private CAs).
 # Creates a volume from an existing Secret/ConfigMap, mounts it into the
@@ -89,6 +106,9 @@ refarch-templates:
         - prefix: MUCGPT_SSO_
           secretRef:
             name: sso
+        - prefix: MUCGPT_CORE_
+          secretRef:
+            name: mucgpt-core-secrets
       env:
         # If caCerts.enabled, point SSL_CERT_FILE to the mounted bundle:
         # - name: SSL_CERT_FILE
@@ -106,17 +126,24 @@ refarch-templates:
         #   mountPath: /etc/pki/ca-trust/extracted/pem
       volumes:
         - name: mucgpt-core-config
-          secret:
-            secretName: "<HELM_RELEASE_NAME>-core-config"
+          configMap:
+            name: "<HELM_RELEASE_NAME>-core-config"
         # CA bundle (if caCerts.enabled):
         # - name: mucgpt-ca-certs
-        #   secret:
-        #     secretName: "<MY-CA-BUNDLE>"
+        #   configMap:
+        #     name: "<MY-CA-BUNDLE>"
         #     items:
         #       - key: ca-bundle.crt
         #         path: ca-bundle.crt
 
     assistants:
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+        - prefix: MUCGPT_ASSISTANT_
+          secretRef:
+            name: mucgpt-assistant-secrets
       volumeMounts:
         - name: mucgpt-assistant-config
           readOnly: true
@@ -124,8 +151,8 @@ refarch-templates:
           subPath: config.yaml
       volumes:
         - name: mucgpt-assistant-config
-          secret:
-            secretName: "<HELM_RELEASE_NAME>-assistant-config"
+          configMap:
+            name: "<HELM_RELEASE_NAME>-assistant-config"
 
   refarch-gateway:
     envAppend:
