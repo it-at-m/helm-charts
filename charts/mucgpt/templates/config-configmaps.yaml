@@ -1,25 +1,23 @@
-{{- if and .Values.coreConfig.data (not .Values.coreConfig.existingSecret) }}
+{{- if and .Values.coreConfig.data (not .Values.coreConfig.existingConfigmap) }}
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: {{ include "mucgpt.getFullname" (dict "dot" . "module" (dict "name" "core-config")) }}
   labels:
 {{ include "mucgpt.getLabels" (dict "dot" . "module" (dict "name" "core")) | indent 4 }}
-type: Opaque
-stringData:
+data:
   config.yaml: |
 {{ toYaml .Values.coreConfig.data | indent 4 }}
 {{- end }}
 ---
-{{- if and .Values.assistantConfig.data (not .Values.assistantConfig.existingSecret) }}
+{{- if and .Values.assistantConfig.data (not .Values.assistantConfig.existingConfigmap) }}
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: {{ include "mucgpt.getFullname" (dict "dot" . "module" (dict "name" "assistant-config")) }}
   labels:
 {{ include "mucgpt.getLabels" (dict "dot" . "module" (dict "name" "assistant")) | indent 4 }}
-type: Opaque
-stringData:
+data:
   config.yaml: |
 {{ toYaml .Values.assistantConfig.data | indent 4 }}
 {{- end }}
