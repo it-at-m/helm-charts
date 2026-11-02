@@ -32,7 +32,7 @@ backend:
   securityContext: null
   initContainers:
     - name: wait-for-elasticsearch
-      image: curlimages/curl:8.21.0
+      image: curlimages/curl:8.23.0
       command:
         - /bin/sh
         - -c
