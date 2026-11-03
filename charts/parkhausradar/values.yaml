@@ -5,6 +5,9 @@ global:
     baseUrl: ""
     # Path of the service root without API version
     path: /FROST-Server
+    # Id of the project the collector links its entities to and the gateway limits reading to, if FROST runs the
+    # Projects plugin. Empty for none.
+    projectId: ""
 
 # Writes the occupancy to FROST every minute, with the BasicAuth credentials from the Secret <release>-frost
 collector:
@@ -65,8 +68,8 @@ refarch-templates:
         value: no-security
       - name: FROST_BASE_URL
         value: '{{ required "global.frost.baseUrl must be provided" .Values.global.frost.baseUrl | trimSuffix "/" }}'
-      - name: FROST_PATH
-        value: '{{ required "global.frost.path must be provided" .Values.global.frost.path | trimSuffix "/" }}'
+      - name: FROST_THINGS_PATH
+        value: '{{ required "global.frost.path must be provided" .Values.global.frost.path | trimSuffix "/" }}/v1.1/{{ with .Values.global.frost.projectId }}Projects({{ . | int64 }})/{{ end }}Things'
     resources:
       requests:
         cpu: 100m
@@ -80,18 +83,26 @@ refarch-templates:
             server:
               webflux:
                 routes:
-                  # Read-only access to FROST: other methods do not match this route
+                  # Read-only access to the Things of the project, the only FROST resource the frontend reads.
+                  # Other methods do not match this route.
                   - id: frost
                     uri: ${FROST_BASE_URL}
                     predicates:
-                      - "Path=/api/frost/**"
+                      - "Path=/api/frost/v1.1/Things"
                       - "Method=GET,HEAD"
                     filters:
-                      - "RewritePath=/api/frost/(?<urlsegments>.*), ${FROST_PATH}/$\\{urlsegments}"
-                  # Rejects every other method on FROST with 405 instead of 404
+                      - "SetPath=${FROST_THINGS_PATH}"
+                  # Rejects every other method on the Things with 405 instead of 404
                   - id: frost-read-only
+                    uri: no://op
+                    predicates:
+                      - "Path=/api/frost/v1.1/Things"
+                    filters:
+                      - "SetStatus=405"
+                  # Hides the rest of FROST, e.g. other projects, instead of passing it on to the frontend route
+                  - id: frost-not-found
                     uri: no://op
                     predicates:
                       - "Path=/api/frost/**"
                     filters:
-                      - "SetStatus=405"
+                      - "SetStatus=404"

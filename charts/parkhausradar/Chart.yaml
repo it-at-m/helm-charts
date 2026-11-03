@@ -2,7 +2,7 @@ apiVersion: v2
 name: parkhausradar
 description: Helm chart for deploying Parkhausradar, the live occupancy of Munich's parking garages
 type: application
-version: 0.1.0
+version: 0.2.0
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/parkhausradar
 icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
 sources:

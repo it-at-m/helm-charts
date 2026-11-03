@@ -47,6 +47,10 @@ spec:
               value: Europe/Berlin
             - name: FROST_URL
               value: {{ printf "%s%s/v1.1" $frostBaseUrl $frostPath | quote }}
+            {{- with $frost.projectId }}
+            - name: FROST_PROJECT_ID
+              value: {{ . | int64 | quote }}
+            {{- end }}
             - name: FROST_USERNAME
               valueFrom:
                 secretKeyRef:
