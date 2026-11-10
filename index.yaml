@@ -2881,6 +2881,32 @@ entries:
     version: 0.1.0
   parkhausradar:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-11-10T17:09:22.683603323Z"
+    dependencies:
+    - name: refarch-templates
+      repository: '@it-at-m'
+      version: 2.4.0
+    - name: common
+      repository: file://../common
+      version: ^1.0.0
+    description: Helm chart for deploying Parkhausradar, the live occupancy of Munich's
+      parking garages
+    digest: 229677036a68716c09b818bddcd5a9d9b1235d1f83d0062a0ce65bfaea3afcf9
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/parkhausradar
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - name: danielnwz
+      url: https://github.com/danielnwz
+    name: parkhausradar
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    - https://github.com/it-at-m/parkhausradar
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/parkhausradar-0.2.0/parkhausradar-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2026-10-28T09:15:47.997085504Z"
     dependencies:
     - name: refarch-templates
@@ -5103,4 +5129,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-29T12:18:53.947639133Z"
+generated: "2026-11-10T17:09:22.68382264Z"
