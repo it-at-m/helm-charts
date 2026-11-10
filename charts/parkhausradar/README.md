@@ -5,7 +5,7 @@ Helm chart for [Parkhausradar](https://github.com/it-at-m/parkhausradar), the li
 It deploys:
 
 - `frontend`: the web app (nginx), as a module of [refarch-templates](../refarch-templates)
-- `refarch-gateway`: the [refarch-gateway](../refarch-gateway) included by refarch-templates. It gives read-only access to FROST under `/api/frost` (`GET` and `HEAD`, otherwise `405`)
+- `refarch-gateway`: the [refarch-gateway](../refarch-gateway) included by refarch-templates. It gives read-only access to the Things of FROST under `/api/frost/v1.1/Things` (`GET` and `HEAD`, otherwise `405`), limited to `global.frost.projectId` if set. Everything else under `/api/frost` answers `404`
 - `collector`: writes the occupancy to FROST every minute, using BasicAuth and optionally a proxy. It has its own Deployment, because it serves no HTTP and therefore does not fit the probes and tests of refarch-templates
 
 The FROST-Server is not part of this chart, it runs separately.
@@ -26,7 +26,8 @@ Then fill in the BasicAuth credentials of the collector in the Secret `<release>
 | --- | --- |
 | `global.frost.baseUrl` | Scheme and host of the FROST-Server, e.g. `https://frost.example.com`. Required. |
 | `global.frost.path` | Path of the service root without API version. Defaults to `/FROST-Server`. |
-| `collector.image.*` | Image of the collector. Defaults to `ghcr.io/it-at-m/parkhausradar/collector:dev`. |
+| `global.frost.projectId` | Id of the project the collector links its Things, Locations and Sensors to and the gateway limits reading to, if FROST runs the [Projects plugin](https://fraunhoferiosb.github.io/FROST-Server/extensions/DataModel-Projects.html). The project has to be public, because the gateway reads without credentials. Empty for none. |
+| `collector.image.*` | Image of the collector. Defaults to `ghcr.io/it-at-m/parkhausradar/collector:1.0.0`. |
 | `collector.proxy` | Proxy of the collector for the data source and FROST, e.g. `http://proxy.example.com:8080`. Empty for none. |
 | `collector.noProxy` | Comma separated hosts the collector reaches without the proxy. |
 | `collector.caCerts.enabled` | Mount a CA bundle in PEM format into the collector and set `SSL_CERT_FILE`. Defaults to `false`. |
@@ -40,7 +41,7 @@ Then fill in the BasicAuth credentials of the collector in the Secret `<release>
 
 `global.frost` is global, because the collector and the gateway in the subchart both need it.
 
-The image tags default to `dev` with `pullPolicy: Always`. For immutable tags set `image.tag` and `image.pullPolicy: IfNotPresent` for the collector and the frontend.
+The image tags default to the released version with `pullPolicy: IfNotPresent`. For the latest build of `main` set `image.tag: dev` and `image.pullPolicy: Always` for the collector and the frontend.
 
 ## Private CAs
 

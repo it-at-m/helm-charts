@@ -13,6 +13,9 @@ spec:
       command: ["sh", "-c"]
       args:
         - |
+          set -e
           echo "Writing to FROST is rejected"
           wget -q -O /dev/null --post-data '{}' http://{{ .Release.Name }}-refarch-gateway:8080/api/frost/v1.1/Things 2>&1 | grep -q "405"
+          echo "FROST besides the Things is hidden"
+          wget -q -O /dev/null http://{{ .Release.Name }}-refarch-gateway:8080/api/frost/v1.1/Projects 2>&1 | grep -q "404"
   restartPolicy: Never
