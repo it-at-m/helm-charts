@@ -14,9 +14,8 @@ collector:
   image:
     registry: ghcr.io
     repository: it-at-m/parkhausradar/collector
-    tag: dev
-    # 'dev' is moved with every build on main, use 'IfNotPresent' for immutable tags
-    pullPolicy: Always
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
   imagePullSecrets: []
   # Proxy for the data source and FROST, e.g. http://proxy.example.com:8080. Empty for none.
   proxy: ""
@@ -43,8 +42,8 @@ refarch-templates:
       image:
         registry: ghcr.io
         repository: it-at-m/parkhausradar/frontend
-        tag: dev
-        pullPolicy: Always
+        tag: 1.0.0
+        pullPolicy: IfNotPresent
       env:
         - name: TZ
           value: Europe/Berlin
