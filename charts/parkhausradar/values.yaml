@@ -14,7 +14,7 @@ collector:
   image:
     registry: ghcr.io
     repository: it-at-m/parkhausradar/collector
-    tag: 1.0.0
+    tag: 1.0.1
     pullPolicy: IfNotPresent
   imagePullSecrets: []
   # Proxy for the data source and FROST, e.g. http://proxy.example.com:8080. Empty for none.
