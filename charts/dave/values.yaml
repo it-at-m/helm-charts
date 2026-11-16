@@ -123,7 +123,6 @@ backend:
       # path to KI-model
       DAVE_ONNX_MODEL_PATH: model/Rad_Modell_DAVE.onnx
       # Tenant configuration
-      DAVE_TENANT_CITY: "München"
       DAVE_TENANT_DATENPORTAL_HEADER: "Datenportal"
       # map center (Eichstätt)
       DAVE_TENANT_MAP_CENTER_LAT: "48.89529"
