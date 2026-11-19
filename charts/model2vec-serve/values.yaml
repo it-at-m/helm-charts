@@ -1,0 +1,118 @@
+# Default values for model2vec-serve.
+replicaCount: 1
+
+image:
+  repository: ghcr.io/it-at-m/model2vec-serve
+  pullPolicy: IfNotPresent
+  tag: ""
+
+# List of Hugging Face model ids or local paths to load.
+# When set, this takes precedence over the deprecated `model` value.
+models: []
+
+# Default model to use when a request does not specify one.
+# When multiple models are configured, this defaults to the first model in the
+# list if omitted.
+defaultModel: ""
+
+# Model publisher or owner shown in OpenAI-compatible `/v1/models` responses.
+modelOwner: "minishlab"
+
+# Path identifier aliases for the `/tei/{model_id}/...` endpoints.
+# Each entry maps a model key (a `models` entry or its derived id) to a URL
+# path alias. Duplicate resolved path segments abort startup.
+modelAliases: []
+# - key: minishlab/blink-multilingual-64M
+#   alias: blink-multi
+
+# (Deprecated) Single Hugging Face model id or local path.
+# Use `models` and `defaultModel` instead.
+model: "minishlab/blink-multilingual-64M"
+
+# Optional API key. Leave empty to disable authentication.
+apiKey: ""
+
+# Extra command-line arguments passed to the model2vec-serve binary.
+args: []
+
+# Extra environment variables.
+env: []
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  # Extra annotations merged into the Service metadata (for example cert-manager
+  # or cloud load-balancer annotations). Empty by default.
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1500Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+# Horizontal Pod Autoscaler configuration.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# Additional volumes to mount model files or secrets.
+extraVolumes: []
+extraVolumeMounts: []
+
+# Optional persistence for the Hugging Face model download cache.
+# When enabled, a PVC is mounted at mountPath and HOME is set to that path so
+# downloaded models land in <mountPath>/.cache/huggingface/hub and survive pod
+# restarts. Set existingClaim to use a pre-provisioned claim instead of
+# creating one. An operator-supplied HOME in `env` overrides the injected one.
+persistence:
+  enabled: false
+  existingClaim: ""
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  mountPath: /models
+  annotations: {}
+
+# Optional application-side TLS. When enabled, the container serves HTTPS on
+# the target port (single listener; plain HTTP is disabled) and probes switch
+# to the HTTPS scheme. The certificate and key are read from an
+# operator-managed Kubernetes secret mounted as files, so traffic can be
+# encrypted end to end to the application inside the pod. Pair with a
+# passthrough ingress for encryption on every hop (see README).
+tls:
+  enabled: false
+  existingSecret: ""      # required when enabled
+  certKey: tls.crt        # secret key holding the PEM certificate chain
+  keyKey: tls.key         # secret key holding the PEM private key
+  mountPath: /etc/model2vec-serve/tls
+
+# Optional Ingress to expose the service outside the cluster.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  # Extra labels merged with the standard chart labels on the Ingress resource.
+  extraLabels: {}
+  hosts:
+    - host: model2vec-serve.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Pod security context.
+podSecurityContext: {}
+securityContext: {}
+
+# Node selector, affinity and tolerations.
+nodeSelector: {}
+tolerations: []
+affinity: {}
