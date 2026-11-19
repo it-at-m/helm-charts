@@ -26,11 +26,11 @@ coreMigration:
     - name: MUCGPT_CORE_DB__PORT
       value: "5432"
     - name: MUCGPT_CORE_DB__NAME
-      value: mucgpt
+      value: mucgpt-core
     - name: MUCGPT_CORE_DB__USER
-      value: mucgpt
+      value: mucgpt-core
     - name: MUCGPT_CORE_DB__PASSWORD
-      value: ci-postgres-password
+      value: ci-core-password
 
 refarch-templates:
   refarch-gateway:
@@ -43,7 +43,7 @@ refarch-templates:
         - name: GIT_PYTHON_REFRESH
           value: "quiet"
         - name: MUCGPT_CORE_DB__PASSWORD
-          value: ci-postgres-password
+          value: ci-core-password
         - name: MUCGPT_CORE_PROVIDERS__CI_GATEWAY__API_KEY
           value: ci-api-key
       volumeMounts:
@@ -77,8 +77,8 @@ coreConfig:
     db:
       host: ci-postgres.default.svc.cluster.local
       port: 5432
-      name: mucgpt
-      user: mucgpt
+      name: mucgpt-core
+      user: mucgpt-core
     providers:
       ci_gateway:
         type: "openai"

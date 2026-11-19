@@ -46,6 +46,9 @@ jobs:
             --set auth.username=mucgpt \
             --set auth.password=ci-postgres-password \
             --set auth.database=mucgpt \
+            --set customUser.name=mucgpt-core \
+            --set customUser.password=ci-core-password \
+            --set customUser.database=mucgpt-core \
             --wait --timeout 5m
       - name: Run chart-testing (install)
         if: "steps.list-changed.outputs.changed == 'true' && ! contains(env.commitmsg, '[skip install]')"
