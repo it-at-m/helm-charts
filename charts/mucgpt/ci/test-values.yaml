@@ -4,6 +4,9 @@
 # it - the bundled postgres subchart cannot be used for migrations because
 # pre-install hooks execute before its resources are created.
 # The gateway is disabled because it requires an identity provider to start.
+# chart-testing installs with a pinned namespace ('ct install --namespace
+# mucgpt-ci'), which makes the Helm release name and thus the rendered
+# ConfigMap names predictable.
 assistantsMigration:
   enabled: true
   env:
@@ -54,7 +57,7 @@ refarch-templates:
       volumes:
         - name: mucgpt-core-config
           configMap:
-            name: mucgpt-core-config
+            name: mucgpt-ci-core-config
     assistants:
       env:
         - name: MUCGPT_ASSISTANT_DB__PASSWORD
@@ -67,7 +70,7 @@ refarch-templates:
       volumes:
         - name: mucgpt-assistant-config
           configMap:
-            name: mucgpt-assistant-config
+            name: mucgpt-ci-assistant-config
 
 # Exercise the config ConfigMap rendering. The release name in chart-testing
 # defaults to the chart name, hence the hardcoded 'mucgpt-valkey' cache host.
