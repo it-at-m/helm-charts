@@ -6,60 +6,93 @@
 #   1. Environment variables (MUCGPT_CORE_* / MUCGPT_ASSISTANT_*, nested values
 #      use '__' as delimiter, e.g. MUCGPT_CORE_REDIS__PASSWORD)
 #   2. The config.yaml file (mounted from the ConfigMaps below)
+#   3. The .env file
+# YAML keys are lowercase (legacy UPPERCASE keys are ignored). Environment
+# variable names stay UPPERCASE.
 # Keep credentials (passwords, API keys) out of config.yaml - provide them via
 # Secrets injected as environment variables instead (see the envFrom entries
-# of the modules and of assistantsMigration below).
+# of the modules and of the migration jobs below).
 
 # Application configuration for the core service (mounted as /app/config.yaml).
 # Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
 # coreConfig:
 #   existingConfigmap: "<MY-CORE-CONFIG>"
+# See the core service config.yaml.example in the mucgpt repository for all
+# supported keys (transcription, canvas limits, documents, prompts, MCP, ...).
 coreConfig:
   data:
-    ENV_NAME: "<MY-ENVIRONMENT>"
-    LOG_CONFIG:
-      LOGLEVEL: INFO
-    # Where documents are parsed. See MUCGPT documentation for the
-    # available parser backends and how to deploy them.
-    PARSER_BACKEND: "<XBERG>"
-    XBERG_URL: "http://<XBERG-SERVICE>:8000"
-    # Optional LLM observability (e.g. Langfuse). The SECRET_KEY is injected
-    # via the MUCGPT_CORE_LANGFUSE__SECRET_KEY environment variable.
-    LANGFUSE:
-      HOST: "https://<LANGFUSE-HOST>"
-      PUBLIC_KEY: "<PUBLIC-KEY>"
-    # Model definitions (type, llm_name, endpoint, api_key, model_info, ...)
-    # Note: model API keys are part of the model configuration and therefore
-    # live here - the app does not support per-model env overrides.
-    MODELS: []
+    version: "0.0.1"
+    env_name: "<MY-ENVIRONMENT>"
+    # Browser-based speech-to-text (runs fully client-side in the browser).
+    transcription_enabled: false
+    # transcription_model: "Olicorne/parakeet-tdt-0.6b-v3-ultra-onnx"
+    ai_act_compliance_check_enabled: true
+    # LLM providers. The api_key is REQUIRED per provider and must be injected
+    # as an environment variable (provider keys must be lowercase):
+    #   MUCGPT_CORE_PROVIDERS__MY_GATEWAY__API_KEY
+    providers:
+      my_gateway:
+        type: "openai" # "openai" or "azure"
+        endpoint: "https://<LLM-GATEWAY-HOST>/"
+        # api_key: provided via MUCGPT_CORE_PROVIDERS__MY_GATEWAY__API_KEY
+        api_version: "" # only needed for type "azure"
+    # Model definitions referencing the providers above. See the core service
+    # config.yaml.example for all supported model_info fields.
+    models:
+      - provider: "my_gateway"
+        id: "<MODEL-ID>"
+        model_info:
+          display_name: "<MODEL-NAME>"
+          max_input_tokens: 128000
+          max_output_tokens: 16384
+    # PostgreSQL persistence for checkpoints (required since core 1.x).
+    # The PASSWORD is injected via the MUCGPT_CORE_DB__PASSWORD env variable.
+    db:
+      host: "<POSTGRES-HOST>"
+      port: 5432
+      name: "<POSTGRES-DB>"
+      user: "<POSTGRES-USER>"
     # Cache settings. HOST/PORT must match the valkey settings below.
     # The PASSWORD is injected via the MUCGPT_CORE_REDIS__PASSWORD env variable.
-    REDIS:
-      HOST: "<HELM_RELEASE_NAME>-valkey"
-      PORT: 6379
-      USERNAME: default
+    redis:
+      host: "<HELM_RELEASE_NAME>-valkey"
+      port: 6379
+      username: default
+    # SSO role mappings (optional).
+    sso:
+      role: "mucgpt-user"
+      admin_role: "mucgpt-admin"
+    # LLM observability (e.g. Langfuse) is configured via the standard
+    # unprefixed environment variables LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY
+    # and LANGFUSE_HOST - the MUCGPT_CORE_LANGFUSE__* variables are no longer
+    # read. See the langfuse envFrom entry of the core module below.
 
 # Application configuration for the assistant service (mounted as /app/config.yaml).
 # Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
 # assistantConfig:
 #   existingConfigmap: "<MY-ASSISTANT-CONFIG>"
+# See the assistant service config.yaml.example in the mucgpt repository for
+# all supported keys (LDAP, compliance flags, ...).
 assistantConfig:
   data:
-    LOG_CONFIG:
-      LOGLEVEL: INFO
-    DB:
-      HOST: "<POSTGRES-HOST>"
-      PORT: 5432
-      NAME: "<POSTGRES-DB>"
-      USER: "<POSTGRES-USER>"
-      # The PASSWORD is injected via the MUCGPT_ASSISTANT_DB__PASSWORD env variable.
-    REDIS:
-      HOST: "<HELM_RELEASE_NAME>-valkey"
-      PORT: 6379
-      USERNAME: default
-      # The PASSWORD is injected via the MUCGPT_ASSISTANT_REDIS__PASSWORD env variable.
+    # The PASSWORD is injected via the MUCGPT_ASSISTANT_DB__PASSWORD env variable.
+    db:
+      host: "<POSTGRES-HOST>"
+      port: 5432
+      name: "<POSTGRES-DB>"
+      user: "<POSTGRES-USER>"
+    # Cache settings. HOST/PORT must match the valkey settings below.
+    # The PASSWORD is injected via the MUCGPT_ASSISTANT_REDIS__PASSWORD env variable.
+    redis:
+      host: "<HELM_RELEASE_NAME>-valkey"
+      port: 6379
+      username: default
+    # SSO role mappings.
+    sso:
+      role: "mucgpt-user"
+      admin_role: "mucgpt-admin"
 
-# Credentials for the assistant service and the migrations job. Create the
+# Credentials for the assistant service and its migrations job. Create the
 # Secret yourself, e.g.:
 #   kubectl create secret generic mucgpt-assistant-secrets \
 #     --from-literal=DB__PASSWORD=<...> \
@@ -72,6 +105,18 @@ assistantsMigration:
     - prefix: MUCGPT_ASSISTANT_
       secretRef:
         name: mucgpt-assistant-secrets
+
+# Database schema migrations for the core service (checkpoints storage,
+# required since core 1.x). Create the Secret yourself, e.g.:
+#   kubectl create secret generic mucgpt-core-secrets \
+#     --from-literal=DB__PASSWORD=<...> \
+#     --from-literal=REDIS__PASSWORD=<...>
+coreMigration:
+  enabled: true
+  envFrom:
+    - prefix: MUCGPT_CORE_
+      secretRef:
+        name: mucgpt-core-secrets
 
 # Generic CA certificate handling (e.g. for TLS-inspecting proxies or private CAs).
 # Creates a volume from an existing Secret/ConfigMap, mounts it into the
@@ -106,6 +151,14 @@ refarch-templates:
         - prefix: MUCGPT_SSO_
           secretRef:
             name: sso
+        # Langfuse credentials use the standard unprefixed LANGFUSE_* env var
+        # names (MUCGPT_CORE_LANGFUSE__* are no longer read). Create the
+        # Secret yourself, e.g.:
+        #   kubectl create secret generic langfuse \
+        #     --from-literal=LANGFUSE_PUBLIC_KEY=<...> \
+        #     --from-literal=LANGFUSE_SECRET_KEY=<...>
+        - secretRef:
+            name: langfuse
         - prefix: MUCGPT_CORE_
           secretRef:
             name: mucgpt-core-secrets

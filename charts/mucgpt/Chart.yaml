@@ -10,7 +10,7 @@ sources:
   - "https://github.com/it-at-m/mucgpt"
 dependencies:
   - name: refarch-templates
-    version: 2.4.0
+    version: 2.4.1
     repository: "@it-at-m"
   - name: valkey
     condition: valkey.enabled

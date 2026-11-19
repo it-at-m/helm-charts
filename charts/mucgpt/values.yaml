@@ -33,7 +33,7 @@ assistantsMigration:
   image:
     registry: ghcr.io
     repository: it-at-m/mucgpt/mucgpt-assistant-migrations
-    tag: "0.9.0"
+    tag: "0.11.0@sha256:e19662759556362a18200177affb3cf65f102dfe3be8986dd4879a9f77f822c8"
   resources:
     requests:
       cpu: 50m
@@ -45,7 +45,36 @@ assistantsMigration:
   # Mount a CA bundle into the job (see top-level 'caCerts')
   useCAcerts: false
   envFrom: []
-  env: []
+  env:
+    # Wait for another migration instead of failing on PostgreSQL's lock.
+    - name: MIGRATION_LOCK_TIMEOUT
+      value: "0"
+
+# Database schema migrations for the core service (PostgreSQL-backed
+# checkpoint storage, required since core 1.x).
+# Runs as a pre-install/pre-upgrade Helm hook Job and needs the core
+# database credentials (e.g. via envFrom referencing an existing Secret).
+coreMigration:
+  enabled: false
+  image:
+    registry: ghcr.io
+    repository: it-at-m/mucgpt/mucgpt-core-migrations
+    tag: "0.1.0@sha256:7a0ae7b2e81b101d308327109df6769aef02b8d0c8f688847df23dcad51850f2"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 512Mi
+    limits:
+      memory: 512Mi
+  # Time limit for the migration job
+  activeDeadlineSeconds: 600
+  # Mount a CA bundle into the job (see top-level 'caCerts')
+  useCAcerts: false
+  envFrom: []
+  env:
+    # Wait for another migration instead of failing on PostgreSQL's lock.
+    - name: MIGRATION_LOCK_TIMEOUT
+      value: "0"
 
 # Generic CA certificate handling.
 # If enabled, a bundle from an existing Secret or ConfigMap is mounted into
@@ -70,9 +99,11 @@ caCerts:
 refarch-templates:
   enabled: true
 
-  frontendTag: &frontendTag "0.38.1"
-  assistantTag: &assistantTag "0.16.0"
-  coreTag: &coreTag "0.22.3"
+  # Image tags are pinned as tag@digest, matching the versions rolled out in
+  # the MUCGPT CAP infrastructure.
+  frontendTag: &frontendTag "1.11.1@sha256:6c7ad5935851a382c9f34dc0a640f5cf4f10e43768a6c38cc85cc143f9acd803"
+  assistantTag: &assistantTag "0.18.1@sha256:b3b9fd0b1d6124f537f17f33d30ff09e6fa0c8ad53302e0f233b1866effe5c88"
+  coreTag: &coreTag "1.11.1@sha256:016ee168dc372164194b60a62d73efe0d683401de194085676e1d23f7bd175ce"
 
   # Global secrets referenced by the modules below. The secrets themselves
   # have to be created externally (values are not managed by this chart).

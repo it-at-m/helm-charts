@@ -1,17 +1,51 @@
 # Minimal values for CI installation in a kind cluster.
-# Keycloak and database are simulated/minimal; the gateway is disabled because
-# it requires an identity provider to start.
+# PostgreSQL is pre-installed in the cluster by the CI workflow (release
+# 'ci-postgres') so that the pre-install migration hook jobs can run against
+# it - the bundled postgres subchart cannot be used for migrations because
+# pre-install hooks execute before its resources are created.
+# The gateway is disabled because it requires an identity provider to start.
 assistantsMigration:
-  enabled: false
+  enabled: true
+  env:
+    - name: MUCGPT_ASSISTANT_DB__HOST
+      value: ci-postgres
+    - name: MUCGPT_ASSISTANT_DB__PORT
+      value: "5432"
+    - name: MUCGPT_ASSISTANT_DB__NAME
+      value: mucgpt
+    - name: MUCGPT_ASSISTANT_DB__USER
+      value: mucgpt
+    - name: MUCGPT_ASSISTANT_DB__PASSWORD
+      value: ci-postgres-password
+
+coreMigration:
+  enabled: true
+  env:
+    - name: MUCGPT_CORE_DB__HOST
+      value: ci-postgres
+    - name: MUCGPT_CORE_DB__PORT
+      value: "5432"
+    - name: MUCGPT_CORE_DB__NAME
+      value: mucgpt
+    - name: MUCGPT_CORE_DB__USER
+      value: mucgpt
+    - name: MUCGPT_CORE_DB__PASSWORD
+      value: ci-postgres-password
 
 refarch-templates:
   refarch-gateway:
     enabled: false
-  # Exercise the config ConfigMap rendering and mounting. The release name in
-  # chart-testing defaults to the chart name, hence the hardcoded ConfigMap
-  # names below.
   modules:
     core:
+      # NOTE: 'env' replaces the chart defaults. The informational version
+      # variables (MUCGPT_CORE_*_VERSION) are intentionally omitted here.
+      env:
+        - name: GIT_PYTHON_REFRESH
+          value: "quiet"
+        - name: MUCGPT_CORE_DB__PASSWORD
+          value: ci-postgres-password
+        - name: MUCGPT_CORE_PROVIDERS__CI_GATEWAY__API_KEY
+          value: ci-api-key
       volumeMounts:
         - name: mucgpt-core-config
           readOnly: true
@@ -22,6 +56,9 @@ refarch-templates:
           configMap:
             name: mucgpt-core-config
     assistants:
+      env:
+        - name: MUCGPT_ASSISTANT_DB__PASSWORD
+          value: ci-postgres-password
       volumeMounts:
         - name: mucgpt-assistant-config
           readOnly: true
@@ -32,14 +69,41 @@ refarch-templates:
           configMap:
             name: mucgpt-assistant-config
 
-# Exercise the config ConfigMap rendering.
+# Exercise the config ConfigMap rendering. The release name in chart-testing
+# defaults to the chart name, hence the hardcoded 'mucgpt-valkey' cache host.
 coreConfig:
   data:
-    ENV_NAME: "ci"
+    env_name: "ci"
+    db:
+      host: ci-postgres
+      port: 5432
+      name: mucgpt
+      user: mucgpt
+    providers:
+      ci_gateway:
+        type: "openai"
+        endpoint: "http://localhost"
+    models:
+      - provider: "ci_gateway"
+        id: "ci-model"
+        model_info:
+          display_name: "CI Model"
+          max_input_tokens: 128000
+          max_output_tokens: 16384
+    redis:
+      host: mucgpt-valkey
+      port: 6379
+
 assistantConfig:
   data:
-    LOG_CONFIG:
-      LOGLEVEL: INFO
+    db:
+      host: ci-postgres
+      port: 5432
+      name: mucgpt
+      user: mucgpt
+    redis:
+      host: mucgpt-valkey
+      port: 6379
 
 valkey:
   auth:
