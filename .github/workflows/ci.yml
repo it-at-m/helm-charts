@@ -39,8 +39,11 @@ jobs:
       - name: Install CI PostgreSQL
         # Pre-install PostgreSQL so that the mucgpt migration hook jobs (which
         # run before the chart's own resources) have a database to migrate.
+        # The namespace for chart-testing is created explicitly because ct does
+        # not create it when --namespace is given.
         if: "steps.list-changed.outputs.changed == 'true' && ! contains(env.commitmsg, '[skip install]')"
         run: |
+          kubectl create namespace mucgpt-ci
           helm install ci-postgres cloudpirates/postgres --version 0.21.1 \
             --set fullnameOverride=ci-postgres \
             --set auth.username=mucgpt \
@@ -52,4 +55,4 @@ jobs:
             --wait --timeout 5m
       - name: Run chart-testing (install)
         if: "steps.list-changed.outputs.changed == 'true' && ! contains(env.commitmsg, '[skip install]')"
-        run: ct install --excluded-charts common --debug --target-branch ${{ github.event.repository.default_branch }} --helm-extra-args '--timeout 20m' --namespace mucgpt-ci
+        run: ct install --excluded-charts common --debug --target-branch ${{ github.event.repository.default_branch }} --helm-extra-args '--timeout 20m' --namespace mucgpt-ci --release-name mucgpt-ci
