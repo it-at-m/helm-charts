@@ -72,8 +72,11 @@ refarch-templates:
           configMap:
             name: mucgpt-ci-assistant-config
 
-# Exercise the config ConfigMap rendering. The release name in chart-testing
-# defaults to the chart name, hence the hardcoded 'mucgpt-valkey' cache host.
+# Exercise the config ConfigMap rendering. The cache host must match the
+# rendered valkey service name: with the pinned release name 'mucgpt-ci' the
+# valkey subchart deploys as 'mucgpt-ci-valkey'. The core service pings Redis
+# during startup warmup (RedisCache.init_redis raises on failure), so an
+# unreachable host crash-loops the pod instead of just degrading features.
 coreConfig:
   data:
     env_name: "ci"
@@ -94,7 +97,7 @@ coreConfig:
           max_input_tokens: 128000
           max_output_tokens: 16384
     redis:
-      host: mucgpt-valkey
+      host: mucgpt-ci-valkey
       port: 6379
 
 assistantConfig:
@@ -105,7 +108,7 @@ assistantConfig:
       name: mucgpt
       user: mucgpt
     redis:
-      host: mucgpt-valkey
+      host: mucgpt-ci-valkey
       port: 6379
 
 valkey:
