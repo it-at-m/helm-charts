@@ -94,6 +94,10 @@ coreConfig:
         id: "ci-model"
         model_info:
           display_name: "CI Model"
+          # Complete metadata (incl. description) so the startup warmup skips
+          # the model-info endpoint enrichment - the dummy provider endpoint
+          # is unreachable, and _initialize_models_metadata re-raises.
+          description: "Dummy model for CI"
           max_input_tokens: 128000
           max_output_tokens: 16384
     redis:
