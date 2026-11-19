@@ -8,7 +8,7 @@ assistantsMigration:
   enabled: true
   env:
     - name: MUCGPT_ASSISTANT_DB__HOST
-      value: ci-postgres
+      value: ci-postgres.default.svc.cluster.local
     - name: MUCGPT_ASSISTANT_DB__PORT
       value: "5432"
     - name: MUCGPT_ASSISTANT_DB__NAME
@@ -22,7 +22,7 @@ coreMigration:
   enabled: true
   env:
     - name: MUCGPT_CORE_DB__HOST
-      value: ci-postgres
+      value: ci-postgres.default.svc.cluster.local
     - name: MUCGPT_CORE_DB__PORT
       value: "5432"
     - name: MUCGPT_CORE_DB__NAME
@@ -75,7 +75,7 @@ coreConfig:
   data:
     env_name: "ci"
     db:
-      host: ci-postgres
+      host: ci-postgres.default.svc.cluster.local
       port: 5432
       name: mucgpt
       user: mucgpt
@@ -97,7 +97,7 @@ coreConfig:
 assistantConfig:
   data:
     db:
-      host: ci-postgres
+      host: ci-postgres.default.svc.cluster.local
       port: 5432
       name: mucgpt
       user: mucgpt
