@@ -6,11 +6,17 @@ Contributions are welcome via GitHub Pull Requests. This document outlines the p
 
 ## Contributing a new Chart
 
-All it@M developers have direct write access to the repo (through team [`itm-devs`](https://github.com/orgs/it-at-m/teams/itm-devs)) and therefore don't have to fork the repository to contribute.
+All it@M developers have direct write access to the repo (through team [`itm-devs`](https://github.com/orgs/it-at-m/teams/itm-devs)) and therefore don't have to fork the repository to contribute. To contribute a Chart please create a Pull Request.
 
-To contribute a Chart please create a Pull Request. Make sure to also add the maintainer(s) of the new Chart as code-owner in [CODEOWNERS](.github/CODEOWNERS), preferably referencing a corresponding team.
+### Document maintainer(s)
+
+Make sure to add the maintainer(s) of the new Chart as code-owner in [CODEOWNERS](.github/CODEOWNERS), preferably referencing a corresponding team.
 
 Charts without maintainers **can not be accepted**.
+
+### Automatic labeling
+
+Add your chart as a label in [labeler.yml](.github/labeler.yml) so that issues and pull request for the chart are labeled automatically.
 
 ### Use common library
 
