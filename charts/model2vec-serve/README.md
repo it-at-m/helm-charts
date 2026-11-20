@@ -215,6 +215,7 @@ deployment/<release>-model2vec-serve -n <namespace>`.
 | `apiKey` | API key for authentication | `""` |
 | `args` | Extra CLI arguments (must not set `--port`; use `port` instead) | `[]` |
 | `port` | Port the application listens on; drives `--port`, the container port and the Service target | `8080` |
+| `strategy` | Deployment update strategy; with persistence enabled consider `{ type: Recreate }` so the replacement pod can attach the ReadWriteOnce cache volume | `{}` |
 | `service.type` | Kubernetes service type | `ClusterIP` |
 | `service.port` | Service port | `80` |
 | `service.annotations` | Extra annotations merged into the Service metadata | `{}` |
