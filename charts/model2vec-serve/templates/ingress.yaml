@@ -22,7 +22,7 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host }}
+    - host: {{ .host | quote }}
       http:
         paths:
           {{- range (.paths | default (list (dict "path" "/" "pathType" "Prefix"))) }}
