@@ -8,6 +8,10 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "model2vec-serve.selectorLabels" . | nindent 6 }}
@@ -77,12 +81,13 @@ spec:
             - --port
             - {{ .Values.port | quote }}
           env:
+            {{- if .Values.apiKey }}
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "model2vec-serve.fullname" . }}
                   key: api-key
-                  optional: true
+            {{- end }}
             {{- if .Values.modelAliases }}
             {{- $aliases := list }}
             {{- range .Values.modelAliases }}

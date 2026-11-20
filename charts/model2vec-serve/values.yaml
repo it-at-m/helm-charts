@@ -1,6 +1,12 @@
 # Default values for model2vec-serve.
 replicaCount: 1
 
+# Deployment update strategy. With persistence enabled (the ReadWriteOnce
+# cache volume is attached to a single pod) consider
+# `strategy: { type: Recreate }` so the old pod releases the volume before
+# the replacement starts.
+strategy: {}
+
 # Port the application listens on. Drives the container port, the Service
 # target (via the named `http` port) and the `--port` argument. Do not set
 # `--port` through `args`.
