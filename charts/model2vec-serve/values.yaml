@@ -1,6 +1,11 @@
 # Default values for model2vec-serve.
 replicaCount: 1
 
+# Port the application listens on. Drives the container port, the Service
+# target (via the named `http` port) and the `--port` argument. Do not set
+# `--port` through `args`.
+port: 8080
+
 image:
   repository: ghcr.io/it-at-m/model2vec-serve
   pullPolicy: IfNotPresent
@@ -41,7 +46,6 @@ env: []
 service:
   type: ClusterIP
   port: 80
-  targetPort: 8080
   # Extra annotations merged into the Service metadata (for example cert-manager
   # or cloud load-balancer annotations). Empty by default.
   annotations: {}
@@ -58,7 +62,18 @@ resources: {}
   #   cpu: 500m
   #   memory: 512Mi
 
+# Startup probe on /health. Model downloads and loads happen before the HTTP
+# listener binds, so this needs a generous budget. Liveness and readiness only
+# start governing the container after the startup probe succeeds.
+startupProbe:
+  enabled: true
+  periodSeconds: 10
+  failureThreshold: 60
+
 # Horizontal Pod Autoscaler configuration.
+# When enabled, CPU and memory resource requests must be configured under
+# `resources` for the utilization targets to compute; limits alone are not
+# sufficient.
 autoscaling:
   enabled: false
   minReplicas: 1

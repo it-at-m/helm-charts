@@ -15,9 +15,23 @@ spec:
     metadata:
       labels:
         {{- include "model2vec-serve.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -53,8 +67,15 @@ spec:
             - {{ printf "%s/%s" .Values.tls.mountPath .Values.tls.keyKey | quote }}
             {{- end }}
             {{- range .Values.args }}
+            {{- if hasPrefix "--port" . }}
+            {{- fail (printf "args must not override --port; set the `port` value instead (got %s)" .) }}
+            {{- end }}
+            {{- end }}
+            {{- range .Values.args }}
             - {{ . | quote }}
             {{- end }}
+            - --port
+            - {{ .Values.port | quote }}
           env:
             - name: API_KEY
               valueFrom:
@@ -79,8 +100,19 @@ spec:
             {{- end }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.port }}
               protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+              {{- if .Values.tls.enabled }}
+              scheme: HTTPS
+              {{- end }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /health
