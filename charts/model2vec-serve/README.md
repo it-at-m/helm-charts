@@ -135,7 +135,7 @@ helm install model2vec-serve ./charts/model2vec-serve \
   --set ingress.enabled=true \
   --set ingress.className=nginx \
   --set ingress.hosts[0].host=embeddings.example.com \
-  --set ingress.annotations."nginx\.ingress\.kubernetes\.io/ssl-passthrough"=true \
+  --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/ssl-passthrough"=true \
   --set ingress.annotations."nginx\.ingress\.kubernetes\.io/backend-protocol"=HTTPS
 ```
 
@@ -144,7 +144,8 @@ Notes:
 - The certificate file should contain the full chain (leaf plus
   intermediates).
 - Certificates are loaded once at startup. Renewal = update the secret +
-  `kubectl rollout restart deployment/<release>`; there is no hot reload.
+  `kubectl rollout restart deployment/<release>-model2vec-serve -n <namespace>`
+  (the chart's generated Deployment name); there is no hot reload.
 - `tls.enabled` without `tls.existingSecret` fails `helm template`/install
   with a template error.
 - Edge TLS termination in front of a plain-HTTP deployment remains fully
@@ -196,7 +197,8 @@ helm install model2vec-serve ./charts/model2vec-serve \
 ACME HTTP01 still works with the passthrough example above (ssl-passthrough
 only affects port 443; the challenge is served on port 80) — or use a DNS01
 solver. After each renewal, restart the pods so the application reloads the
-certificate: `kubectl rollout restart deployment/<release>`.
+certificate: `kubectl rollout restart
+deployment/<release>-model2vec-serve -n <namespace>`.
 
 ## Configuration
 
@@ -211,12 +213,13 @@ certificate: `kubectl rollout restart deployment/<release>`.
 | `modelAliases` | List of `{key, alias}` pairs overriding the `/tei/{model_id}/...` path segments; keys must match a `models` entry, duplicate resolved segments abort startup | `[]` |
 | `model` | (Deprecated) Hugging Face model id or local path | `minishlab/blink-multilingual-64M` |
 | `apiKey` | API key for authentication | `""` |
-| `args` | Extra CLI arguments | `[]` |
+| `args` | Extra CLI arguments (must not set `--port`; use `port` instead) | `[]` |
+| `port` | Port the application listens on; drives `--port`, the container port and the Service target | `8080` |
 | `service.type` | Kubernetes service type | `ClusterIP` |
 | `service.port` | Service port | `80` |
-| `service.targetPort` | Container port | `8080` |
 | `service.annotations` | Extra annotations merged into the Service metadata | `{}` |
 | `resources` | CPU/memory requests and limits | see `values.yaml` |
+| `startupProbe.enabled` | Startup probe on `/health` with a generous budget for model loading; liveness/readiness start after it succeeds | `true` |
 | `autoscaling.enabled` | Enable HPA | `false` |
 | `extraVolumes` | Extra volumes | `[]` |
 | `extraVolumeMounts` | Extra volume mounts | `[]` |
