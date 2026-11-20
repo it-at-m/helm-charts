@@ -5,7 +5,13 @@ Get the application URL by running:
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "model2vec-serve.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:8080
 
-Then visit http://127.0.0.1:8080/docs for the API documentation.
+Then visit {{ if .Values.tls.enabled }}https{{ else }}http{{ end }}://127.0.0.1:8080/docs for the API documentation.
+{{- if .Values.tls.enabled }}
+
+The application serves HTTPS only (tls.enabled). Your client must trust the
+certificate from secret "{{ .Values.tls.existingSecret }}" in namespace
+{{ .Release.Namespace }} (for a quick test, use `curl -k` / `--insecure`).
+{{- end }}
 {{- if .Values.ingress.enabled }}
 
 The service is exposed through an Ingress at:
