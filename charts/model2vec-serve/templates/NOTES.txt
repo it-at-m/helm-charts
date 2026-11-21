@@ -16,5 +16,12 @@ certificate from secret "{{ .Values.tls.existingSecret }}" in namespace
 
 The service is exposed through an Ingress at:
 
-  http{{ if or .Values.tls.enabled .Values.ingress.tls }}s{{ end }}://{{ (index .Values.ingress.hosts 0).host }}
+{{- $displayHost := (index .Values.ingress.hosts 0).host }}
+{{- $hostTls := false }}
+{{- range .Values.ingress.tls }}
+  {{- if has $displayHost .hosts }}
+    {{- $hostTls = true }}
+  {{- end }}
+{{- end }}
+  http{{ if or .Values.tls.enabled $hostTls }}s{{ end }}://{{ $displayHost }}
 {{- end }}

@@ -10,7 +10,7 @@ registry:
 ```bash
 helm install model2vec-serve \
   oci://ghcr.io/it-at-m/helm-charts/model2vec-serve \
-  --version 0.7.0 \
+  --version 0.7.2 \
   --set models[0]=minishlab/blink-multilingual-64M \
   --set apiKey=your-secret-key
 ```
@@ -21,7 +21,7 @@ or the HTTP repository:
 helm repo add it-at-m https://it-at-m.github.io/helm-charts
 helm repo update
 helm install model2vec-serve it-at-m/model2vec-serve \
-  --version 0.7.0 \
+  --version 0.7.2 \
   --set models[0]=minishlab/blink-multilingual-64M \
   --set apiKey=your-secret-key
 ```
