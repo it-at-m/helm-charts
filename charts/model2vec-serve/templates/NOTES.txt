@@ -1,0 +1,27 @@
+model2vec-serve has been deployed.
+
+Get the application URL by running:
+
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "model2vec-serve.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:{{ .Values.port }}
+
+Then visit {{ if .Values.tls.enabled }}https{{ else }}http{{ end }}://127.0.0.1:8080/docs for the API documentation.
+{{- if .Values.tls.enabled }}
+
+The application serves HTTPS only (tls.enabled). Your client must trust the
+certificate from secret "{{ .Values.tls.existingSecret }}" in namespace
+{{ .Release.Namespace }} (for a quick test, use `curl -k` / `--insecure`).
+{{- end }}
+{{- if .Values.ingress.enabled }}
+
+The service is exposed through an Ingress at:
+
+{{- $displayHost := (index .Values.ingress.hosts 0).host }}
+{{- $hostTls := false }}
+{{- range .Values.ingress.tls }}
+  {{- if has $displayHost .hosts }}
+    {{- $hostTls = true }}
+  {{- end }}
+{{- end }}
+  http{{ if or .Values.tls.enabled $hostTls }}s{{ end }}://{{ $displayHost }}
+{{- end }}

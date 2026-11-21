@@ -33,6 +33,10 @@ kf-app-eai:
   - changed-files:
       - any-glob-to-any-file: charts/kf-app-eai/**
 
+model2vec-serve:
+  - changed-files:
+      - any-glob-to-any-file: charts/model2vec-serve/**
+
 pentaho-carte:
   - changed-files:
       - any-glob-to-any-file: charts/pentaho-carte/**

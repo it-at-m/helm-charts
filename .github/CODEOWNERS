@@ -19,3 +19,4 @@
 /charts/refarch-templates/ @it-at-m/refarch-maintainer @it-at-m/sps
 /charts/common/ @eidottermihi
 /charts/parkhausradar/ @danielnwz
+/charts/model2vec-serve/ @freinold @shteenft

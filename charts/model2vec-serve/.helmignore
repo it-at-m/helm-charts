@@ -1,0 +1,10 @@
+# Patterns to ignore when building Helm packages.
+.git/
+.gitignore
+*.tgz
+*.lock
+charts/
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp

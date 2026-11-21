@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "model2vec-serve.fullname" . }}
+  labels:
+    {{- include "model2vec-serve.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "model2vec-serve.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "model2vec-serve.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- if .Values.models }}
+            {{- range .Values.models }}
+            - --model
+            - {{ . | quote }}
+            {{- end }}
+            {{- if .Values.defaultModel }}
+            - --default-model
+            - {{ .Values.defaultModel | quote }}
+            {{- end }}
+            {{- else if .Values.model }}
+            - --model
+            - {{ .Values.model | quote }}
+            {{- end }}
+            {{- if .Values.modelOwner }}
+            - --model-owner
+            - {{ .Values.modelOwner | quote }}
+            {{- end }}
+            {{- if .Values.apiKey }}
+            - --api-key
+            - $(API_KEY)
+            {{- end }}
+            {{- if .Values.tls.enabled }}
+            - --tls-cert
+            - {{ printf "%s/%s" .Values.tls.mountPath .Values.tls.certKey | quote }}
+            - --tls-key
+            - {{ printf "%s/%s" .Values.tls.mountPath .Values.tls.keyKey | quote }}
+            {{- end }}
+            {{- range .Values.args }}
+            {{- if hasPrefix "--port" . }}
+            {{- fail (printf "args must not override --port; set the `port` value instead (got %s)" .) }}
+            {{- end }}
+            {{- end }}
+            {{- range .Values.args }}
+            - {{ . | quote }}
+            {{- end }}
+            - --port
+            - {{ .Values.port | quote }}
+          env:
+            {{- if .Values.apiKey }}
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "model2vec-serve.fullname" . }}
+                  key: api-key
+            {{- end }}
+            {{- if .Values.modelAliases }}
+            {{- $aliases := list }}
+            {{- range .Values.modelAliases }}
+            {{- $aliases = append $aliases (printf "%s=%s" .key .alias) }}
+            {{- end }}
+            - name: MODEL_ALIAS
+              value: {{ $aliases | join "," | quote }}
+            {{- end }}
+            {{- if .Values.persistence.enabled }}
+            - name: HOME
+              value: {{ .Values.persistence.mountPath | quote }}
+            {{- end }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+              {{- if .Values.tls.enabled }}
+              scheme: HTTPS
+              {{- end }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+              {{- if .Values.tls.enabled }}
+              scheme: HTTPS
+              {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+              {{- if .Values.tls.enabled }}
+              scheme: HTTPS
+              {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: models
+              mountPath: {{ .Values.persistence.mountPath }}
+            {{- end }}
+            {{- if .Values.tls.enabled }}
+            - name: tls
+              mountPath: {{ .Values.tls.mountPath }}
+              readOnly: true
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: models
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (printf "%s-models" (include "model2vec-serve.fullname" .)) }}
+        {{- end }}
+        {{- if .Values.tls.enabled }}
+        - name: tls
+          secret:
+            secretName: {{ required "tls.existingSecret is required when tls.enabled is true" .Values.tls.existingSecret }}
+            optional: false
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
