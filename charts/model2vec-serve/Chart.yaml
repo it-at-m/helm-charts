@@ -4,7 +4,7 @@ description: Lightweight OpenAI/TEI compatible model2vec embeddings server
 icon: https://raw.githubusercontent.com/it-at-m/model2vec-serve/main/docs/public/model2vec_logo.png
 type: application
 version: 0.7.0
-appVersion: "0.7.0"
+appVersion: "0.7.2"
 home: https://github.com/it-at-m/helm-charts/tree/main/charts/model2vec-serve
 sources:
   - https://github.com/it-at-m/model2vec-serve
