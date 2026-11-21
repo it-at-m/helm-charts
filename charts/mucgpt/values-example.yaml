@@ -1,0 +1,288 @@
+# Sample values demonstrating a full MUCGPT deployment.
+# Copy and adjust for your environment. Replace all placeholders marked with
+# <ANGLE_BRACKETS>.
+#
+# MUCGPT reads its configuration with the following priority (highest first):
+#   1. Environment variables (MUCGPT_CORE_* / MUCGPT_ASSISTANT_*, nested values
+#      use '__' as delimiter, e.g. MUCGPT_CORE_REDIS__PASSWORD)
+#   2. The config.yaml file (mounted from the ConfigMaps below)
+#   3. The .env file
+# YAML keys are lowercase (legacy UPPERCASE keys are ignored). Environment
+# variable names stay UPPERCASE.
+# Keep credentials (passwords, API keys) out of config.yaml - provide them via
+# Secrets injected as environment variables instead (see the envFrom entries
+# of the modules and of the migration jobs below).
+
+# Application configuration for the core service (mounted as /app/config.yaml).
+# Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
+# coreConfig:
+#   existingConfigmap: "<MY-CORE-CONFIG>"
+# See the core service config.yaml.example in the mucgpt repository for all
+# supported keys (transcription, canvas limits, documents, prompts, MCP, ...).
+coreConfig:
+  data:
+    version: "0.0.1"
+    env_name: "<MY-ENVIRONMENT>"
+    # Browser-based speech-to-text (runs fully client-side in the browser).
+    transcription_enabled: false
+    # transcription_model: "Olicorne/parakeet-tdt-0.6b-v3-ultra-onnx"
+    ai_act_compliance_check_enabled: true
+    # LLM providers. The api_key is REQUIRED per provider and must be injected
+    # as an environment variable (provider keys must be lowercase):
+    #   MUCGPT_CORE_PROVIDERS__MY_GATEWAY__API_KEY
+    providers:
+      my_gateway:
+        type: "openai" # "openai" or "azure"
+        endpoint: "https://<LLM-GATEWAY-HOST>/"
+        # api_key: provided via MUCGPT_CORE_PROVIDERS__MY_GATEWAY__API_KEY
+        api_version: "" # only needed for type "azure"
+    # Model definitions referencing the providers above. See the core service
+    # config.yaml.example for all supported model_info fields.
+    models:
+      - provider: "my_gateway"
+        id: "<MODEL-ID>"
+        model_info:
+          display_name: "<MODEL-NAME>"
+          max_input_tokens: 128000
+          max_output_tokens: 16384
+    # PostgreSQL persistence for checkpoints (required since core 1.x).
+    # The PASSWORD is injected via the MUCGPT_CORE_DB__PASSWORD env variable.
+    db:
+      host: "<POSTGRES-HOST>"
+      port: 5432
+      name: "<POSTGRES-DB>"
+      user: "<POSTGRES-USER>"
+    # Cache settings. HOST/PORT must match the valkey settings below.
+    # The PASSWORD is injected via the MUCGPT_CORE_REDIS__PASSWORD env variable.
+    redis:
+      host: "<HELM_RELEASE_NAME>-valkey"
+      port: 6379
+      username: default
+    # SSO role mappings (optional).
+    sso:
+      role: "mucgpt-user"
+      admin_role: "mucgpt-admin"
+    # LLM observability (e.g. Langfuse) is configured via the standard
+    # unprefixed environment variables LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY
+    # and LANGFUSE_HOST - the MUCGPT_CORE_LANGFUSE__* variables are no longer
+    # read. See the langfuse envFrom entry of the core module below.
+
+# Application configuration for the assistant service (mounted as /app/config.yaml).
+# Alternatively reference a pre-created ConfigMap containing a 'config.yaml' key:
+# assistantConfig:
+#   existingConfigmap: "<MY-ASSISTANT-CONFIG>"
+# See the assistant service config.yaml.example in the mucgpt repository for
+# all supported keys (LDAP, compliance flags, ...).
+assistantConfig:
+  data:
+    # The PASSWORD is injected via the MUCGPT_ASSISTANT_DB__PASSWORD env variable.
+    db:
+      host: "<POSTGRES-HOST>"
+      port: 5432
+      name: "<POSTGRES-DB>"
+      user: "<POSTGRES-USER>"
+    # Cache settings. HOST/PORT must match the valkey settings below.
+    # The PASSWORD is injected via the MUCGPT_ASSISTANT_REDIS__PASSWORD env variable.
+    redis:
+      host: "<HELM_RELEASE_NAME>-valkey"
+      port: 6379
+      username: default
+    # SSO role mappings.
+    sso:
+      role: "mucgpt-user"
+      admin_role: "mucgpt-admin"
+
+# Credentials for the assistant service and its migrations job. Create the
+# Secret yourself, e.g.:
+#   kubectl create secret generic mucgpt-assistant-secrets \
+#     --from-literal=DB__PASSWORD=<...> \
+#     --from-literal=REDIS__PASSWORD=<...>
+# Combined with the 'MUCGPT_ASSISTANT_' envFrom prefix below, the keys become
+# the environment variables MUCGPT_ASSISTANT_DB__PASSWORD and
+# MUCGPT_ASSISTANT_REDIS__PASSWORD (env vars override config.yaml).
+assistantsMigration:
+  envFrom:
+    - prefix: MUCGPT_ASSISTANT_
+      secretRef:
+        name: mucgpt-assistant-secrets
+
+# Database schema migrations for the core service (checkpoints storage,
+# required since core 1.x). Create the Secret yourself, e.g.:
+#   kubectl create secret generic mucgpt-core-secrets \
+#     --from-literal=DB__PASSWORD=<...> \
+#     --from-literal=REDIS__PASSWORD=<...>
+coreMigration:
+  enabled: true
+  envFrom:
+    - prefix: MUCGPT_CORE_
+      secretRef:
+        name: mucgpt-core-secrets
+
+# Generic CA certificate handling (e.g. for TLS-inspecting proxies or private CAs).
+# Creates a volume from an existing Secret/ConfigMap, mounts it into the
+# migrations job (when assistantsMigration.useCAcerts=true) and sets
+# SSL_CERT_FILE accordingly. For the application containers, add the
+# volume/volumeMount/env snippets to the corresponding modules.
+caCerts:
+  enabled: false
+  # existingSecret: "<MY-CA-BUNDLE>"      # Secret or ConfigMap containing the bundle
+  # existingConfigmap: "<MY-CA-BUNDLE>"
+  key: "ca-bundle.crt"
+  mountPath: /etc/pki/ca-trust/extracted/pem
+
+refarch-templates:
+  secrets:
+    - name: sso
+      keys:
+        - URL            # e.g. https://sso.example.com
+        - REALM
+        - CLIENTID
+        - CLIENTSECRET
+        - SCOPE
+        - ROLE
+
+  modules:
+    frontend:
+      service:
+        http: true
+
+    core:
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+        # Langfuse credentials use the standard unprefixed LANGFUSE_* env var
+        # names (MUCGPT_CORE_LANGFUSE__* are no longer read). Create the
+        # Secret yourself, e.g.:
+        #   kubectl create secret generic langfuse \
+        #     --from-literal=LANGFUSE_PUBLIC_KEY=<...> \
+        #     --from-literal=LANGFUSE_SECRET_KEY=<...>
+        - secretRef:
+            name: langfuse
+        - prefix: MUCGPT_CORE_
+          secretRef:
+            name: mucgpt-core-secrets
+      env:
+        # If caCerts.enabled, point SSL_CERT_FILE to the mounted bundle:
+        # - name: SSL_CERT_FILE
+        #   value: "/etc/pki/ca-trust/extracted/pem/ca-bundle.crt"
+        - name: GIT_PYTHON_REFRESH
+          value: "quiet"
+      volumeMounts:
+        - name: mucgpt-core-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+        # CA bundle (if caCerts.enabled):
+        # - name: mucgpt-ca-certs
+        #   readOnly: true
+        #   mountPath: /etc/pki/ca-trust/extracted/pem
+      volumes:
+        - name: mucgpt-core-config
+          configMap:
+            name: "<HELM_RELEASE_NAME>-core-config"
+        # CA bundle (if caCerts.enabled):
+        # - name: mucgpt-ca-certs
+        #   configMap:
+        #     name: "<MY-CA-BUNDLE>"
+        #     items:
+        #       - key: ca-bundle.crt
+        #         path: ca-bundle.crt
+
+    assistants:
+      envFrom:
+        - prefix: MUCGPT_SSO_
+          secretRef:
+            name: sso
+        - prefix: MUCGPT_ASSISTANT_
+          secretRef:
+            name: mucgpt-assistant-secrets
+      volumeMounts:
+        - name: mucgpt-assistant-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+      volumes:
+        - name: mucgpt-assistant-config
+          configMap:
+            name: "<HELM_RELEASE_NAME>-assistant-config"
+
+  refarch-gateway:
+    envAppend:
+      - name: ALLOWED_ORIGINS_PUBLIC
+        value: "https://<MY-DOMAIN>.example.com"
+      - name: ALLOWED_ORIGINS_CLIENTS
+        value: "https://<MY-DOMAIN>.example.com"
+    applicationYML:
+      spring:
+        session:
+          timeout: 10h # should match the SSO session lifetime
+        cloud:
+          gateway:
+            httpclient:
+              connect-timeout: 10000
+              response-timeout: 120s
+            server:
+              webflux:
+                routes:
+                  - id: "sso"
+                    uri: ${SSO_URL}
+                    predicates:
+                      - "Path=/api/sso/userinfo"
+                    filters:
+                      - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
+                  - id: "core"
+                    uri: "http://<HELM_RELEASE_NAME>-core:8000/"
+                    predicates:
+                      - "Path=/api/backend/**"
+                    filters:
+                      - "RewritePath=/api/backend/(?<urlsegments>.*), /api/$\\{urlsegments}"
+                  - id: "assistants"
+                    uri: "http://<HELM_RELEASE_NAME>-assistants:8084/"
+                    predicates:
+                      - "Path=/api/assistant/**,/api/user/**,/api/directory/**,/api/admin/**"
+                  # The catch all route has to be the last route.
+                  - id: "frontend"
+                    uri: "http://<HELM_RELEASE_NAME>-frontend:8080/"
+                    predicates:
+                      - "Path=/**"
+    ingress:
+      enabled: true
+      hosts:
+        - host: "<MY-HOSTNAME>"
+          paths:
+            - path: /
+              pathType: "ImplementationSpecific"
+      # OpenShift-specific configuration; adjust for plain Kubernetes.
+      # annotations:
+      #   route.openshift.io/termination: "edge"
+      # className: openshift-default
+
+# Optional example autoscaling using absolute CPU targets and scaling behavior.
+# refarch-templates:
+#   modules:
+#     core:
+#       autoscaling:
+#         minReplicas: 2
+#         maxReplicas: 4
+#         targetCPUAverageValue: "250m"
+#         behavior:
+#           scaleUp:
+#             stabilizationWindowSeconds: 60
+
+# Valkey cache. Consider using an external cache or the Valkey operator
+# (https://github.com/valkey-io/valkey-operator, early development) instead.
+valkey:
+  enabled: true
+  auth:
+    existingSecret: mucgpt-valkey
+    existingSecretPasswordKey: PASSWORD
+  resources:
+    requests:
+      cpu: 50m
+      memory: 500Mi
+    limits:
+      memory: 500Mi
+  persistence:
+    enabled: true
+    size: 1Gi

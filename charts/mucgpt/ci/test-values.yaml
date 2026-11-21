@@ -1,0 +1,120 @@
+# Minimal values for CI installation in a kind cluster.
+# PostgreSQL is pre-installed in the cluster by the CI workflow (release
+# 'ci-postgres') so that the pre-install migration hook jobs can run against
+# it - the bundled postgres subchart cannot be used for migrations because
+# pre-install hooks execute before its resources are created.
+# The gateway is disabled because it requires an identity provider to start.
+# chart-testing installs with a pinned namespace ('ct install --namespace
+# mucgpt-ci'), which makes the Helm release name and thus the rendered
+# ConfigMap names predictable.
+assistantsMigration:
+  enabled: true
+  env:
+    - name: MUCGPT_ASSISTANT_DB__HOST
+      value: ci-postgres.default.svc.cluster.local
+    - name: MUCGPT_ASSISTANT_DB__PORT
+      value: "5432"
+    - name: MUCGPT_ASSISTANT_DB__NAME
+      value: mucgpt
+    - name: MUCGPT_ASSISTANT_DB__USER
+      value: mucgpt
+    - name: MUCGPT_ASSISTANT_DB__PASSWORD
+      value: ci-postgres-password
+
+coreMigration:
+  enabled: true
+  env:
+    - name: MUCGPT_CORE_DB__HOST
+      value: ci-postgres.default.svc.cluster.local
+    - name: MUCGPT_CORE_DB__PORT
+      value: "5432"
+    - name: MUCGPT_CORE_DB__NAME
+      value: mucgpt-core
+    - name: MUCGPT_CORE_DB__USER
+      value: mucgpt-core
+    - name: MUCGPT_CORE_DB__PASSWORD
+      value: ci-core-password
+
+refarch-templates:
+  refarch-gateway:
+    enabled: false
+  modules:
+    core:
+      # NOTE: 'env' replaces the chart defaults. The informational version
+      # variables (MUCGPT_CORE_*_VERSION) are intentionally omitted here.
+      env:
+        - name: GIT_PYTHON_REFRESH
+          value: "quiet"
+        - name: MUCGPT_CORE_DB__PASSWORD
+          value: ci-core-password
+        - name: MUCGPT_CORE_PROVIDERS__CI_GATEWAY__API_KEY
+          value: ci-api-key
+      volumeMounts:
+        - name: mucgpt-core-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+      volumes:
+        - name: mucgpt-core-config
+          configMap:
+            name: mucgpt-ci-core-config
+    assistants:
+      env:
+        - name: MUCGPT_ASSISTANT_DB__PASSWORD
+          value: ci-postgres-password
+      volumeMounts:
+        - name: mucgpt-assistant-config
+          readOnly: true
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+      volumes:
+        - name: mucgpt-assistant-config
+          configMap:
+            name: mucgpt-ci-assistant-config
+
+# Exercise the config ConfigMap rendering. The cache host must match the
+# rendered valkey service name: with the pinned release name 'mucgpt-ci' the
+# valkey subchart deploys as 'mucgpt-ci-valkey'. The core service pings Redis
+# during startup warmup (RedisCache.init_redis raises on failure), so an
+# unreachable host crash-loops the pod instead of just degrading features.
+coreConfig:
+  data:
+    env_name: "ci"
+    db:
+      host: ci-postgres.default.svc.cluster.local
+      port: 5432
+      name: mucgpt-core
+      user: mucgpt-core
+    providers:
+      ci_gateway:
+        type: "openai"
+        endpoint: "http://localhost"
+    models:
+      - provider: "ci_gateway"
+        id: "ci-model"
+        model_info:
+          display_name: "CI Model"
+          # Complete metadata (incl. description) so the startup warmup skips
+          # the model-info endpoint enrichment - the dummy provider endpoint
+          # is unreachable, and _initialize_models_metadata re-raises.
+          description: "Dummy model for CI"
+          max_input_tokens: 128000
+          max_output_tokens: 16384
+    redis:
+      host: mucgpt-ci-valkey
+      port: 6379
+
+assistantConfig:
+  data:
+    db:
+      host: ci-postgres.default.svc.cluster.local
+      port: 5432
+      name: mucgpt
+      user: mucgpt
+    redis:
+      host: mucgpt-ci-valkey
+      port: 6379
+
+valkey:
+  auth:
+    enabled: false

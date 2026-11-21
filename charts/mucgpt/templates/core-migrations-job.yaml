@@ -1,0 +1,66 @@
+{{- if .Values.coreMigration.enabled }}
+{{- if and .Values.postgres.enabled .Values.coreMigration.enabled }}
+{{- fail "coreMigration cannot run against the bundled PostgreSQL: the pre-install migration hook executes before the in-chart postgres resources are created. Disable coreMigration (and run the migrations manually) or use an external PostgreSQL database." }}
+{{- end }}
+{{- $mountCerts := and .Values.coreMigration.useCAcerts .Values.caCerts.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mucgpt.getFullname" (dict "dot" . "module" (dict "name" "core-migrations")) }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-20"
+  labels:
+{{ include "mucgpt.getLabels" (dict "dot" . "module" (dict "name" "core-migrations")) | indent 4 }}
+spec:
+  {{- if .Values.coreMigration.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ .Values.coreMigration.activeDeadlineSeconds }}
+  {{- end }}
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+{{ include "mucgpt.getSelectorLabels" (dict "dot" . "module" (dict "name" "core-migrations")) | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: "{{ .Values.coreMigration.image.registry }}/{{ .Values.coreMigration.image.repository }}:{{ .Values.coreMigration.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          {{- if or .Values.coreMigration.env $mountCerts }}
+          env:
+          {{- if .Values.coreMigration.env }}
+          {{- toYaml .Values.coreMigration.env | nindent 12 }}
+          {{- end }}
+          {{- if $mountCerts }}
+          {{ include "mucgpt.caCertsEnv" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.coreMigration.envFrom }}
+          envFrom:
+          {{- toYaml .Values.coreMigration.envFrom | nindent 12 }}
+          {{- end }}
+          {{- if .Values.coreMigration.resources }}
+          resources:
+          {{- toYaml .Values.coreMigration.resources | nindent 12 }}
+          {{- end }}
+          {{- if or $mountCerts .Values.coreMigration.volumeMounts }}
+          volumeMounts:
+          {{- if $mountCerts }}
+{{ include "mucgpt.caCertsVolumeMount" . | indent 12 }}
+          {{- end }}
+          {{- if .Values.coreMigration.volumeMounts }}
+{{ toYaml .Values.coreMigration.volumeMounts | indent 12 }}
+          {{- end }}
+          {{- end }}
+      {{- if or $mountCerts .Values.coreMigration.volumes }}
+      volumes:
+      {{- if $mountCerts }}
+{{ include "mucgpt.caCertsVolume" . | indent 8 }}
+      {{- end }}
+      {{- if .Values.coreMigration.volumes }}
+{{ toYaml .Values.coreMigration.volumes | indent 8 }}
+      {{- end }}
+      {{- end }}
+{{- end }}
