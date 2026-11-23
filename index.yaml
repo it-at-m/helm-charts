@@ -2879,6 +2879,24 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/kf-app-eai-0.1.0/kf-app-eai-0.1.0.tgz
     version: 0.1.0
+  model2vec-serve:
+  - apiVersion: v2
+    appVersion: 0.7.2
+    created: "2026-11-23T05:39:11.233844685Z"
+    description: Lightweight OpenAI/TEI compatible model2vec embeddings server
+    digest: 8e1091b9c8f2a13d28bedc1644ff024675d6502ffb6c9a0647da1e7e1dc590f0
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/model2vec-serve
+    icon: https://raw.githubusercontent.com/it-at-m/model2vec-serve/main/docs/public/model2vec_logo.png
+    maintainers:
+    - name: freinold
+    - name: shteenft
+    name: model2vec-serve
+    sources:
+    - https://github.com/it-at-m/model2vec-serve
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/model2vec-serve-0.7.2/model2vec-serve-0.7.2.tgz
+    version: 0.7.2
   parkhausradar:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -5231,4 +5249,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-20T07:39:52.342871263Z"
+generated: "2026-11-23T05:39:11.234721893Z"
