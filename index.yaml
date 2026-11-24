@@ -3,6 +3,27 @@ entries:
   ad2image:
   - apiVersion: v2
     appVersion: 2.1.3
+    created: "2026-11-24T12:39:03.611708098Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.2
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: 9d8981d8297ec7d7e27ead177f2ce8f909d17723eb9e7040edb87099f4b34536
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-2.1.6/ad2image-2.1.6.tgz
+    version: 2.1.6
+  - apiVersion: v2
+    appVersion: 2.1.3
     created: "2026-10-13T12:31:09.936990997Z"
     dependencies:
     - name: common
@@ -425,6 +446,27 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ad2image-1.0.4/ad2image-1.0.4.tgz
     version: 1.0.4
   appswitcher-server:
+  - apiVersion: v2
+    appVersion: 1.4.1
+    created: "2026-11-24T12:39:03.856848065Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.2
+    description: Server component for a Google-like app switching experience.
+    digest: 26916f6f782e86202769ea4910a5814cb12e9b6a082feeb49872b56c937862aa
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/appswitcher-server
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: appswitcher-server
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/appswitcher-server-2.0.5/appswitcher-server-2.0.5.tgz
+    version: 2.0.5
   - apiVersion: v2
     appVersion: 1.4.1
     created: "2026-10-28T09:10:01.651362947Z"
@@ -2290,6 +2332,27 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: 1.2.0
+    created: "2026-11-24T12:39:04.080785949Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.2
+    description: ezLDAP - easy read access for LDAP
+    digest: 690b11e713915db98f741e04d3eb428cb38c92aadc029a3fcf79c78037c6608b
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-2.0.4/ezldap-2.0.4.tgz
+    version: 2.0.4
+  - apiVersion: v2
+    appVersion: 1.2.0
     created: "2026-10-15T13:33:23.280594577Z"
     dependencies:
     - name: common
@@ -2475,6 +2538,26 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
   java-spring-boot:
+  - apiVersion: v2
+    created: "2026-11-24T12:39:04.327147909Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.2
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: 320f68115fbfcc2943ba903c1126879ca0e133685a71f3be10d2ddd42682123b
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-1.1.3/java-spring-boot-1.1.3.tgz
+    version: 1.1.3
   - apiVersion: v2
     created: "2026-10-28T09:10:01.907630686Z"
     dependencies:
@@ -5266,4 +5349,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-24T11:03:33.123739925Z"
+generated: "2026-11-24T12:39:04.327856794Z"
