@@ -97,3 +97,21 @@ serviceMonitor:
 | Helper identifier       | Description                                              | Expected Input    |
 | ----------------------- | -------------------------------------------------------- | ----------------- |
 | `common.serviceAccount` | Create a ServiceAccount if serviceAccount.create is true | `.` Chart context |
+
+
+## Changelog
+
+All notable changes to this Helm chart library will be documented here.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this Helm chart adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### 1.0.2
+
+#### Added
+
+- [#316](https://github.com/it-at-m/helm-charts/issues/316) : add `ServiceMonitor` template
+
+#### Fixed
+
+- [!345](https://github.com/it-at-m/helm-charts/pull/345): fix common.route generates route name collisions if name must be truncated and the suffixes first 3 characters are identical (e.g. api-public / api-private). to avoid collisions in this case a 8 character long sha256 hash based on the original suffix is used as suffix in the route name.
