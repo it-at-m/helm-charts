@@ -38,4 +38,4 @@ jobs:
       - name: Run unit tests
         run: |
           helm dependency update charts/common/tests/chart
-          helm unittest charts/common
+          helm unittest charts/common/tests/chart
