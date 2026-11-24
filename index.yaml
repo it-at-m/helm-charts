@@ -818,6 +818,23 @@ entries:
     version: 0.1.0
   common:
   - apiVersion: v2
+    created: "2026-11-24T11:03:33.122579515Z"
+    description: A Library Helm Chart for grouping common logic between charts. This
+      Library Chart is not deployable by itself.
+    digest: b21ca1da0edcff3376577c39e1dcb797bf061759d75f54e435305299c0d41c16
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/common
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: common
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: library
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/common-1.0.2/common-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
     created: "2025-10-22T08:29:25.760986869Z"
     description: A Library Helm Chart for grouping common logic between charts. This
       Library Chart is not deployable by itself.
@@ -5249,4 +5266,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-23T05:39:11.234721893Z"
+generated: "2026-11-24T11:03:33.123739925Z"
