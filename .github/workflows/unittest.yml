@@ -7,14 +7,14 @@ on:
       - main
     paths:
       - 'charts/common/**'
-      - '.github/workflows/unittest.yaml'
+      - '.github/workflows/unittest.yml'
 
   pull_request:
     branches:
       - main
     paths:
       - 'charts/common/**'
-      - '.github/workflows/unittest.yaml'
+      - '.github/workflows/unittest.yml'
 
   workflow_dispatch:
 

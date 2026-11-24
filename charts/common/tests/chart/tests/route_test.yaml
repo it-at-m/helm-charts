@@ -55,7 +55,7 @@ tests:
           path: metadata.name
           value: RELEASE-NAME-chart-routename
 
-  - it: should truncate long route names
+  - it: should truncate long route names and use hash as suffix to avoid collisions
     set:
       route: {}
       service:
@@ -65,6 +65,9 @@ tests:
       - matchRegex:
           path: metadata.name
           pattern: "^.{1,64}$"
+      - equal:
+          path: metadata.name
+          value: "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrst-896e4204"
 
   # --------------------------------------------------
   # Optional Route configuration
