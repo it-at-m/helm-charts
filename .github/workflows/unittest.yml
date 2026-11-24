@@ -6,14 +6,14 @@ on:
     branches:
       - main
     paths:
-      - 'chart/charts/common/**'
+      - 'charts/common/**'
       - '.github/workflows/unittest.yaml'
 
   pull_request:
     branches:
       - main
     paths:
-      - 'chart/charts/common/**'
+      - 'charts/common/**'
       - '.github/workflows/unittest.yaml'
 
   workflow_dispatch:
@@ -25,7 +25,6 @@ jobs:
   test:
     name: Helm unittest
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
