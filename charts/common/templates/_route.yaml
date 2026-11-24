@@ -18,9 +18,9 @@ Params:
 {{- $name = printf "%s-%s" $fullName $suffix -}}
 {{- end -}}
 {{- if gt (len $name) 63 -}}
-{{- $name = substr $name 0 60 -}}  # Keep 60 characters for the suffix and a hyphen
+{{- $name = substr 0 60 $name -}}  # Keep 60 characters for the suffix and a hyphen
 {{- if $suffix -}}
-{{- $name = printf "%s-%s" $name (substr $suffix 0 3) -}}  # Allow only 3 characters for suffix
+{{- $name = printf "%s-%s" $name (substr 0 3 $suffix) -}}  # Allow only 3 characters for suffix
 {{- end -}}
 {{- end -}}
 apiVersion: route.openshift.io/v1

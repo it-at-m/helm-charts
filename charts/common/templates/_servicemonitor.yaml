@@ -1,0 +1,34 @@
+{{/*
+Create a ServiceMonitor when `.Values.serviceMonitor.enabled` is true.
+
+Usage:
+  {{ include "common.serviceMonitor" . }}
+
+Parameters:
+  - .Values.serviceMonitor.enabled - Boolean - Required. Enables creation of the ServiceMonitor.
+  - .Values.serviceMonitor.interval - String - Optional. Scrape interval. Defaults to "15s".
+  - .Values.serviceMonitor.port - String - Optional. Name of the Service port to scrape. Defaults to "http".
+  - .Values.serviceMonitor.scheme - String - Optional. HTTP scheme used for scraping. Defaults to "http".
+  - .Values.serviceMonitor.path - String - Optional. Metrics endpoint path. Defaults to "/actuator/prometheus".
+
+The ServiceMonitor is named after `common.fullname` and selects Services using
+the labels returned by `common.selectorLabels`.
+*/}}
+{{- define "common.serviceMonitor" -}}
+{{- if .Values.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "common.fullname" . }}
+spec:
+  endpoints:
+    - interval: {{ default "15s" .Values.serviceMonitor.interval | quote }}
+      port: {{ default "http" .Values.serviceMonitor.port | quote }}
+      scheme: {{ default "http" .Values.serviceMonitor.scheme | quote }}
+      path: {{ default "/actuator/prometheus" .Values.serviceMonitor.path | quote }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+{{- end }}
+---
+{{- end -}}

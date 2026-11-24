@@ -50,6 +50,35 @@ The following table lists the helpers available in the library which are scoped 
 | ----------------- | ------------------ | ----------------- |
 | `common.service`  | Creates a Service. | `.` Chart context |
 
+### ServiceMonitor
+
+| Helper identifier        | Description                                                                                         | Expected Input    |
+| ------------------------ | --------------------------------------------------------------------------------------------------- | ----------------- |
+| `common.serviceMonitor` | Creates a Prometheus Operator `ServiceMonitor` when `serviceMonitor.enabled` is `true`.             | `.` Chart context |
+
+The `common.serviceMonitor` helper creates a `ServiceMonitor` named after
+`common.fullname`. It selects the Service using the labels returned by
+`common.selectorLabels`.
+
+| Value | Type | Required | Default | Description |
+| ----- | ---- | -------- | ------- | ----------- |
+| `.Values.serviceMonitor.enabled` | Boolean | Yes | — | Whether to create the `ServiceMonitor`. |
+| `.Values.serviceMonitor.interval` | String | No | `"15s"` | Prometheus scrape interval. |
+| `.Values.serviceMonitor.port` | String | No | `"http"` | Name of the Service port to scrape. |
+| `.Values.serviceMonitor.scheme` | String | No | `"http"` | HTTP scheme used for scraping. |
+| `.Values.serviceMonitor.path` | String | No | `"/actuator/prometheus"` | Path of the metrics endpoint. |
+
+Example:
+
+```yaml
+serviceMonitor:
+  enabled: true
+  interval: 30s
+  port: http
+  scheme: http
+  path: /actuator/prometheus
+```
+
 ### Ingress / Route
 
 | Helper identifier | Description                         | Expected Input                                                         |

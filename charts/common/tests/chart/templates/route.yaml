@@ -1,0 +1,1 @@
+{{ include "common.route" (dict "route" .Values.route "service" .Values.service "context" . "suffix" "routename") }}

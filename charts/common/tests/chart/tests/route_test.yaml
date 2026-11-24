@@ -1,0 +1,319 @@
+
+suite: OpenShift Route tests
+
+templates:
+  - templates/route.yaml
+
+tests:
+  # --------------------------------------------------
+  # Basic resource rendering
+  # --------------------------------------------------
+
+  - it: should render a Route resource
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Route
+      - isAPIVersion:
+          of: route.openshift.io/v1
+
+  - it: should render required Route fields
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - exists:
+          path: metadata.name
+      - exists:
+          path: metadata.labels
+      - equal:
+          path: spec.port.targetPort
+          value: http
+      - equal:
+          path: spec.to.kind
+          value: Service
+      - exists:
+          path: spec.to.name
+
+  # --------------------------------------------------
+  # Route naming
+  # --------------------------------------------------
+
+  - it: should append suffix to route name
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-chart-routename
+
+  - it: should truncate long route names
+    set:
+      route: {}
+      service:
+        port: http
+      fullnameOverride: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnop
+    asserts:
+      - matchRegex:
+          path: metadata.name
+          pattern: "^.{1,64}$"
+
+  # --------------------------------------------------
+  # Optional Route configuration
+  # --------------------------------------------------
+
+  - it: should configure host
+    set:
+      route:
+        host: myapp.example.com
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.host
+          value: myapp.example.com
+
+  - it: should configure path
+    set:
+      route:
+        path: /api
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.path
+          value: /api
+
+  - it: should configure wildcard policy
+    set:
+      route:
+        wildcardPolicy: Subdomain
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.wildcardPolicy
+          value: Subdomain
+
+  - it: should omit host when not configured
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - notExists:
+          path: spec.host
+
+  - it: should omit path when not configured
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - notExists:
+          path: spec.path
+
+  - it: should omit wildcard policy when not configured
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - notExists:
+          path: spec.wildcardPolicy
+
+  # --------------------------------------------------
+  # Labels and annotations
+  # --------------------------------------------------
+
+  - it: should include extra labels
+    set:
+      route:
+        extraLabels:
+          environment: production
+          team: backend
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: metadata.labels.environment
+          value: production
+      - equal:
+          path: metadata.labels.team
+          value: backend
+
+  - it: should include annotations
+    set:
+      route:
+        annotations:
+          description: application route
+          example.com/managed-by: helm
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: metadata.annotations.description
+          value: application route
+      - equal:
+          path: metadata.annotations["example.com/managed-by"]
+          value: helm
+
+  - it: should omit annotations when not configured
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - notExists:
+          path: metadata.annotations
+
+  # --------------------------------------------------
+  # Service configuration
+  # --------------------------------------------------
+
+  - it: should use the configured service port
+    set:
+      route: {}
+      service:
+        port: metrics
+    asserts:
+      - equal:
+          path: spec.port.targetPort
+          value: metrics
+
+  # --------------------------------------------------
+  # TLS configuration
+  # --------------------------------------------------
+
+  - it: should omit TLS when not configured
+    set:
+      route: {}
+      service:
+        port: http
+    asserts:
+      - notExists:
+          path: spec.tls
+
+  - it: should configure TLS termination
+    set:
+      route:
+        tls:
+          termination: edge
+          insecureEdgeTerminationPolicy: Redirect
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.termination
+          value: edge
+      - equal:
+          path: spec.tls.insecureEdgeTerminationPolicy
+          value: Redirect
+
+  - it: should configure TLS key
+    set:
+      route:
+        tls:
+          termination: edge
+          insecureEdgeTerminationPolicy: Redirect
+          key: |
+            PRIVATE KEY CONTENT
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.key
+          value: |
+            PRIVATE KEY CONTENT
+
+  - it: should configure TLS certificate
+    set:
+      route:
+        tls:
+          termination: edge
+          insecureEdgeTerminationPolicy: Redirect
+          certificate: |
+            CERTIFICATE CONTENT
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.certificate
+          value: |
+            CERTIFICATE CONTENT
+
+  - it: should configure TLS CA certificate
+    set:
+      route:
+        tls:
+          termination: edge
+          insecureEdgeTerminationPolicy: Redirect
+          caCertificate: |
+            CA CERTIFICATE CONTENT
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.caCertificate
+          value: |
+            CA CERTIFICATE CONTENT
+
+  - it: should configure TLS destination CA certificate
+    set:
+      route:
+        tls:
+          termination: edge
+          insecureEdgeTerminationPolicy: Redirect
+          destinationCACertificate: |
+            DESTINATION CA CERTIFICATE CONTENT
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.destinationCACertificate
+          value: |
+            DESTINATION CA CERTIFICATE CONTENT
+
+  - it: should configure all TLS options together
+    set:
+      route:
+        tls:
+          termination: reencrypt
+          insecureEdgeTerminationPolicy: Redirect
+          key: PRIVATE KEY
+          certificate: CERTIFICATE
+          caCertificate: CA CERTIFICATE
+          destinationCACertificate: DESTINATION CA CERTIFICATE
+      service:
+        port: http
+    asserts:
+      - equal:
+          path: spec.tls.termination
+          value: reencrypt
+      - equal:
+          path: spec.tls.insecureEdgeTerminationPolicy
+          value: Redirect
+      - equal:
+          path: spec.tls.key
+          value: |
+            PRIVATE KEY
+      - equal:
+          path: spec.tls.certificate
+          value: |
+            CERTIFICATE
+      - equal:
+          path: spec.tls.caCertificate
+          value: |
+            CA CERTIFICATE
+      - equal:
+          path: spec.tls.destinationCACertificate
+          value: |
+            DESTINATION CA CERTIFICATE
