@@ -278,8 +278,10 @@ initContainers:
 # serviceMonitor can be used to create a ServiceMonitor resource to scrape metrics
 serviceMonitor:
   enabled: false
-  # path configures the path of the metrics/prometheus endpoint
-  path: "/actuator/prometheus"
+  # interval: "15s"
+  # port: "http"
+  # scheme: "http"
+  # path: "/actuator/prometheus"
 
 build:
   # enables the creation of a BuildConfig + ImageStream to perform "binary" S2I-Builds
