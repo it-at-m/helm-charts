@@ -37,4 +37,5 @@ jobs:
           helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
       - name: Run unit tests
         run: |
+          helm dependency update charts/common/tests/chart
           helm unittest charts/common
