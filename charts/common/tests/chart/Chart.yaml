@@ -1,0 +1,11 @@
+apiVersion: v2
+name: chart
+description: dummy chart to enable helm unittest
+type: application
+version: 0.0.1
+sources:
+  - "https://github.com/helm-unittest/helm-unittest/tree/main/test/data/v3/library-chart"
+dependencies:
+  - name: common
+    version: "^1.0.0"
+    repository: "file://../../../common"

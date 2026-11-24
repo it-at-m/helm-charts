@@ -11,17 +11,21 @@ Params:
   - suffix - String - Optional. A suffix to append to the route name.
 */}}
 {{- define "common.route" -}}
+
 {{- $fullName := include "common.fullname" .context -}}
 {{- $suffix := .suffix | default "" -}}
 {{- $name := $fullName -}}
+
 {{- if $suffix -}}
-{{- $name = printf "%s-%s" $fullName $suffix -}}
+  {{- $fullName = printf "%s-%s" $fullName $suffix -}}
 {{- end -}}
-{{- if gt (len $name) 63 -}}
-{{- $name = substr $name 0 60 -}}  # Keep 60 characters for the suffix and a hyphen
-{{- if $suffix -}}
-{{- $name = printf "%s-%s" $name (substr $suffix 0 3) -}}  # Allow only 3 characters for suffix
-{{- end -}}
+
+{{- if gt (len $fullName) 63 -}}
+  {{- $hash := sha256sum $fullName | trunc 8 -}}
+  {{- $maxLength := int (sub 54 (len $hash)) -}}
+  {{- $name = printf "%s-%s" (substr 0 $maxLength $fullName) $hash -}}
+{{- else -}}
+  {{- $name = $fullName -}}
 {{- end -}}
 apiVersion: route.openshift.io/v1
 kind: Route
