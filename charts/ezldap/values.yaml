@@ -160,6 +160,10 @@ routes:
 
 serviceMonitor:
   enabled: false
+  # interval: "15s"
+  # port: "http"
+  # scheme: "http"
+  # path: "/actuator/prometheus"
 
 applicationYML:
   ezldap:
