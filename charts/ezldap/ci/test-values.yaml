@@ -1,3 +1,7 @@
 credentials:
   userDn: "test-userdn"
   password: "testTest"
+
+autoscaling:
+  enabled: true
+  maxReplicas: 10
