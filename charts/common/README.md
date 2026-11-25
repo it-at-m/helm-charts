@@ -19,7 +19,7 @@ helm dependency update
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: { { include "common.fullname" . } }
+  name: {{ include "common.fullname" . }}
 data:
   myvalue: "Hello World"
 ```
