@@ -1,0 +1,9 @@
+{{- /*
+Test-only render harness for common.autoscaling.
+*/ -}}
+{{- if .Values.__unittest.enabled -}}
+{{ include "common.autoscaling" (dict
+  "root" .
+  "config" .Values.__unittest.config
+) }}
+{{- end -}}
