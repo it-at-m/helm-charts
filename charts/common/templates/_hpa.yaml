@@ -1,0 +1,116 @@
+{{/*
+Create a HorizontalPodAutoscaler (HPA).
+
+Usage:
+{{ include "common.autoscaling" (dict
+  "root" .
+  "config" .Values.autoscaling
+) }}
+
+Parameters:
+  - .root   - Root chart context. Required; used for common.fullname and common.labels.
+  - .config - Map containing the HPA configuration.
+
+Config values:
+  - enabled                                  - Bool   - Enables HPA creation.
+  - minReplicas                              - Int    - Minimum replicas; defaults to 1.
+  - maxReplicas                              - Int    - Required when enabled.
+  - targetCPUUtilizationPercentage           - Int    - CPU utilization target.
+  - targetCPUAverageValue                    - String - CPU average-value target, e.g. "500m".
+  - targetMemoryUtilizationPercentage        - Int    - Memory utilization target.
+  - targetMemoryAverageValue                 - String - Memory average-value target, e.g. "512Mi".
+  - behavior                                 - Map    - Optional HPA behavior configuration.
+
+Notes:
+  - Configure either a utilization target or an average-value target per resource.
+  - CPU and memory targets can be configured together.
+  - Utilization targets require resource requests on the target workload.
+*/}}
+{{- define "common.autoscaling" -}}
+{{- $root := .root -}}
+{{- $config := default (dict) .config -}}
+
+{{- if $config.enabled -}}
+{{- $minReplicas := 1 -}}
+{{- if hasKey $config "minReplicas" -}}
+{{- $minReplicas = $config.minReplicas -}}
+{{- end -}}
+
+{{- if not (hasKey $config "maxReplicas") -}}
+{{- fail "autoscaling: maxReplicas must be configured when autoscaling is enabled" -}}
+{{- end -}}
+
+{{- if lt (int $config.maxReplicas) (int $minReplicas) -}}
+{{- fail "autoscaling: maxReplicas must be greater than or equal to minReplicas" -}}
+{{- end -}}
+
+{{- $cpuUtilization := get $config "targetCPUUtilizationPercentage" -}}
+{{- $cpuAverageValue := get $config "targetCPUAverageValue" -}}
+{{- $memoryUtilization := get $config "targetMemoryUtilizationPercentage" -}}
+{{- $memoryAverageValue := get $config "targetMemoryAverageValue" -}}
+
+{{- if and $cpuUtilization $cpuAverageValue -}}
+{{- fail "autoscaling: targetCPUUtilizationPercentage and targetCPUAverageValue are mutually exclusive" -}}
+{{- end -}}
+
+{{- if and $memoryUtilization $memoryAverageValue -}}
+{{- fail "autoscaling: targetMemoryUtilizationPercentage and targetMemoryAverageValue are mutually exclusive" -}}
+{{- end -}}
+
+{{- if not (or $cpuUtilization $cpuAverageValue $memoryUtilization $memoryAverageValue) -}}
+{{- fail "autoscaling: configure at least one CPU or memory target" -}}
+{{- end -}}
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "common.fullname" $root }}
+  labels:
+    {{- include "common.labels" $root | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "common.fullname" $root }}
+  minReplicas: {{ $minReplicas }}
+  maxReplicas: {{ $config.maxReplicas }}
+  metrics:
+    {{- if $cpuUtilization }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $cpuUtilization }}
+    {{- end }}
+    {{- if $cpuAverageValue }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: {{ $cpuAverageValue | quote }}
+    {{- end }}
+    {{- if $memoryUtilization }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ $memoryUtilization }}
+    {{- end }}
+    {{- if $memoryAverageValue }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: {{ $memoryAverageValue | quote }}
+    {{- end }}
+  {{- with $config.behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+---
+{{- end -}}
