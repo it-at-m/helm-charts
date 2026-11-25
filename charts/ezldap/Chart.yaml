@@ -2,7 +2,7 @@ apiVersion: v2
 name: ezldap
 description: ezLDAP - easy read access for LDAP
 type: application
-version: 2.0.4
+version: 2.0.5
 appVersion: "1.2.0"
 maintainers:
   - name: eidottermihi
@@ -13,5 +13,5 @@ sources:
   - "https://github.com/it-at-m/helm-charts"
 dependencies:
   - name: common
-    version: "^1.0.2"
+    version: "^1.0.3"
     repository: "https://it-at-m.github.io/helm-charts"

@@ -4,4 +4,13 @@
 
 {{ include "common.serviceMonitor" . }}
 
-{{ include "common.ingress" (dict "ingress" .Values.ingress "service" .Values.service "context" .) }}
+{{ include "common.ingress" (dict
+  "ingress" .Values.ingress
+  "service" .Values.service
+  "context" .
+) }}
+
+{{ include "common.autoscaling" (dict
+  "root" .
+  "config" .Values.autoscaling
+) }}
