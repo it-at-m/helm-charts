@@ -3,6 +3,10 @@ image:
   repository: "ghcr.io/it-at-m/appswitcher-server"
   tag: "1.4.1"
 
+autoscaling:
+  enabled: true
+  maxReplicas: 2
+
 applicationYml: |-
   applications:
     demo-phone-book:

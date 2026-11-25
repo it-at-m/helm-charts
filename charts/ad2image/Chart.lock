@@ -1,6 +1,6 @@
 dependencies:
 - name: common
   repository: https://it-at-m.github.io/helm-charts
-  version: 1.0.2
-digest: sha256:5ac247024b96a42f1ba550e667d428bb4716318a3eed6a3d9a7272fc3acf375a
-generated: "2026-11-24T13:25:05.0605459+01:00"
+  version: 1.0.3
+digest: sha256:0a0375bfca266de5b96606cc4ae01da673a1d6c80c2b6b17b7102cb92d1e5767
+generated: "2026-11-25T16:38:10.8065847+01:00"
