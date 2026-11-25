@@ -1,4 +1,3 @@
-
 suite: ServiceMonitor tests
 templates:
   - templates/servicemonitor.yaml
