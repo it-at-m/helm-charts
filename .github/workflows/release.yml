@@ -36,7 +36,7 @@ jobs:
       - name: Install git-cliff
         uses: taiki-e/install-action@v2
         with:
-          tool: git-cliff
+          tool: git-cliff 
       - name: Generate chart release notes
         env:
           GITHUB_TOKEN: "${{ github.token }}"
@@ -77,8 +77,21 @@ jobs:
               --tag-pattern "^${chart_name}-" \
               --unreleased \
               --strip all \
-              --verbose \
+              --verbose \              
+              --context > context.json \
               --output "${chart_dir}/RELEASE_NOTES.md"
+
+            echo "Commits with PR metadata:"
+            jq -r '
+              .commits[]
+              | select(.remote.pr_number != null)
+              | {
+                  message,
+                  pr_number: .remote.pr_number,
+                  pr_title: .remote.pr_title,
+                  pr_labels: .remote.pr_labels
+                }
+            ' context.json          
 
             if [[ ! -s "${chart_dir}/RELEASE_NOTES.md" ]]; then
               echo "No changes found for ${chart_name}."
