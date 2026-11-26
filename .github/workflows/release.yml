@@ -77,7 +77,7 @@ jobs:
               --tag-pattern "^${chart_name}-" \
               --unreleased \
               --strip all \
-              --verbose \              
+              --verbose \
               --output "${chart_dir}/RELEASE_NOTES.md"
 
             if [[ ! -s "${chart_dir}/RELEASE_NOTES.md" ]]; then
