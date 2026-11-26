@@ -36,7 +36,62 @@ jobs:
       - name: Install git-cliff
         uses: taiki-e/install-action@v2
         with:
-          tool: git-cliff 
+          tool: git-cliff
+      - name: debug chart release notes
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+        run: |
+          set -euo pipefail
+
+          shopt -s nullglob
+
+          for chart_yaml in charts/*/Chart.yaml; do
+            chart_dir=$(dirname "$chart_yaml")
+
+            # Read chart metadata
+            metadata=$(ruby -e '
+              require "yaml"
+              chart = YAML.load_file(ARGV[0])
+              puts "#{chart["name"]}\t#{chart["version"]}"
+            ' "$chart_yaml")
+
+            IFS=$'\t' read -r chart_name chart_version <<< "$metadata"
+
+            release_tag="${chart_name}-${chart_version}"
+
+            echo "::group::Generating release notes for ${chart_name} (${chart_version})"
+
+            # Skip charts that have already been released
+            if git rev-parse --verify --quiet "refs/tags/${release_tag}" >/dev/null; then
+              echo "Release ${release_tag} already exists. Skipping."
+              echo "::endgroup::"
+              continue
+            fi
+
+            echo "Generating release notes for ${release_tag}"
+
+            git-cliff \
+              --config cliff.toml \
+              --github-repo "${GITHUB_REPOSITORY}" \
+              --include-path "${chart_dir}/**" \
+              --tag-pattern "^${chart_name}-" \
+              --unreleased \
+              --strip all \
+              --verbose \              
+              --context > context.json
+
+            echo "Commits with PR metadata:"
+            jq -r '
+              .commits[]
+              | select(.remote.pr_number != null)
+              | {
+                  message,
+                  pr_number: .remote.pr_number,
+                  pr_title: .remote.pr_title,
+                  pr_labels: .remote.pr_labels
+                }
+            ' context.json
+          done
       - name: Generate chart release notes
         env:
           GITHUB_TOKEN: "${{ github.token }}"
@@ -78,20 +133,7 @@ jobs:
               --unreleased \
               --strip all \
               --verbose \              
-              --context > context.json \
               --output "${chart_dir}/RELEASE_NOTES.md"
-
-            echo "Commits with PR metadata:"
-            jq -r '
-              .commits[]
-              | select(.remote.pr_number != null)
-              | {
-                  message,
-                  pr_number: .remote.pr_number,
-                  pr_title: .remote.pr_title,
-                  pr_labels: .remote.pr_labels
-                }
-            ' context.json          
 
             if [[ ! -s "${chart_dir}/RELEASE_NOTES.md" ]]; then
               echo "No changes found for ${chart_name}."
