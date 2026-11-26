@@ -3,6 +3,27 @@ entries:
   ad2image:
   - apiVersion: v2
     appVersion: 2.1.3
+    created: "2026-11-26T06:52:08.678350007Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.3
+    description: easy avatars powered by AD / Exchange & Identicons
+    digest: bf2a4c3b56341ad56ba9c2a7713c63926d6979e5526cc7c950311877d56aa1fe
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ad2image
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ad2image
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ad2image-2.1.7/ad2image-2.1.7.tgz
+    version: 2.1.7
+  - apiVersion: v2
+    appVersion: 2.1.3
     created: "2026-11-24T12:39:03.611708098Z"
     dependencies:
     - name: common
@@ -2349,6 +2370,27 @@ entries:
   ezldap:
   - apiVersion: v2
     appVersion: 1.2.0
+    created: "2026-11-26T06:52:08.90296835Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.3
+    description: ezLDAP - easy read access for LDAP
+    digest: ae116feb17efd51fd453aeeadcad736579466259a6f16d0ab92142c6c6cc2762
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/ezldap
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: ezldap
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/ezldap-2.0.5/ezldap-2.0.5.tgz
+    version: 2.0.5
+  - apiVersion: v2
+    appVersion: 1.2.0
     created: "2026-11-24T12:39:04.080785949Z"
     dependencies:
     - name: common
@@ -2555,6 +2597,26 @@ entries:
     - https://github.com/it-at-m/helm-charts/releases/download/ezldap-1.0.1/ezldap-1.0.1.tgz
     version: 1.0.1
   java-spring-boot:
+  - apiVersion: v2
+    created: "2026-11-26T06:52:09.143394816Z"
+    dependencies:
+    - name: common
+      repository: https://it-at-m.github.io/helm-charts
+      version: ^1.0.3
+    description: Generic Helm chart to deploy a Spring Boot application on Kubernetes
+    digest: 88f0708af528ee60f8143840104e897ab6449fe4dd6d693eac361e04afcc7f43
+    home: https://github.com/it-at-m/helm-charts/tree/main/charts/java-spring-boot
+    icon: https://raw.githubusercontent.com/it-at-m/helm-charts/main/images/logo.png
+    maintainers:
+    - email: eidottermihi@gmail.com
+      name: eidottermihi
+    name: java-spring-boot
+    sources:
+    - https://github.com/it-at-m/helm-charts
+    type: application
+    urls:
+    - https://github.com/it-at-m/helm-charts/releases/download/java-spring-boot-1.1.4/java-spring-boot-1.1.4.tgz
+    version: 1.1.4
   - apiVersion: v2
     created: "2026-11-24T12:39:04.327147909Z"
     dependencies:
@@ -5366,4 +5428,4 @@ entries:
     urls:
     - https://github.com/it-at-m/helm-charts/releases/download/zammad-ldap-sync-0.1.0/zammad-ldap-sync-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-25T15:35:15.523518004Z"
+generated: "2026-11-26T06:52:09.144285478Z"
