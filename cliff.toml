@@ -6,9 +6,9 @@
 # See https://keats.github.io/tera/#getting-started
 body = """
 ## What's Changed
-{% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | trim | striptags }}
-{% for commit in commits %}
+{% for entry in commits | commit_groups(groups=commit_parsers_groups) %}
+### {{ entry.group | trim | upper_first }}
+{% for commit in entry.commits %}
   {% if commit.remote.pr_title -%}
     {%- set commit_message = commit.remote.pr_title -%}
   {%- else -%}
@@ -57,6 +57,7 @@ footer = """
 # An array of regex based postprocessors to modify the changelog.
 # Replace the placeholder `<REPO>` with a URL.
 postprocessors = []
+format = true
 
 [git]
 # Parse commits according to the conventional commits specification.
@@ -81,13 +82,13 @@ commit_parsers = [
     { field = "remote.pr_labels", pattern = "skip-changelog|duplicate|invalid", skip = true },
 
     # Group by PR labels
-    { field = "remote.pr_labels", pattern = "BREAKING", group = "<!-- 0 -->💥 Breaking Changes" },
-    { field = "remote.pr_labels", pattern = "feature|enhancement", group = "<!-- 1 -->✨ Features" },
-    { field = "remote.pr_labels", pattern = "bug|bugfix", group = "<!-- 2 -->🐛 Bug Fixes" },
-    { field = "remote.pr_labels", pattern = "dependencies", group = "<!-- 3 -->📦 Dependencies" },
-    { field = "remote.pr_labels", pattern = "documentation", group = "<!-- 4 -->📝 Documentation" },
-    { field = "remote.pr_labels", pattern = "maintenance|refactoring", group = "<!-- 5 -->🔧 Maintenance" },
+    { field = "remote.pr_labels", pattern = "BREAKING", group = "💥 Breaking Changes" },
+    { field = "remote.pr_labels", pattern = "feature|enhancement", group = "✨ Features" },
+    { field = "remote.pr_labels", pattern = "bug|bugfix", group = "🐛 Bug Fixes" },
+    { field = "remote.pr_labels", pattern = "dependencies", group = "📦 Dependencies" },
+    { field = "remote.pr_labels", pattern = "documentation", group = "📝 Documentation" },
+    { field = "remote.pr_labels", pattern = "maintenance|refactoring", group = "🔧 Maintenance" },
 
     # Fallback
-    { message = ".*", group = "<!-- 6 -->📋 Other Changes" },
+    { message = ".*", group = "📋 Other Changes" },
 ]
