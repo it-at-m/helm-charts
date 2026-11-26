@@ -1,5 +1,6 @@
 # additional configuration for chart releaser (cr): https://github.com/helm/chart-releaser?tab=readme-ov-file#configuration
-generate-release-notes: true
+release-notes-file: RELEASE_NOTES.md
+generate-release-notes: false
 # Set to true for GPG signing
 sign: true
 # UID of the GPG key to use

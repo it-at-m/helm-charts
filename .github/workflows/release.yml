@@ -7,13 +7,21 @@ on:
     paths:
       - "charts/**"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only generate release notes (do not publish)"
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: write
   packages: write
+  pull-requests: read
 
 env:
   REGISTRY: ghcr.io
+  DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
 
 jobs:
   release:
@@ -25,7 +33,78 @@ jobs:
           fetch-depth: 0
       - name: Setup git user
         uses: fregante/setup-git-user@v2
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+      - name: Generate chart release notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          shopt -s nullglob
+
+          for chart_yaml in charts/*/Chart.yaml; do
+            chart_dir=$(dirname "$chart_yaml")
+
+            # Read chart metadata
+            metadata=$(ruby -e '
+              require "yaml"
+              chart = YAML.load_file(ARGV[0])
+              puts "#{chart["name"]}\t#{chart["version"]}"
+            ' "$chart_yaml")
+
+            IFS=$'\t' read -r chart_name chart_version <<< "$metadata"
+
+            release_tag="${chart_name}-${chart_version}"
+
+            echo "::group::Generating release notes for ${chart_name} (${chart_version})"
+
+            # Skip charts that have already been released
+            if git rev-parse --verify --quiet "refs/tags/${release_tag}" >/dev/null; then
+              echo "Release ${release_tag} already exists. Skipping."
+              echo "::endgroup::"
+              continue
+            fi
+
+            echo "Generating release notes for ${release_tag}"
+
+            git-cliff \
+              --config cliff.toml \
+              --github-repo "${GITHUB_REPOSITORY}" \
+              --include-path "${chart_dir}/**" \
+              --tag-pattern "^${chart_name}-" \
+              --unreleased \
+              --strip all \
+              --output "${chart_dir}/RELEASE_NOTES.md"
+
+            if [[ ! -s "${chart_dir}/RELEASE_NOTES.md" ]]; then
+              echo "No changes found for ${chart_name}."
+              echo "No chart-specific changes found." > "${chart_dir}/RELEASE_NOTES.md"
+            fi
+
+            cat "${chart_dir}/RELEASE_NOTES.md"
+
+            echo "::endgroup::"
+          done
+
+      - name: Upload generated release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: chart-release-notes
+          path: charts/*/RELEASE_NOTES.md
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Stop before publishing (dry run)
+        if: env.DRY_RUN == 'true'
+        run: |
+          echo "Dry run enabled. Skipping chart publishing."
+          exit 0
+
       - name: Prepare GPG key
+        if: env.DRY_RUN != 'true'
         run: |
           gpg_dir=.cr-gpg
           mkdir "$gpg_dir"
@@ -39,18 +118,22 @@ jobs:
           GPG_KEYRING_BASE64: "${{ secrets.GPG_KEYRING_BASE64 }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
       - name: Install Helm
+        if: env.DRY_RUN != 'true'
         uses: azure/setup-helm@v5
       - name: Add dependency repos
+        if: env.DRY_RUN != 'true'
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add it-at-m https://it-at-m.github.io/helm-charts
       - name: Login to Registry
+        if: env.DRY_RUN != 'true'
         uses: docker/login-action@v4
         with:
           registry: ${{env.REGISTRY}}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Run chart-releaser
+        if: env.DRY_RUN != 'true'
         uses: helm/chart-releaser-action@v1.9.0
         with:
           config: cr.yaml
