@@ -1,0 +1,12 @@
+dependencies:
+- name: refarch-templates
+  repository: https://it-at-m.github.io/helm-charts
+  version: 2.4.1
+- name: valkey
+  repository: https://cloudpirates-io.github.io/helm-charts
+  version: 0.25.13
+- name: postgres
+  repository: https://cloudpirates-io.github.io/helm-charts
+  version: 0.21.1
+digest: sha256:ed51474b5322ef4fcd78580413a60a0018e9247b5dc7ac35b3bf94f688dedfaa
+generated: "2026-11-19T19:54:49.1241511+01:00"
